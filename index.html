@@ -5,34 +5,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="MS Pens">
-
-<link rel="apple-touch-icon" href="MSPENS.png">
-
 <title>MS Pens</title>
 
 <style>
 body {
   font-family: -apple-system, Arial;
-  margin: 0;
   padding: 15px;
 }
 
+/* Header */
 .header {
   display: flex;
   align-items: center;
   gap: 15px;
 }
+.header img { width: 60px; }
 
-.header img {
-  width: 60px;
-}
-
-.section {
-  margin-top: 20px;
-}
-
+/* Felder */
 input, textarea {
   width: 100%;
   padding: 12px;
@@ -42,45 +31,29 @@ input, textarea {
   border: 1px solid #ccc;
 }
 
-textarea {
-  height: 120px;
+textarea { height: 140px; }
+
+/* Geräte */
+.geraetBlock {
+  border: 1px solid #ccc;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 10px;
 }
 
-/* ✅ Custom Checkbox */
+/* ✅ robuste Checkbox (iPad sicher) */
 .checkbox {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 8px 0;
-  cursor: pointer;
-}
-
-.checkbox input {
-  display: none;
-}
-
-.checkmark {
-  width: 22px;
-  height: 22px;
-  border: 2px solid black;
-  border-radius: 4px;
-  display: inline-block;
-  position: relative;
-}
-
-.checkbox input:checked + .checkmark {
-  background: black;
-}
-
-.checkbox input:checked + .checkmark::after {
-  content: "✓";
-  color: white;
-  position: absolute;
-  top: -2px;
-  left: 4px;
+  display: block;
+  margin: 6px 0;
   font-size: 16px;
 }
 
+.checkbox input {
+  margin-right: 10px;
+  transform: scale(1.3);
+}
+
+/* Buttons */
 button {
   width: 100%;
   padding: 14px;
@@ -93,13 +66,7 @@ button {
 .print { background: #007AFF; color: white; }
 .reset { background: #ccc; }
 
-.geraetBlock {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-top: 15px;
-  border-radius: 10px;
-}
-
+/* Druck */
 @media print {
   button, .toggle { display: none; }
 }
@@ -114,31 +81,35 @@ button {
   <h2 id="title">Werkstattzettel</h2>
 </div>
 
+<!-- Angebotsmodus -->
+
 <div class="toggle">
   <label class="checkbox">
     <input type="checkbox" id="angebotToggle" onchange="toggleAngebot()">
-    <span class="checkmark"></span>
     Angebotsmodus
   </label>
 </div>
 
-<div class="section">
-  <h3>Kundendaten</h3>
-  <input id="name" placeholder="Name">
-  <input id="datum" placeholder="Datum">
-</div>
+<!-- Kundendaten -->
+
+<h3>Kundendaten</h3>
+<input id="name" placeholder="Name">
+<input id="strasse" placeholder="Straße">
+<input id="strasse2" placeholder="Straße 2">
+<input id="plzort" placeholder="PLZ / Ort">
+<input id="land" placeholder="Land">
+<input id="extra" placeholder="Zusätzliches">
+<input id="datum" placeholder="Datum">
 
 <!-- Geräte -->
 
-<div class="section">
-  <h3>Schreibgeräte</h3>
-  <div id="geraeteContainer"></div>
-  <button onclick="addGeraet()">+ Gerät hinzufügen</button>
-</div>
+<h3>Schreibgeräte</h3>
+<div id="geraeteContainer"></div>
+<button onclick="addGeraet()">+ Gerät hinzufügen</button>
 
 <!-- Gesamtpreis -->
 
-<div class="section" id="gesamtBlock" style="display:none;">
+<div id="gesamtBlock" style="display:none;">
   <h3>Gesamtpreis</h3>
   <input id="gesamtpreis" readonly>
 </div>
@@ -158,25 +129,25 @@ function addGeraet() {
   div.innerHTML = `
     <h4>Gerät ${geraetCounter}</h4>
 
-    <input placeholder="Modell">
+    <input class="modell" placeholder="Modell">
 
     <textarea placeholder="Notizen"></textarea>
 
 ```
-<div>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Demontage</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Reinigung</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Wartung Mechanik</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Korkdichtung erneuern</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Politur einfach</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Mehrstufige Handpolitur</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Gravur entfernen</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenriss schließen</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenlippe erneuern</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Clip/Kappenringe vergolden</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenstern erneuert</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Feder umschleifen</label>
-  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Schreibprobe</label>
+<div class="arbeiten">
+  <label class="checkbox"><input type="checkbox">Demontage</label>
+  <label class="checkbox"><input type="checkbox">Reinigung</label>
+  <label class="checkbox"><input type="checkbox">Wartung Mechanik</label>
+  <label class="checkbox"><input type="checkbox">Korkdichtung erneuern</label>
+  <label class="checkbox"><input type="checkbox">Politur einfach</label>
+  <label class="checkbox"><input type="checkbox">Mehrstufige Handpolitur</label>
+  <label class="checkbox"><input type="checkbox">Gravur entfernen</label>
+  <label class="checkbox"><input type="checkbox">Kappenriss schließen</label>
+  <label class="checkbox"><input type="checkbox">Kappenlippe erneuern</label>
+  <label class="checkbox"><input type="checkbox">Clip/Kappenringe vergolden</label>
+  <label class="checkbox"><input type="checkbox">Kappenstern erneuert</label>
+  <label class="checkbox"><input type="checkbox">Feder umschleifen</label>
+  <label class="checkbox"><input type="checkbox">Schreibprobe</label>
 </div>
 
 <input class="preisInput" placeholder="Einzelpreis €" oninput="updateSumme()">
@@ -207,10 +178,23 @@ document.getElementById("gesamtBlock").style.display = aktiv ? "block" : "none";
 
 function drucken() {
 
-document.querySelectorAll("label.checkbox").forEach(el => {
-let input = el.querySelector("input");
-if (!input.checked) el.style.display = "none";
+// nur angehakte Arbeiten anzeigen
+document.querySelectorAll(".arbeiten label").forEach(label => {
+let cb = label.querySelector("input");
+if (!cb.checked) label.style.display = "none";
 });
+
+// leere Felder ausblenden
+document.querySelectorAll("input, textarea").forEach(el => {
+if (!el.value) el.style.display = "none";
+});
+
+// Dateiname setzen
+let name = document.getElementById("name").value || "Kunde";
+let modell = document.querySelector(".modell")?.value || "Füller";
+let datum = document.getElementById("datum").value || new Date().toISOString().split("T")[0];
+
+document.title = datum + "*" + name + "*" + modell;
 
 window.print();
 setTimeout(() => location.reload(), 500);
@@ -220,7 +204,7 @@ function resetForm() {
 location.reload();
 }
 
-// Start mit 1 Gerät
+// Startgerät
 addGeraet();
 
 </script>
