@@ -20,10 +20,20 @@ input, textarea {
   font-size: 16px;
 }
 
+textarea {
+  height: 120px;
+}
+
 .geraet {
   border: 1px solid #ccc;
   padding: 10px;
   margin-top: 15px;
+  border-radius: 8px;
+}
+
+label {
+  display: block;
+  margin: 4px 0;
 }
 
 button {
@@ -33,10 +43,8 @@ button {
   font-size: 16px;
 }
 
-/* Checkbox sichtbar */
-label {
-  display: block;
-  margin: 5px 0;
+@media print {
+  button { display: none; }
 }
 </style>
 
@@ -51,8 +59,13 @@ label {
   Angebotsmodus
 </label>
 
-<h3>Kunde</h3>
+<h3>Kundendaten</h3>
 <input id="name" placeholder="Name">
+<input id="strasse" placeholder="Straße">
+<input id="strasse2" placeholder="Straße 2">
+<input id="plzort" placeholder="PLZ / Ort">
+<input id="land" placeholder="Land">
+<input id="extra" placeholder="Zusätzliches">
 <input id="datum" placeholder="Datum">
 
 <h3>Geräte</h3>
@@ -65,11 +78,10 @@ label {
   <input id="gesamtpreis" readonly>
 </div>
 
-<button onclick="drucken()">Drucken</button>
+<button onclick="drucken()">📄 Drucken / PDF</button> <button onclick="resetForm()">🔄 Zurücksetzen</button>
 
 <script>
 
-// Gerät hinzufügen
 function addGeraet() {
 
   let div = document.createElement("div");
@@ -78,42 +90,85 @@ function addGeraet() {
   div.innerHTML = `
     <input class="modell" placeholder="Modell">
 
-    <label><input type="checkbox"> Demontage</label>
-    <label><input type="checkbox"> Reinigung</label>
-    <label><input type="checkbox"> Politur</label>
+    <textarea placeholder="Notizen"></textarea>
 
-    <input class="preis" placeholder="Preis" oninput="summe()">
-  `;
+```
+<strong>Arbeiten:</strong>
 
-  document.getElementById("container").appendChild(div);
+<label><input type="checkbox"> Demontage</label>
+<label><input type="checkbox"> Reinigung</label>
+<label><input type="checkbox"> Wartung Mechanik</label>
+<label><input type="checkbox"> Korkdichtung erneuern</label>
+<label><input type="checkbox"> Politur einfach</label>
+<label><input type="checkbox"> Mehrstufige Handpolitur</label>
+<label><input type="checkbox"> Gravur entfernen</label>
+<label><input type="checkbox"> Kappenriss schließen</label>
+<label><input type="checkbox"> Kappenlippe erneuern</label>
+<label><input type="checkbox"> Clip/Kappenringe vergolden</label>
+<label><input type="checkbox"> Kappenstern erneuert</label>
+<label><input type="checkbox"> Feder umschleifen</label>
+<label><input type="checkbox"> Schreibprobe</label>
+
+<input class="preis" placeholder="Einzelpreis €" oninput="summe()">
+```
+
+`;
+
+document.getElementById("container").appendChild(div);
 }
 
-// Summe
+// Summe berechnen
 function summe() {
-  let total = 0;
+let total = 0;
 
-  document.querySelectorAll(".preis").forEach(el => {
-    let v = parseFloat(el.value.replace(",", "."));
-    if (!isNaN(v)) total += v;
-  });
+document.querySelectorAll(".preis").forEach(el => {
+let v = parseFloat(el.value.replace(",", "."));
+if (!isNaN(v)) total += v;
+});
 
-  document.getElementById("gesamtpreis").value = total.toFixed(2);
+document.getElementById("gesamtpreis").value = total.toFixed(2) + " €";
 }
 
-// Angebotsmodus
+// Angebot / Werkstatt
 function toggleAngebot() {
-  let aktiv = document.getElementById("angebotToggle").checked;
+let aktiv = document.getElementById("angebotToggle").checked;
 
-  document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
-  document.getElementById("gesamtBlock").style.display = aktiv ? "block" : "none";
+document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
+document.getElementById("gesamtBlock").style.display = aktiv ? "block" : "none";
 }
 
 // Drucken
 function drucken() {
-  window.print();
+
+// nur angehakte Arbeiten anzeigen
+document.querySelectorAll(".geraet").forEach(g => {
+g.querySelectorAll("label").forEach(label => {
+let cb = label.querySelector("input");
+if (!cb.checked) label.style.display = "none";
+});
+});
+
+// leere Felder ausblenden
+document.querySelectorAll("input, textarea").forEach(el => {
+if (!el.value) el.style.display = "none";
+});
+
+// Dateiname
+let name = document.getElementById("name").value || "Kunde";
+let modell = document.querySelector(".modell")?.value || "Füller";
+let datum = document.getElementById("datum").value || new Date().toISOString().split("T")[0];
+
+document.title = datum + "*" + name + "*" + modell;
+
+window.print();
 }
 
-// Start
+// Reset
+function resetForm() {
+location.reload();
+}
+
+// Startgerät
 addGeraet();
 
 </script>
