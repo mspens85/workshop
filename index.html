@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- iOS App Verhalten -->
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="MS Pens">
+
+<!-- Icon -->
+
+<link rel="apple-touch-icon" href="MSPENS.png">
+
+<title>MS Pens</title>
+
+<style>
+body {
+  font-family: -apple-system, Arial;
+  margin: 0;
+  padding: 15px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header img {
+  width: 60px;
+}
+
+h1 {
+  font-size: 22px;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  height: 120px;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.4);
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 15px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+}
+
+.print { background: #007AFF; color: white; }
+.reset { background: #ccc; }
+
+@media print {
+  button, .toggle { display: none; }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+  <img src="MSPENS.png">
+  <h1 id="title">Werkstattzettel</h1>
+</div>
+
+<div class="toggle">
+  <label>
+    <input type="checkbox" id="angebotToggle" onchange="toggleAngebot()">
+    Angebotsmodus
+  </label>
+</div>
+
+<div class="section">
+  <h3>Kundendaten</h3>
+  <input id="name" placeholder="Name">
+  <input id="strasse" placeholder="Straße">
+  <input id="strasse2" placeholder="Straße 2">
+  <input id="plzort" placeholder="PLZ / Ort">
+  <input id="land" placeholder="Land">
+  <input id="zusatz" placeholder="Zusatz">
+  <input id="datum" placeholder="Datum">
+</div>
+
+<div class="section">
+  <h3>Gerät</h3>
+  <input id="modell" placeholder="Modell">
+  <textarea id="notizen" placeholder="Notizen"></textarea>
+</div>
+
+<div class="section" id="arbeiten">
+  <h3>Arbeiten</h3>
+
+<label><input type="checkbox"> Demontage</label> <label><input type="checkbox"> Reinigung</label> <label><input type="checkbox"> Wartung Mechanik</label> <label><input type="checkbox"> Korkdichtung erneuern</label> <label><input type="checkbox"> Politur einfach</label> <label><input type="checkbox"> Mehrstufige Handpolitur</label> <label><input type="checkbox"> Gravur entfernen</label> <label><input type="checkbox"> Kappenriss schließen</label> <label><input type="checkbox"> Kappenlippe erneuern</label> <label><input type="checkbox"> Clip/Kappenringe vergolden</label> <label><input type="checkbox"> Kappenstern erneuert</label> <label><input type="checkbox"> Feder umschleifen</label> <label><input type="checkbox"> Schreibprobe</label>
+
+</div>
+
+<div id="preisBlock" style="display:none;">
+  <h3>Gesamtpreis</h3>
+  <input id="gesamtpreis" placeholder="z. B. 180€">
+</div>
+
+<button class="print" onclick="drucken()">📄 Drucken / PDF</button> <button class="reset" onclick="resetForm()">🔄 Zurücksetzen</button>
+
+<script>
+
+const fields = ["name","strasse","strasse2","plzort","land","zusatz","datum","modell","notizen","gesamtpreis"];
+
+window.onload = function() {
+  fields.forEach(id => {
+    let val = localStorage.getItem(id);
+    if (val) document.getElementById(id).value = val;
+  });
+};
+
+document.addEventListener("input", e => {
+  if (fields.includes(e.target.id)) {
+    localStorage.setItem(e.target.id, e.target.value);
+  }
+});
+
+function toggleAngebot() {
+  let aktiv = document.getElementById("angebotToggle").checked;
+  document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
+  document.getElementById("preisBlock").style.display = aktiv ? "block" : "none";
+}
+
+function drucken() {
+
+  document.querySelectorAll("#arbeiten label").forEach(el => {
+    if (!el.querySelector("input").checked) {
+      el.style.display = "none";
+    }
+  });
+
+  fields.forEach(id => {
+    let el = document.getElementById(id);
+    if (!el.value) el.style.display = "none";
+  });
+
+  window.print();
+  setTimeout(() => location.reload(), 500);
+}
+
+function resetForm() {
+  localStorage.clear();
+  location.reload();
+}
+
+</script>
+
+</body>
+</html>
