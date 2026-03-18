@@ -132,12 +132,77 @@ button {
   <textarea id="notizen" placeholder="Notizen"></textarea>
 </div>
 
-<div class="section" id="arbeiten">
-  <h3>Arbeiten</h3>
+<!-- Geräte Bereich -->
 
-<label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Demontage</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Reinigung</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Wartung Mechanik</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Korkdichtung erneuern</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Politur einfach</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Mehrstufige Handpolitur</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Gravur entfernen</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenriss schließen</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenlippe erneuern</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Clip/Kappenringe vergolden</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenstern erneuert</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Feder umschleifen</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Schreibprobe</label>
-
+<div class="section">
+  <h3>Schreibgeräte</h3>
+  <div id="geraeteContainer"></div>
+  <button onclick="addGeraet()">+ Gerät hinzufügen</button>
 </div>
+
+<script>
+
+let geraetCounter = 0;
+
+function addGeraet() {
+  geraetCounter++;
+
+  let container = document.getElementById("geraeteContainer");
+
+  let div = document.createElement("div");
+  div.className = "geraetBlock";
+  div.style.border = "1px solid #ccc";
+  div.style.padding = "10px";
+  div.style.marginTop = "15px";
+
+  div.innerHTML = `
+    <h4>Gerät ${geraetCounter}</h4>
+
+    <input placeholder="Modell">
+
+    <textarea placeholder="Notizen"></textarea>
+
+```
+<div class="arbeiten">
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Demontage</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Reinigung</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Wartung Mechanik</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Korkdichtung erneuern</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Politur einfach</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Mehrstufige Handpolitur</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Gravur entfernen</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenriss schließen</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenlippe erneuern</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Clip/Kappenringe vergolden</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenstern erneuert</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Feder umschleifen</label>
+  <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Schreibprobe</label>
+</div>
+
+<div class="preisEinzel" style="margin-top:10px;">
+  <input class="preisInput" placeholder="Einzelpreis €" oninput="updateSumme()">
+</div>
+```
+
+`;
+
+container.appendChild(div);
+}
+
+// Gesamtpreis berechnen
+function updateSumme() {
+let summe = 0;
+
+document.querySelectorAll(".preisInput").forEach(input => {
+let val = parseFloat(input.value.replace(",", "."));
+if (!isNaN(val)) summe += val;
+});
+
+document.getElementById("gesamtpreis").value = summe.toFixed(2) + " €";
+}
+
+</script>
+
 
 <div id="preisBlock" style="display:none;">
   <h3>Gesamtpreis</h3>
@@ -221,3 +286,7 @@ function resetForm() {
 
 </body>
 </html>
+<div class="section">
+  <h3>Gesamtpreis</h3>
+  <input id="gesamtpreis" readonly>
+</div>
