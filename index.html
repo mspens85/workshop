@@ -4,7 +4,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>MS Pens</title>
 
 <style>
@@ -28,7 +27,6 @@ textarea {
   border: 1px solid #ccc;
   padding: 10px;
   margin-top: 15px;
-  border-radius: 8px;
 }
 
 label {
@@ -55,118 +53,114 @@ button {
 <h2 id="title">Werkstattzettel</h2>
 
 <label>
-  <input type="checkbox" id="angebotToggle" onchange="toggleAngebot()">
+  <input type="checkbox" id="angebotToggle">
   Angebotsmodus
 </label>
 
 <h3>Kundendaten</h3>
 <input id="name" placeholder="Name">
-<input id="strasse" placeholder="Straße">
-<input id="strasse2" placeholder="Straße 2">
-<input id="plzort" placeholder="PLZ / Ort">
-<input id="land" placeholder="Land">
-<input id="extra" placeholder="Zusätzliches">
 <input id="datum" placeholder="Datum">
 
 <h3>Geräte</h3>
 <div id="container"></div>
 
-<button onclick="addGeraet()">+ Gerät hinzufügen</button>
+<button id="addBtn">+ Gerät hinzufügen</button>
 
 <div id="gesamtBlock" style="display:none;">
   <h3>Gesamtpreis</h3>
   <input id="gesamtpreis" readonly>
 </div>
 
-<button onclick="drucken()">📄 Drucken / PDF</button> <button onclick="resetForm()">🔄 Zurücksetzen</button>
+<button id="printBtn">📄 Drucken / PDF</button>
 
 <script>
 
-function addGeraet() {
+// ---------- Gerät erstellen ----------
+function createGeraet() {
 
-  let div = document.createElement("div");
+  const div = document.createElement("div");
   div.className = "geraet";
 
-  div.innerHTML = `
-    <input class="modell" placeholder="Modell">
+  // Modell
+  const modell = document.createElement("input");
+  modell.placeholder = "Modell";
 
-    <textarea placeholder="Notizen"></textarea>
+  // Arbeiten
+  const arbeiten = [
+    "Demontage","Reinigung","Wartung Mechanik","Korkdichtung erneuern",
+    "Politur einfach","Mehrstufige Handpolitur","Gravur entfernen",
+    "Kappenriss schließen","Kappenlippe erneuern",
+    "Clip/Kappenringe vergolden","Kappenstern erneuert",
+    "Feder umschleifen","Schreibprobe"
+  ];
 
-```
-<strong>Arbeiten:</strong>
+  const arbeitenDiv = document.createElement("div");
 
-<label><input type="checkbox"> Demontage</label>
-<label><input type="checkbox"> Reinigung</label>
-<label><input type="checkbox"> Wartung Mechanik</label>
-<label><input type="checkbox"> Korkdichtung erneuern</label>
-<label><input type="checkbox"> Politur einfach</label>
-<label><input type="checkbox"> Mehrstufige Handpolitur</label>
-<label><input type="checkbox"> Gravur entfernen</label>
-<label><input type="checkbox"> Kappenriss schließen</label>
-<label><input type="checkbox"> Kappenlippe erneuern</label>
-<label><input type="checkbox"> Clip/Kappenringe vergolden</label>
-<label><input type="checkbox"> Kappenstern erneuert</label>
-<label><input type="checkbox"> Feder umschleifen</label>
-<label><input type="checkbox"> Schreibprobe</label>
+  arbeiten.forEach(text => {
+    const label = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
 
-<input class="preis" placeholder="Einzelpreis €" oninput="summe()">
-```
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(" " + text));
 
-`;
+    arbeitenDiv.appendChild(label);
+  });
 
-document.getElementById("container").appendChild(div);
+  // Preis
+  const preis = document.createElement("input");
+  preis.placeholder = "Einzelpreis €";
+
+  preis.addEventListener("input", updateSumme);
+
+  // Zusammenbauen
+  div.appendChild(modell);
+  div.appendChild(arbeitenDiv);
+  div.appendChild(preis);
+
+  return div;
 }
 
-// Summe berechnen
-function summe() {
-let total = 0;
-
-document.querySelectorAll(".preis").forEach(el => {
-let v = parseFloat(el.value.replace(",", "."));
-if (!isNaN(v)) total += v;
-});
-
-document.getElementById("gesamtpreis").value = total.toFixed(2) + " €";
+// ---------- Gerät hinzufügen ----------
+function addGeraet() {
+  document.getElementById("container").appendChild(createGeraet());
 }
 
-// Angebot / Werkstatt
+// ---------- Summe ----------
+function updateSumme() {
+  let sum = 0;
+
+  document.querySelectorAll("#container input[placeholder='Einzelpreis €']").forEach(el => {
+    let v = parseFloat(el.value.replace(",", "."));
+    if (!isNaN(v)) sum += v;
+  });
+
+  document.getElementById("gesamtpreis").value = sum.toFixed(2) + " €";
+}
+
+// ---------- Angebot ----------
 function toggleAngebot() {
-let aktiv = document.getElementById("angebotToggle").checked;
+  const aktiv = document.getElementById("angebotToggle").checked;
 
-document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
-document.getElementById("gesamtBlock").style.display = aktiv ? "block" : "none";
+  document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
+  document.getElementById("gesamtBlock").style.display = aktiv ? "block" : "none";
 }
 
-// Drucken
+// ---------- Drucken ----------
 function drucken() {
 
-// nur angehakte Arbeiten anzeigen
-document.querySelectorAll(".geraet").forEach(g => {
-g.querySelectorAll("label").forEach(label => {
-let cb = label.querySelector("input");
-if (!cb.checked) label.style.display = "none";
-});
-});
+  document.querySelectorAll(".geraet label").forEach(label => {
+    const cb = label.querySelector("input");
+    if (!cb.checked) label.style.display = "none";
+  });
 
-// leere Felder ausblenden
-document.querySelectorAll("input, textarea").forEach(el => {
-if (!el.value) el.style.display = "none";
-});
-
-// Dateiname
-let name = document.getElementById("name").value || "Kunde";
-let modell = document.querySelector(".modell")?.value || "Füller";
-let datum = document.getElementById("datum").value || new Date().toISOString().split("T")[0];
-
-document.title = datum + "*" + name + "*" + modell;
-
-window.print();
+  window.print();
 }
 
-// Reset
-function resetForm() {
-location.reload();
-}
+// ---------- EVENTS sauber setzen ----------
+document.getElementById("addBtn").addEventListener("click", addGeraet);
+document.getElementById("printBtn").addEventListener("click", drucken);
+document.getElementById("angebotToggle").addEventListener("change", toggleAngebot);
 
 // Startgerät
 addGeraet();
