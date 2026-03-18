@@ -43,15 +43,15 @@ input, textarea {
 }
 
 textarea {
-  height: 140px;
+  height: 120px;
 }
 
-/* 🔥 Custom Checkbox (iPad fix) */
+/* ✅ Custom Checkbox */
 .checkbox {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: 10px 0;
+  margin: 8px 0;
   cursor: pointer;
 }
 
@@ -83,8 +83,8 @@ textarea {
 
 button {
   width: 100%;
-  padding: 15px;
-  margin-top: 15px;
+  padding: 14px;
+  margin-top: 10px;
   font-size: 16px;
   border-radius: 10px;
   border: none;
@@ -92,6 +92,13 @@ button {
 
 .print { background: #007AFF; color: white; }
 .reset { background: #ccc; }
+
+.geraetBlock {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 10px;
+}
 
 @media print {
   button, .toggle { display: none; }
@@ -118,27 +125,25 @@ button {
 <div class="section">
   <h3>Kundendaten</h3>
   <input id="name" placeholder="Name">
-  <input id="strasse" placeholder="Straße">
-  <input id="strasse2" placeholder="Straße 2">
-  <input id="plzort" placeholder="PLZ / Ort">
-  <input id="land" placeholder="Land">
-  <input id="zusatz" placeholder="Zusätzliche Angaben">
   <input id="datum" placeholder="Datum">
 </div>
 
-<div class="section">
-  <h3>Gerät</h3>
-  <input id="modell" placeholder="Modell">
-  <textarea id="notizen" placeholder="Notizen"></textarea>
-</div>
-
-<!-- Geräte Bereich -->
+<!-- Geräte -->
 
 <div class="section">
   <h3>Schreibgeräte</h3>
   <div id="geraeteContainer"></div>
   <button onclick="addGeraet()">+ Gerät hinzufügen</button>
 </div>
+
+<!-- Gesamtpreis -->
+
+<div class="section" id="gesamtBlock" style="display:none;">
+  <h3>Gesamtpreis</h3>
+  <input id="gesamtpreis" readonly>
+</div>
+
+<button class="print" onclick="drucken()">📄 Drucken / PDF</button> <button class="reset" onclick="resetForm()">🔄 Zurücksetzen</button>
 
 <script>
 
@@ -147,13 +152,8 @@ let geraetCounter = 0;
 function addGeraet() {
   geraetCounter++;
 
-  let container = document.getElementById("geraeteContainer");
-
   let div = document.createElement("div");
   div.className = "geraetBlock";
-  div.style.border = "1px solid #ccc";
-  div.style.padding = "10px";
-  div.style.marginTop = "15px";
 
   div.innerHTML = `
     <h4>Gerät ${geraetCounter}</h4>
@@ -163,7 +163,7 @@ function addGeraet() {
     <textarea placeholder="Notizen"></textarea>
 
 ```
-<div class="arbeiten">
+<div>
   <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Demontage</label>
   <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Reinigung</label>
   <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Wartung Mechanik</label>
@@ -179,17 +179,14 @@ function addGeraet() {
   <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Schreibprobe</label>
 </div>
 
-<div class="preisEinzel" style="margin-top:10px;">
-  <input class="preisInput" placeholder="Einzelpreis €" oninput="updateSumme()">
-</div>
+<input class="preisInput" placeholder="Einzelpreis €" oninput="updateSumme()">
 ```
 
 `;
 
-container.appendChild(div);
+document.getElementById("geraeteContainer").appendChild(div);
 }
 
-// Gesamtpreis berechnen
 function updateSumme() {
 let summe = 0;
 
@@ -201,92 +198,32 @@ if (!isNaN(val)) summe += val;
 document.getElementById("gesamtpreis").value = summe.toFixed(2) + " €";
 }
 
-</script>
-
-
-<div id="preisBlock" style="display:none;">
-  <h3>Gesamtpreis</h3>
-  <input id="gesamtpreis" placeholder="z. B. 180€">
-</div>
-
-<button class="print" onclick="drucken()">📄 Drucken / PDF</button> <button class="reset" onclick="resetForm()">🔄 Zurücksetzen</button>
-
-<script>
-
-const fields = ["name","strasse","strasse2","plzort","land","zusatz","datum","modell","notizen","gesamtpreis"];
-
-// 💾 Daten laden
-window.onload = function() {
-  fields.forEach(id => {
-    let val = localStorage.getItem(id);
-    if (val) document.getElementById(id).value = val;
-  });
-};
-
-// 💾 speichern
-document.addEventListener("input", e => {
-  if (fields.includes(e.target.id)) {
-    localStorage.setItem(e.target.id, e.target.value);
-  }
-});
-
-// Angebotsmodus
 function toggleAngebot() {
-  let aktiv = document.getElementById("angebotToggle").checked;
-  document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
-  document.getElementById("preisBlock").style.display = aktiv ? "block" : "none";
+let aktiv = document.getElementById("angebotToggle").checked;
+
+document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
+document.getElementById("gesamtBlock").style.display = aktiv ? "block" : "none";
 }
 
-// Drucken
 function drucken() {
 
-// Arbeiten filtern
-document.querySelectorAll("#arbeiten label").forEach(el => {
-if (!el.querySelector("input").checked) {
-el.style.display = "none";
-}
+document.querySelectorAll("label.checkbox").forEach(el => {
+let input = el.querySelector("input");
+if (!input.checked) el.style.display = "none";
 });
 
-// Leere Felder ausblenden
-fields.forEach(id => {
-let el = document.getElementById(id);
-if (!el.value) el.style.display = "none";
-});
-
-// 🔥 Dateiname bauen
-let name = document.getElementById("name").value || "Kunde";
-let modell = document.getElementById("modell").value || "Füller";
-let typ = document.getElementById("angebotToggle").checked ? "Angebot" : "Werkstatt";
-
-// Datum automatisch (falls leer)
-let datumInput = document.getElementById("datum").value;
-let datum = datumInput ? datumInput : new Date().toISOString().split("T")[0];
-
-// Sonderzeichen entfernen (wichtig!)
-name = name.replace(/[^a-zA-Z0-9]/g, "");
-modell = modell.replace(/[^a-zA-Z0-9]/g, "");
-
-let filename = datum + "" + name + "" + modell + "_" + typ;
-
-document.title = filename;
-
-// Drucken
 window.print();
-
 setTimeout(() => location.reload(), 500);
 }
 
-// Reset
 function resetForm() {
-  localStorage.clear();
-  location.reload();
+location.reload();
 }
+
+// Start mit 1 Gerät
+addGeraet();
 
 </script>
 
 </body>
 </html>
-<div class="section">
-  <h3>Gesamtpreis</h3>
-  <input id="gesamtpreis" readonly>
-</div>
