@@ -5,13 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- iOS App Verhalten -->
-
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="MS Pens">
-
-<!-- Icon -->
 
 <link rel="apple-touch-icon" href="MSPENS.png">
 
@@ -34,10 +29,6 @@ body {
   width: 60px;
 }
 
-h1 {
-  font-size: 22px;
-}
-
 .section {
   margin-top: 20px;
 }
@@ -52,18 +43,42 @@ input, textarea {
 }
 
 textarea {
-  height: 120px;
+  height: 140px;
 }
 
-label {
+/* 🔥 Custom Checkbox (iPad fix) */
+.checkbox {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 8px 0;
+  gap: 12px;
+  margin: 10px 0;
+  cursor: pointer;
 }
 
-input[type="checkbox"] {
-  transform: scale(1.4);
+.checkbox input {
+  display: none;
+}
+
+.checkmark {
+  width: 22px;
+  height: 22px;
+  border: 2px solid black;
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+}
+
+.checkbox input:checked + .checkmark {
+  background: black;
+}
+
+.checkbox input:checked + .checkmark::after {
+  content: "✓";
+  color: white;
+  position: absolute;
+  top: -2px;
+  left: 4px;
+  font-size: 16px;
 }
 
 button {
@@ -89,12 +104,13 @@ button {
 
 <div class="header">
   <img src="MSPENS.png">
-  <h1 id="title">Werkstattzettel</h1>
+  <h2 id="title">Werkstattzettel</h2>
 </div>
 
 <div class="toggle">
-  <label>
+  <label class="checkbox">
     <input type="checkbox" id="angebotToggle" onchange="toggleAngebot()">
+    <span class="checkmark"></span>
     Angebotsmodus
   </label>
 </div>
@@ -106,7 +122,7 @@ button {
   <input id="strasse2" placeholder="Straße 2">
   <input id="plzort" placeholder="PLZ / Ort">
   <input id="land" placeholder="Land">
-  <input id="zusatz" placeholder="Zusatz">
+  <input id="zusatz" placeholder="Zusätzliche Angaben">
   <input id="datum" placeholder="Datum">
 </div>
 
@@ -119,7 +135,7 @@ button {
 <div class="section" id="arbeiten">
   <h3>Arbeiten</h3>
 
-<label><input type="checkbox"> Demontage</label> <label><input type="checkbox"> Reinigung</label> <label><input type="checkbox"> Wartung Mechanik</label> <label><input type="checkbox"> Korkdichtung erneuern</label> <label><input type="checkbox"> Politur einfach</label> <label><input type="checkbox"> Mehrstufige Handpolitur</label> <label><input type="checkbox"> Gravur entfernen</label> <label><input type="checkbox"> Kappenriss schließen</label> <label><input type="checkbox"> Kappenlippe erneuern</label> <label><input type="checkbox"> Clip/Kappenringe vergolden</label> <label><input type="checkbox"> Kappenstern erneuert</label> <label><input type="checkbox"> Feder umschleifen</label> <label><input type="checkbox"> Schreibprobe</label>
+<label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Demontage</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Reinigung</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Wartung Mechanik</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Korkdichtung erneuern</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Politur einfach</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Mehrstufige Handpolitur</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Gravur entfernen</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenriss schließen</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenlippe erneuern</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Clip/Kappenringe vergolden</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Kappenstern erneuert</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Feder umschleifen</label> <label class="checkbox"><input type="checkbox"><span class="checkmark"></span>Schreibprobe</label>
 
 </div>
 
@@ -134,6 +150,7 @@ button {
 
 const fields = ["name","strasse","strasse2","plzort","land","zusatz","datum","modell","notizen","gesamtpreis"];
 
+// 💾 Daten laden
 window.onload = function() {
   fields.forEach(id => {
     let val = localStorage.getItem(id);
@@ -141,18 +158,21 @@ window.onload = function() {
   });
 };
 
+// 💾 speichern
 document.addEventListener("input", e => {
   if (fields.includes(e.target.id)) {
     localStorage.setItem(e.target.id, e.target.value);
   }
 });
 
+// Angebotsmodus
 function toggleAngebot() {
   let aktiv = document.getElementById("angebotToggle").checked;
   document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
   document.getElementById("preisBlock").style.display = aktiv ? "block" : "none";
 }
 
+// Drucken
 function drucken() {
 
   document.querySelectorAll("#arbeiten label").forEach(el => {
@@ -170,6 +190,7 @@ function drucken() {
   setTimeout(() => location.reload(), 500);
 }
 
+// Reset
 function resetForm() {
   localStorage.clear();
   location.reload();
