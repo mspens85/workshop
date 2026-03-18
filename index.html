@@ -175,19 +175,40 @@ function toggleAngebot() {
 // Drucken
 function drucken() {
 
-  document.querySelectorAll("#arbeiten label").forEach(el => {
-    if (!el.querySelector("input").checked) {
-      el.style.display = "none";
-    }
-  });
+// Arbeiten filtern
+document.querySelectorAll("#arbeiten label").forEach(el => {
+if (!el.querySelector("input").checked) {
+el.style.display = "none";
+}
+});
 
-  fields.forEach(id => {
-    let el = document.getElementById(id);
-    if (!el.value) el.style.display = "none";
-  });
+// Leere Felder ausblenden
+fields.forEach(id => {
+let el = document.getElementById(id);
+if (!el.value) el.style.display = "none";
+});
 
-  window.print();
-  setTimeout(() => location.reload(), 500);
+// 🔥 Dateiname bauen
+let name = document.getElementById("name").value || "Kunde";
+let modell = document.getElementById("modell").value || "Füller";
+let typ = document.getElementById("angebotToggle").checked ? "Angebot" : "Werkstatt";
+
+// Datum automatisch (falls leer)
+let datumInput = document.getElementById("datum").value;
+let datum = datumInput ? datumInput : new Date().toISOString().split("T")[0];
+
+// Sonderzeichen entfernen (wichtig!)
+name = name.replace(/[^a-zA-Z0-9]/g, "");
+modell = modell.replace(/[^a-zA-Z0-9]/g, "");
+
+let filename = datum + "" + name + "" + modell + "_" + typ;
+
+document.title = filename;
+
+// Drucken
+window.print();
+
+setTimeout(() => location.reload(), 500);
 }
 
 // Reset
