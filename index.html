@@ -7,10 +7,7 @@
 <title>MS Pens</title>
 
 <style>
-body {
-  font-family: Arial;
-  padding: 15px;
-}
+body { font-family: Arial; padding: 15px; }
 
 input, textarea {
   width: 100%;
@@ -19,9 +16,7 @@ input, textarea {
   font-size: 16px;
 }
 
-textarea {
-  height: 120px;
-}
+textarea { height: 150px; }
 
 .geraet {
   border: 1px solid #ccc;
@@ -29,10 +24,7 @@ textarea {
   margin-top: 15px;
 }
 
-label {
-  display: block;
-  margin: 4px 0;
-}
+label { display: block; margin: 4px 0; }
 
 button {
   width: 100%;
@@ -57,35 +49,47 @@ button {
   Angebotsmodus
 </label>
 
+<!-- Kundendaten -->
+
 <h3>Kundendaten</h3>
 <input id="name" placeholder="Name">
+<input id="strasse" placeholder="Straße">
+<input id="strasse2" placeholder="Straße 2">
+<input id="plzort" placeholder="PLZ / Ort">
+<input id="land" placeholder="Land">
+<input id="extra" placeholder="Zusätzliches">
 <input id="datum" placeholder="Datum">
+
+<!-- Geräte -->
 
 <h3>Geräte</h3>
 <div id="container"></div>
 
 <button id="addBtn">+ Gerät hinzufügen</button>
 
+<!-- Gesamtpreis -->
+
 <div id="gesamtBlock" style="display:none;">
   <h3>Gesamtpreis</h3>
   <input id="gesamtpreis" readonly>
 </div>
 
-<button id="printBtn">📄 Drucken / PDF</button>
+<button id="printBtn">📄 Drucken / PDF</button> <button onclick="location.reload()">🔄 Zurücksetzen</button>
 
 <script>
 
-// ---------- Gerät erstellen ----------
+// Gerät erstellen
 function createGeraet() {
 
   const div = document.createElement("div");
   div.className = "geraet";
 
-  // Modell
   const modell = document.createElement("input");
   modell.placeholder = "Modell";
 
-  // Arbeiten
+  const notizen = document.createElement("textarea");
+  notizen.placeholder = "Notizen";
+
   const arbeiten = [
     "Demontage","Reinigung","Wartung Mechanik","Korkdichtung erneuern",
     "Politur einfach","Mehrstufige Handpolitur","Gravur entfernen",
@@ -107,30 +111,30 @@ function createGeraet() {
     arbeitenDiv.appendChild(label);
   });
 
-  // Preis
   const preis = document.createElement("input");
   preis.placeholder = "Einzelpreis €";
+  preis.className = "preis";
 
   preis.addEventListener("input", updateSumme);
 
-  // Zusammenbauen
   div.appendChild(modell);
+  div.appendChild(notizen);
   div.appendChild(arbeitenDiv);
   div.appendChild(preis);
 
   return div;
 }
 
-// ---------- Gerät hinzufügen ----------
+// Gerät hinzufügen
 function addGeraet() {
   document.getElementById("container").appendChild(createGeraet());
 }
 
-// ---------- Summe ----------
+// Summe
 function updateSumme() {
   let sum = 0;
 
-  document.querySelectorAll("#container input[placeholder='Einzelpreis €']").forEach(el => {
+  document.querySelectorAll(".preis").forEach(el => {
     let v = parseFloat(el.value.replace(",", "."));
     if (!isNaN(v)) sum += v;
   });
@@ -138,31 +142,42 @@ function updateSumme() {
   document.getElementById("gesamtpreis").value = sum.toFixed(2) + " €";
 }
 
-// ---------- Angebot ----------
+// Angebotsmodus
 function toggleAngebot() {
   const aktiv = document.getElementById("angebotToggle").checked;
 
   document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
   document.getElementById("gesamtBlock").style.display = aktiv ? "block" : "none";
+
+  // Preise nur im Angebot sichtbar
+  document.querySelectorAll(".preis").forEach(p => {
+    p.style.display = aktiv ? "block" : "none";
+  });
 }
 
-// ---------- Drucken ----------
+// Drucken
 function drucken() {
 
+  // Arbeiten filtern
   document.querySelectorAll(".geraet label").forEach(label => {
     const cb = label.querySelector("input");
     if (!cb.checked) label.style.display = "none";
   });
 
+  // Leere Felder ausblenden
+  document.querySelectorAll("input, textarea").forEach(el => {
+    if (!el.value) el.style.display = "none";
+  });
+
   window.print();
 }
 
-// ---------- EVENTS sauber setzen ----------
+// Events
 document.getElementById("addBtn").addEventListener("click", addGeraet);
 document.getElementById("printBtn").addEventListener("click", drucken);
 document.getElementById("angebotToggle").addEventListener("change", toggleAngebot);
 
-// Startgerät
+// Start
 addGeraet();
 
 </script>
