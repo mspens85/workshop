@@ -371,6 +371,8 @@ function toggleAngebot() {
   document.getElementById("gesamtBlock").style.display = aktiv ? "block" : "none";
   document.getElementById("positionsliste").style.display = aktiv ? "block" : "none";
   document.getElementById("positionsTitel").style.display = aktiv ? "block" : "none";
+  document.getElementById("addToolBtn").style.display = aktiv ? "block" : "none";
+  document.getElementById("toolsTitel").style.display = aktiv ? "block" : "none";
 
   document.querySelectorAll(".preis").forEach(p => {
     p.style.display = aktiv ? "block" : "none";
