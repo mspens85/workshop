@@ -264,7 +264,7 @@ label {
 <button id="printBtn">📄 Drucken / PDF</button>
 <button onclick="location.reload()">🔄 Zurücksetzen</button>
 
-<div id="toolsContainer" style="display:none;"></div>
+
 
 <script>
   
@@ -484,7 +484,20 @@ function generatePositionsliste() {
   });
 }
 
-function drucken() {
+function drucken() 
+
+// Geräte nur anzeigen wenn befüllt
+let hasGeraet = false;
+document.querySelectorAll("#container .geraet").forEach(g => {
+  if (g.querySelector("input").value.trim()) {
+    hasGeraet = true;
+  }
+});
+
+if (!hasGeraet) {
+  document.querySelector("h3:nth-of-type(2)").style.display = "none";
+}
+  {
 document.querySelectorAll("textarea").forEach(el => {
   el.style.height = "auto";
   el.style.height = el.scrollHeight + "px";
@@ -517,6 +530,8 @@ document.querySelectorAll("textarea").forEach(el => {
   if (sichtbareGeraete === 0) {
   document.getElementById("geraeteTitel").style.display = "none";
 }
+
+  addGeraet();
 
   generatePositionsliste();
 
