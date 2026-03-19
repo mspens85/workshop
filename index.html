@@ -199,13 +199,15 @@ function createGeraet() {
   div.className = "geraet";
 
   const modell = document.createElement("input");
-  modell.placeholder = "Modell";
+modell.placeholder = "Modell";
+
+const notizen = document.createElement("textarea");
+notizen.placeholder = "Notizen";
 
 notizen.addEventListener("input", function () {
   this.style.height = "auto";
   this.style.height = (this.scrollHeight + 2) + "px";
 });
-
   
   const arbeiten = [
     "Demontage","Reinigung","Wartung Mechanik","Korkdichtung erneuern",
