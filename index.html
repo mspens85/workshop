@@ -141,6 +141,9 @@ textarea {
   margin: 0 !important;
   line-height: 1.2;
   overflow: hidden;
+  font-style: italic;
+  margin-bottom: 2px;
+
 }
   
   button { display: none; }
@@ -336,6 +339,12 @@ function drucken() {
 document.querySelectorAll("textarea").forEach(el => {
   el.style.height = "auto";
   el.style.height = el.scrollHeight + "px";
+});
+
+  document.querySelectorAll("textarea").forEach(el => {
+  if (el.value.trim()) {
+    el.value = "Notizen: " + el.value;
+  }
 });
 
   document.querySelectorAll(".geraet label").forEach(label => {
