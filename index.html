@@ -484,40 +484,47 @@ function generatePositionsliste() {
   });
 }
 
-function drucken() 
+function drucken() {
 
-// Geräte nur anzeigen wenn befüllt
-let hasGeraet = false;
-document.querySelectorAll("#container .geraet").forEach(g => {
-  if (g.querySelector("input").value.trim()) {
-    hasGeraet = true;
-  }
-});
-
-if (!hasGeraet) {
-  document.querySelector("h3:nth-of-type(2)").style.display = "none";
-}
-  {
-document.querySelectorAll("textarea").forEach(el => {
-  el.style.height = "auto";
-  el.style.height = el.scrollHeight + "px";
-});
-
-  document.querySelectorAll("textarea").forEach(el => {
-  if (el.value.trim()) {
-    el.value = "Notizen: " + el.value;
-  }
-});
-
-  document.querySelectorAll(".geraet label").forEach(label => {
-    const cb = label.querySelector("input");
-    if (!cb.checked) label.style.display = "none";
+  // 👉 Prüfen ob Geräte Inhalt haben
+  let hasGeraet = false;
+  document.querySelectorAll("#container .geraet").forEach(g => {
+    const modell = g.querySelector("input");
+    if (modell && modell.value.trim()) {
+      hasGeraet = true;
+    }
   });
 
+  // 👉 Geräte-Titel ausblenden wenn leer
+  if (!hasGeraet) {
+    document.getElementById("geraeteTitel").style.display = "none";
+  }
+
+  // 👉 Textareas korrekt schrumpfen
+  document.querySelectorAll("textarea").forEach(el => {
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
+  });
+
+  // 👉 Notizen Label hinzufügen
+  document.querySelectorAll("textarea").forEach(el => {
+    if (el.value.trim()) {
+      el.value = "Notizen: " + el.value;
+    }
+  });
+
+  // 👉 Nur angehaktes anzeigen
+  document.querySelectorAll(".geraet label").forEach(label => {
+    const cb = label.querySelector("input");
+    if (cb && !cb.checked) label.style.display = "none";
+  });
+
+  // 👉 Leere Felder ausblenden
   document.querySelectorAll("input, textarea").forEach(el => {
     if (!el.value) el.style.display = "none";
   });
 
+  // 👉 Preise formatieren
   document.querySelectorAll(".preis").forEach(el => {
     if (el.value) {
       let v = parseFloat(el.value.replace(",", "."));
@@ -526,12 +533,6 @@ document.querySelectorAll("textarea").forEach(el => {
       }
     }
   });
-
-  if (sichtbareGeraete === 0) {
-  document.getElementById("geraeteTitel").style.display = "none";
-}
-
-  addGeraet();
 
   generatePositionsliste();
 
