@@ -313,10 +313,20 @@ function generatePositionsliste() {
 
 function drucken() {
 
-  document.querySelectorAll("textarea").forEach(el => {
-    el.style.height = "auto";
-    el.style.height = el.scrollHeight + "px";
-  });
+document.querySelectorAll("textarea").forEach(el => {
+
+  if (!el.value.trim()) {
+    el.style.display = "none";
+    return;
+  }
+
+  el.style.height = "auto";
+
+  // 🔥 kleiner Korrekturwert für saubere Höhe
+  const newHeight = el.scrollHeight - 4;
+
+  el.style.height = newHeight + "px";
+});
 
   document.querySelectorAll(".geraet label").forEach(label => {
     const cb = label.querySelector("input");
