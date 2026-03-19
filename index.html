@@ -16,7 +16,10 @@ textarea {
   font-size: 16px;
 }
 
-textarea { height: 150px; }
+textarea {
+  min-height: 40px;
+  resize: none;
+}
 
 .geraet {
   border: 1px solid #aaa;
@@ -198,9 +201,10 @@ function createGeraet() {
   const modell = document.createElement("input");
   modell.placeholder = "Modell";
 
-  const notizen = document.createElement("textarea");
-  notizen.placeholder = "Notizen";
-
+notizen.addEventListener("input", function () {
+  this.style.height = "auto";
+  this.style.height = this.scrollHeight + "px";
+});
   const arbeiten = [
     "Demontage","Reinigung","Wartung Mechanik","Korkdichtung erneuern",
     "Politur einfach","Mehrstufige Handpolitur","Gravur entfernen",
