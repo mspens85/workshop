@@ -24,7 +24,7 @@ textarea { height: 150px; }
   margin-top: 15px;
 }
 
-label {   display: inline-flex;
+label {   display: flex;
   align-items: center;
   gap: 6px;
   margin: 4px 0; }
@@ -34,7 +34,13 @@ button {
   padding: 12px;
   margin-top: 10px;
   font-size: 16px;
+  align-items: center;
 }
+  .arbeiten {
+  display: flex;
+  flex-direction: column;
+}
+  
 
 @media print {
 
@@ -168,6 +174,7 @@ function createGeraet() {
   ];
 
   const arbeitenDiv = document.createElement("div");
+arbeitenDiv.className = "arbeiten";
 
   arbeiten.forEach(text => {
     const label = document.createElement("label");
