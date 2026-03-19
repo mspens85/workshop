@@ -293,7 +293,14 @@ function drucken() {
     if (!el.value) el.style.display = "none";
   });
 
-
+document.querySelectorAll(".preis").forEach(el => {
+  if (el.value) {
+    let v = parseFloat(el.value.replace(",", "."));
+    if (!isNaN(v)) {
+      el.value = v.toFixed(2).replace(".", ",") + " €";
+    }
+  }
+});
 
   
 
