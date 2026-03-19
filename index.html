@@ -130,12 +130,15 @@ label input { flex-shrink: 0; }
     font-size: 11px;
   }
 
-  textarea {
-    height: auto;
-    overflow: visible;
-    min-height: 0 !important;
-  }
-
+textarea {
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1.2;
+  overflow: hidden;
+}
+  
   button { display: none; }
 
   .kunde { display: block !important; }
@@ -313,20 +316,9 @@ function generatePositionsliste() {
 }
 
 function drucken() {
-
 document.querySelectorAll("textarea").forEach(el => {
-
-  if (!el.value.trim()) {
-    el.style.display = "none";
-    return;
-  }
-
   el.style.height = "auto";
-
-  // 🔥 kleiner Korrekturwert für saubere Höhe
-  const newHeight = el.scrollHeight - 4;
-
-  el.style.height = newHeight + "px";
+  el.style.height = el.scrollHeight + "px";
 });
 
   document.querySelectorAll(".geraet label").forEach(label => {
