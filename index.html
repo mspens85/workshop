@@ -251,6 +251,8 @@ label {
 <button id="printBtn">📄 Drucken / PDF</button>
 <button onclick="location.reload()">🔄 Zurücksetzen</button>
 
+<div id="toolsContainer" style="display:none;"></div>
+
 <script>
   
 const artikelListe = {
@@ -373,6 +375,7 @@ function toggleAngebot() {
   document.getElementById("positionsTitel").style.display = aktiv ? "block" : "none";
   document.getElementById("addToolBtn").style.display = aktiv ? "block" : "none";
   document.getElementById("toolsTitel").style.display = aktiv ? "block" : "none";
+  document.getElementById("toolsContainer").style.display = aktiv ? "block" : "none";
 
   document.querySelectorAll(".preis").forEach(p => {
     p.style.display = aktiv ? "block" : "none";
