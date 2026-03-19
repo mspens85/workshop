@@ -243,7 +243,7 @@ label {
   <input id="datum" placeholder="Datum">
 </div>
 
-<h3>Geräte</h3>
+<h3 id="geraeteTitel">Geräte</h3>
 <div id="container"></div>
 
   <h3 id="toolsTitel" style="display:none;">Werkzeuge</h3>
@@ -513,6 +513,10 @@ document.querySelectorAll("textarea").forEach(el => {
       }
     }
   });
+
+  if (sichtbareGeraete === 0) {
+  document.getElementById("geraeteTitel").style.display = "none";
+}
 
   generatePositionsliste();
 
