@@ -34,7 +34,45 @@ button {
 }
 
 @media print {
-  button { display: none; }
+
+  body {
+    font-size: 12px;
+    padding: 5px;
+  }
+
+  h2, h3 {
+    margin: 5px 0;
+  }
+
+  .geraet {
+    margin-top: 8px;
+    padding: 6px;
+  }
+
+  label {
+    margin: 2px 0;
+  }
+
+  input {
+    border: none;
+    padding: 2px;
+    margin: 2px 0;
+  }
+
+  textarea {
+    border: none;
+    padding: 2px;
+    margin: 2px 0;
+
+    /* 🔥 DAS ist der wichtige Teil */
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  button {
+    display: none;
+  }
 }
 </style>
 
@@ -168,6 +206,16 @@ function drucken() {
   document.querySelectorAll("input, textarea").forEach(el => {
     if (!el.value) el.style.display = "none";
   });
+
+
+
+  
+  document.querySelectorAll("textarea").forEach(el => {
+  el.style.height = "auto";
+  el.style.height = el.scrollHeight + "px";
+});
+
+  
 
   window.print();
 }
