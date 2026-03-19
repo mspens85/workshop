@@ -64,11 +64,25 @@ button {
     page-break-inside: avoid;
   }
 
+  /* 🔥 Checkboxen komplett raus */
+  input[type="checkbox"] {
+    display: none;
+  }
+
   label {
     margin: 1px 0;
   }
 
-  input {
+  label::before {
+    content: "– ";
+  }
+
+  /* Angebots-Checkbox oben */
+  .toggle {
+    display: none;
+  }
+
+  input, textarea {
     border: none;
     padding: 1px;
     margin: 1px 0;
@@ -76,11 +90,6 @@ button {
   }
 
   textarea {
-    border: none;
-    padding: 1px;
-    margin: 1px 0;
-    font-size: 11px;
-
     height: auto;
     overflow: visible;
   }
@@ -89,9 +98,7 @@ button {
     display: none;
   }
 
-
 }
-
 </style>
 
 </head>
