@@ -127,6 +127,15 @@ button {
   button {
     display: none;
   }
+  
+  .kunde input {
+  display: block;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.2;
+}
 
 }
 </style>
@@ -147,13 +156,15 @@ button {
 <!-- Kundendaten -->
 
 <h3>Kundendaten</h3>
-<div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+
+<div class="kunde">
   <input id="name" placeholder="Name">
-  <input id="datum" placeholder="Datum">
   <input id="strasse" placeholder="Straße">
   <input id="strasse2" placeholder="Straße 2">
   <input id="plzort" placeholder="PLZ / Ort">
   <input id="land" placeholder="Land">
+  <input id="extra" placeholder="Zusätzliches">
+  <input id="datum" placeholder="Datum">
 </div>
 
 <input id="extra" placeholder="Zusätzliches">
