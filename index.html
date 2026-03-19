@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -39,19 +38,17 @@ button {
   padding: 12px;
   margin-top: 10px;
   font-size: 16px;
-  align-items: center;
 }
+
 .arbeiten {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 20px;
 }
 
-  * {
-  box-sizing: border-box;
-}
-  
-  input, textarea {
+* { box-sizing: border-box; }
+
+input, textarea {
   width: 100%;
   padding: 8px;
   margin: 4px 0;
@@ -59,13 +56,25 @@ button {
   border-radius: 6px;
   border: 1px solid #bbb;
 }
-  label input {
-  flex-shrink: 0;
-}
-  .kunde {
+
+label input { flex-shrink: 0; }
+
+.kunde {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
+}
+
+#positionsliste {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.position {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 2px 0;
 }
 
 @media print {
@@ -99,23 +108,17 @@ button {
     page-break-inside: avoid;
   }
 
-  /* 🔥 Checkboxen komplett raus */
   input[type="checkbox"] {
     display: none;
   }
 
-  label {
-    margin: 1px 0;
-  }
+  label { margin: 1px 0; }
 
   label::before {
     content: "– ";
   }
 
-  /* Angebots-Checkbox oben */
-  .toggle {
-    display: none;
-  }
+  .toggle { display: none; }
 
   input, textarea {
     border: none;
@@ -129,27 +132,21 @@ button {
     overflow: visible;
   }
 
-  button {
-    display: none;
+  button { display: none; }
+
+  .kunde { display: block !important; }
+
+  .kunde input {
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.2;
   }
-
-  .kunde {
-  display: block !important;
-}
-  
-.kunde input {
-  display: block;
-  width: 100%;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font-size: 11px;
-  line-height: 1.2;
-}
-
 }
 </style>
-
 </head>
 
 <body>
@@ -163,8 +160,6 @@ button {
   </label>
 </div>
 
-<!-- Kundendaten -->
-
 <h3>Kundendaten</h3>
 
 <div class="kunde">
@@ -177,28 +172,26 @@ button {
   <input id="datum" placeholder="Datum">
 </div>
 
-
-<!-- Geräte -->
-
 <h3>Geräte</h3>
 <div id="container"></div>
 
 <button id="addBtn">+ Gerät hinzufügen</button>
 
-<!-- Gesamtpreis -->
+<!-- Positionsliste -->
+<h3 id="positionsTitel" style="display:none;">Positionen</h3>
+<div id="positionsliste" style="display:none;"></div>
 
 <div id="gesamtBlock" style="display:none;">
   <h3>Gesamtpreis</h3>
   <input id="gesamtpreis" readonly>
 </div>
 
-<button id="printBtn">📄 Drucken / PDF</button> <button onclick="location.reload()">🔄 Zurücksetzen</button>
+<button id="printBtn">📄 Drucken / PDF</button>
+<button onclick="location.reload()">🔄 Zurücksetzen</button>
 
 <script>
 
-// Gerät erstellen
 function createGeraet() {
-
   const div = document.createElement("div");
   div.className = "geraet";
 
@@ -217,7 +210,7 @@ function createGeraet() {
   ];
 
   const arbeitenDiv = document.createElement("div");
-arbeitenDiv.className = "arbeiten";
+  arbeitenDiv.className = "arbeiten";
 
   arbeiten.forEach(text => {
     const label = document.createElement("label");
@@ -244,12 +237,10 @@ arbeitenDiv.className = "arbeiten";
   return div;
 }
 
-// Gerät hinzufügen
 function addGeraet() {
   document.getElementById("container").appendChild(createGeraet());
 }
 
-// Summe
 function updateSumme() {
   let sum = 0;
 
@@ -258,64 +249,96 @@ function updateSumme() {
     if (!isNaN(v)) sum += v;
   });
 
-  document.getElementById("gesamtpreis").value = sum.toFixed(2) + " €";
+  document.getElementById("gesamtpreis").value = sum.toFixed(2).replace(".", ",") + " €";
 }
 
-// Angebotsmodus
 function toggleAngebot() {
   const aktiv = document.getElementById("angebotToggle").checked;
 
   document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
   document.getElementById("gesamtBlock").style.display = aktiv ? "block" : "none";
+  document.getElementById("positionsliste").style.display = aktiv ? "block" : "none";
+  document.getElementById("positionsTitel").style.display = aktiv ? "block" : "none";
 
-  // Preise nur im Angebot sichtbar
   document.querySelectorAll(".preis").forEach(p => {
     p.style.display = aktiv ? "block" : "none";
   });
 }
 
-// Drucken
+function generatePositionsliste() {
+  const liste = document.getElementById("positionsliste");
+  liste.innerHTML = "";
+
+  document.querySelectorAll(".geraet").forEach(g => {
+
+    const modell = g.querySelector("input").value;
+
+    const arbeiten = [];
+    g.querySelectorAll("label").forEach(label => {
+      const cb = label.querySelector("input");
+      if (cb && cb.checked) {
+        arbeiten.push(label.innerText.trim());
+      }
+    });
+
+    const preis = g.querySelector(".preis").value;
+
+    if (modell || arbeiten.length || preis) {
+
+      const div = document.createElement("div");
+      div.className = "position";
+
+      const text = document.createElement("div");
+      text.innerText = modell + " – " + arbeiten.join(", ");
+
+      const price = document.createElement("div");
+      price.innerText = preis;
+
+      div.appendChild(text);
+      div.appendChild(price);
+
+      liste.appendChild(div);
+    }
+
+  });
+}
+
 function drucken() {
 
   document.querySelectorAll("textarea").forEach(el => {
-  el.style.height = "auto";
-  el.style.height = el.scrollHeight + "px";
-});
-  
-  // Arbeiten filtern
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
+  });
+
   document.querySelectorAll(".geraet label").forEach(label => {
     const cb = label.querySelector("input");
     if (!cb.checked) label.style.display = "none";
   });
 
-  // Leere Felder ausblenden
   document.querySelectorAll("input, textarea").forEach(el => {
     if (!el.value) el.style.display = "none";
   });
 
-document.querySelectorAll(".preis").forEach(el => {
-  if (el.value) {
-    let v = parseFloat(el.value.replace(",", "."));
-    if (!isNaN(v)) {
-      el.value = v.toFixed(2).replace(".", ",") + " €";
+  document.querySelectorAll(".preis").forEach(el => {
+    if (el.value) {
+      let v = parseFloat(el.value.replace(",", "."));
+      if (!isNaN(v)) {
+        el.value = v.toFixed(2).replace(".", ",") + " €";
+      }
     }
-  }
-});
+  });
 
-  
-
-
-  
+  generatePositionsliste();
 
   window.print();
 }
 
 // Events
+
 document.getElementById("addBtn").addEventListener("click", addGeraet);
 document.getElementById("printBtn").addEventListener("click", drucken);
 document.getElementById("angebotToggle").addEventListener("change", toggleAngebot);
 
-// Start
 addGeraet();
 
 </script>
