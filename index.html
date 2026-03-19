@@ -233,6 +233,10 @@ label {
 <h3>Geräte</h3>
 <div id="container"></div>
 
+  <h3 id="toolsTitel" style="display:none;">Werkzeuge</h3>
+<div id="toolsContainer"></div>
+<button id="addToolBtn" style="display:none;">+ Werkzeug hinzufügen</button>
+
 <button id="addBtn">+ Gerät hinzufügen</button>
 
 <!-- Positionsliste -->
@@ -248,7 +252,52 @@ label {
 <button onclick="location.reload()">🔄 Zurücksetzen</button>
 
 <script>
+  
+const artikelListe = {
+  "CORK2": { name: "Dichtkorken Größe 2", preis: 20 },
+  "CORK4": { name: "Dichtkorken Größe 4", preis: 20 },
+  "CORK6": { name: "Dichtkorken Größe 6", preis: 20 },
+  "CORK9": { name: "Dichtkorken Größe 9", preis: 20 },
+  "PTM": { name: "Werkzeug für die Kolbeneinheit modern", preis: 39 },
+  "PTA": { name: "Werkzeug für die Kolbeneinheit antik", preis: 39 },
+  "SHIP1": { name: "Versandkosten", preis: 3.99 },
+  "NTM6": { name: "Federeinheit Werkzeug modern Größe 6", preis: 60 },
+  "NTM9": { name: "Federeinheit Werkzeug modern Größe 9", preis: 60 },
+  "NTA2": { name: "Federeinheit Werkzeug antik Größe 2", preis: 60 },
+  "NTA4": { name: "Federeinheit Werkzeug antik Größe 4", preis: 60 },
+  "NTA6": { name: "Federeinheit Werkzeug antik Größe 6", preis: 60 },
+  "NTA9": { name: "Federeinheit Werkzeug antik Größe 9", preis: 60 },
+  "CORKTOOL": { name: "Werkzeug Korkmutter", preis: 60 },
+  "CORKPUSH": { name: "Eindrückhilfe Dichtkorken", preis: 60 },
+  "CORKNUT": { name: "Hartgummimutter", preis: 25 },
+  "GREASE": { name: "Schmierfett", preis: 4.5 },
+  "SEALING": { name: "Dichtwachs", preis: 4.5 },
+  "KOB": { name: "Knockout-Block", preis: 60 },
+  "SHIP2": { name: "Versandkosten", preis: 5.49 }
+};
 
+  function createTool() {
+  const div = document.createElement("div");
+  div.className = "geraet";
+
+  const text = document.createElement("input");
+  text.placeholder = "Werkzeug / Beschreibung";
+
+  const preis = document.createElement("input");
+  preis.placeholder = "Preis €";
+  preis.className = "preis";
+  preis.addEventListener("input", updateSumme);
+
+  div.appendChild(text);
+  div.appendChild(preis);
+
+  return div;
+}
+
+document.getElementById("addToolBtn").onclick = () => {
+  document.getElementById("toolsContainer").appendChild(createTool());
+};
+  
 function createGeraet() {
   const div = document.createElement("div");
   div.className = "geraet";
