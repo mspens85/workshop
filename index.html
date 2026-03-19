@@ -284,20 +284,57 @@ const artikelListe = {
   "KOB": { name: "Knockout-Block", preis: 60 },
   "SHIP2": { name: "Versandkosten", preis: 5.49 }
 };
-
-  function createTool() {
+function createTool() {
   const div = document.createElement("div");
   div.className = "geraet";
 
-  const text = document.createElement("input");
-  text.placeholder = "Werkzeug / Beschreibung";
+  // Menge
+  const menge = document.createElement("input");
+  menge.placeholder = "Menge";
+  menge.type = "number";
+  menge.value = "1";
 
+  // Dropdown
+  const artikel = document.createElement("select");
+
+  const empty = document.createElement("option");
+  empty.textContent = "Artikel wählen";
+  empty.value = "";
+  artikel.appendChild(empty);
+
+  for (let key in artikelListe) {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = key + " – " + artikelListe[key].name;
+    artikel.appendChild(opt);
+  }
+
+  // Beschreibung
+  const beschreibung = document.createElement("input");
+  beschreibung.placeholder = "Beschreibung";
+
+  // Preis
   const preis = document.createElement("input");
   preis.placeholder = "Preis €";
   preis.className = "preis";
-  preis.addEventListener("input", updateSumme);
 
-  div.appendChild(text);
+  // 👉 Automatik beim Auswählen
+  artikel.addEventListener("change", function () {
+    const data = artikelListe[this.value];
+    if (data) {
+      beschreibung.value = data.name;
+      preis.value = data.preis.toString().replace(".", ",");
+      updateSumme();
+    }
+  });
+
+  // 👉 Summe aktualisieren
+  preis.addEventListener("input", updateSumme);
+  menge.addEventListener("input", updateSumme);
+
+  div.appendChild(menge);
+  div.appendChild(artikel);
+  div.appendChild(beschreibung);
   div.appendChild(preis);
 
   return div;
@@ -367,10 +404,24 @@ function updateSumme() {
 
   document.querySelectorAll(".preis").forEach(el => {
     let v = parseFloat(el.value.replace(",", "."));
-    if (!isNaN(v)) sum += v;
+    if (isNaN(v)) return;
+
+    let menge = 1;
+
+    // prüfen ob es ein Tool ist
+    const parent = el.parentElement;
+    const mengeInput = parent.querySelector('input[type="number"]');
+
+    if (mengeInput) {
+      let m = parseFloat(mengeInput.value);
+      if (!isNaN(m)) menge = m;
+    }
+
+    sum += v * menge;
   });
 
-  document.getElementById("gesamtpreis").value = sum.toFixed(2).replace(".", ",") + " €";
+  document.getElementById("gesamtpreis").value =
+    sum.toFixed(2).replace(".", ",") + " €";
 }
 
 function toggleAngebot() {
