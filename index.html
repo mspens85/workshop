@@ -80,6 +80,22 @@ label input { flex-shrink: 0; }
   padding: 2px 0;
 }
 
+  .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.logo {
+  height: 50px;
+  object-fit: contain;
+}
+
+.header-text {
+  text-align: right;
+}
+
 @media print {
 
   @page {
@@ -172,13 +188,28 @@ textarea {
 label {
   margin: 0;
   }
+
+  .header {
+  border-bottom: 1px solid #000;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.logo {
+  height: 40px;
+}
 }
 </style>
 </head>
 
 <body>
 
-<h2 id="title">Werkstattzettel</h2>
+<div class="header">
+  <img src="logo.png" class="logo">
+  <div class="header-text">
+    <h2 id="title">Werkstattzettel</h2>
+  </div>
+</div>
 
 <div class="toggle">
   <label>
