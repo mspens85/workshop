@@ -485,6 +485,27 @@ function generatePositionsliste() {
 }
 
 function drucken() {
+  
+  // 👉 Prüfen ob Werkzeuge vorhanden sind
+let hasTools = false;
+
+document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
+  const beschreibung = t.querySelector("input[placeholder='Beschreibung']");
+  const preis = t.querySelector(".preis");
+
+  if (
+    (beschreibung && beschreibung.value.trim()) ||
+    (preis && preis.value.trim())
+  ) {
+    hasTools = true;
+  }
+});
+
+// 👉 Werkzeuge-Titel & Container ausblenden wenn leer
+if (!hasTools) {
+  document.getElementById("toolsTitel").style.display = "none";
+  document.getElementById("toolsContainer").style.display = "none";
+}
 
   // 👉 Prüfen ob Geräte Inhalt haben
   let hasGeraet = false;
