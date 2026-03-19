@@ -17,10 +17,10 @@ textarea {
 }
 
 textarea {
-  min-height: 40px;
+  min-height: 60px;
+  height: auto;
   resize: none;
 }
-
 .geraet {
   border: 1px solid #aaa;
   padding: 10px;
@@ -203,8 +203,10 @@ function createGeraet() {
 
 notizen.addEventListener("input", function () {
   this.style.height = "auto";
-  this.style.height = this.scrollHeight + "px";
+  this.style.height = (this.scrollHeight + 2) + "px";
 });
+
+  
   const arbeiten = [
     "Demontage","Reinigung","Wartung Mechanik","Korkdichtung erneuern",
     "Politur einfach","Mehrstufige Handpolitur","Gravur entfernen",
