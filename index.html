@@ -16,6 +16,8 @@ input, textarea, select {
   border: 1px solid #bbb;
 }
 
+textarea { resize: none; }
+
 .geraet {
   border: 1px solid #aaa;
   padding: 10px;
@@ -29,35 +31,37 @@ input, textarea, select {
   gap: 8px;
 }
 
+.arbeiten {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
 button {
   padding: 10px;
   margin-top: 10px;
   width: 50%;
 }
 
-.arbeiten {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.position {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
 }
 
-#footer { display:none; margin-top:20px; font-size:12px; }
-.footer-grid { display:grid; grid-template-columns:1fr 1fr 1fr; }
+#footer, #zahlungstext { display:none; margin-top:20px; font-size:12px; }
 
-#zahlungstext { display:none; font-size:12px; margin-top:10px; }
-
-.position {
-  display:flex;
-  justify-content:space-between;
-  border-bottom:1px solid #ccc;
+.footer-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
 }
 
 @media print {
 
   button, select { display:none !important; }
 
-  #footer, #zahlungstext { display:block !important; }
-
   body { font-size:11px; }
+
+  #footer, #zahlungstext { display:block !important; }
 }
 </style>
 </head>
@@ -82,7 +86,7 @@ button {
   <input id="rechnungsnummer" placeholder="Rechnungsnummer">
 </div>
 
-<h3>Geräte</h3>
+<h3 id="geraeteTitel">Geräte</h3>
 <div id="container"></div>
 <button onclick="addGeraet()">+ Gerät</button>
 
@@ -96,7 +100,7 @@ button {
 <table id="toolsTable" style="display:none; width:100%; font-size:12px;">
 <thead>
 <tr>
-<th>Pos</th><th>Art.-Nr</th><th>Beschreibung</th><th>Menge</th><th>Preis</th><th>Gesamt</th>
+<th>Pos</th><th>Art.-Nr</th><th>Beschreibung</th><th>Menge</th><th>Einzelpreis</th><th>Gesamt</th>
 </tr>
 </thead>
 <tbody></tbody>
@@ -128,11 +132,13 @@ Bankverbindung<br>Institut: Comdirect Bank<br>IBAN: DE43 2004 1133 0201 3571 00<
 </div>
 
 <button onclick="drucken()">📄 Drucken</button>
+<button onclick="location.reload()">🔄 Reset</button>
 
 <script>
 
 const artikelListe = {
   "CORK2": { name: "Dichtkorken Größe 2", preis: 20 },
+  "CORK4": { name: "Dichtkorken Größe 4", preis: 20 },
   "PTM": { name: "Kolbenwerkzeug", preis: 39 },
   "GREASE": { name: "Schmierfett", preis: 4.5 }
 };
@@ -145,25 +151,34 @@ function addGeraet() {
   const modell = document.createElement("input");
   modell.placeholder = "Modell";
 
+  const notizen = document.createElement("textarea");
+  notizen.placeholder = "Notizen";
+
   const arbeitenDiv = document.createElement("div");
   arbeitenDiv.className = "arbeiten";
 
-  ["Reinigung","Politur","Korkdichtung"].forEach(t => {
+  const arbeiten = [
+    "Demontage","Reinigung","Wartung Mechanik","Korkdichtung erneuern",
+    "Politur einfach","Mehrstufige Handpolitur","Gravur entfernen",
+    "Kappenriss schließen","Kappenlippe erneuern",
+    "Clip/Kappenringe vergolden","Kappenstern erneuert",
+    "Feder umschleifen","Schreibprobe"
+  ];
+
+  arbeiten.forEach(text => {
     const label = document.createElement("label");
     const cb = document.createElement("input");
     cb.type = "checkbox";
-    label.appendChild(cb);
-    label.appendChild(document.createTextNode(" " + t));
+    label.append(cb, document.createTextNode(" " + text));
     arbeitenDiv.appendChild(label);
   });
 
   const preis = document.createElement("input");
   preis.className = "preis";
-  preis.placeholder = "Preis";
-
+  preis.placeholder = "Preis €";
   preis.addEventListener("input", updateSumme);
 
-  div.append(modell, arbeitenDiv, preis);
+  div.append(modell, notizen, arbeitenDiv, preis);
   document.getElementById("container").appendChild(div);
 }
 
@@ -178,24 +193,38 @@ function addTool() {
 
   const select = document.createElement("select");
 
+  const empty = document.createElement("option");
+  empty.textContent = "Artikel wählen";
+  empty.value = "";
+  select.appendChild(empty);
+
   for (let key in artikelListe) {
     const opt = document.createElement("option");
     opt.value = key;
-    opt.textContent = key + " - " + artikelListe[key].name;
+    opt.textContent = key + " – " + artikelListe[key].name;
     select.appendChild(opt);
   }
 
+  const beschreibung = document.createElement("input");
+  beschreibung.placeholder = "Beschreibung";
+
   const preis = document.createElement("input");
   preis.className = "preis";
+  preis.placeholder = "Preis €";
 
   select.addEventListener("change", () => {
-    preis.value = artikelListe[select.value].preis;
-    updateSumme();
+    const data = artikelListe[select.value];
+    if (data) {
+      beschreibung.value = data.name;
+      preis.value = data.preis;
+      updateSumme();
+    }
   });
 
   preis.addEventListener("input", updateSumme);
+  menge.addEventListener("input", updateSumme);
 
-  div.append(menge, select, preis);
+  div.append(menge, select, beschreibung, preis);
   document.getElementById("toolsContainer").appendChild(div);
 }
 
@@ -207,7 +236,7 @@ function updateSumme() {
 
   document.querySelectorAll(".preis").forEach(el => {
 
-    let v = parseFloat(el.value);
+    let v = parseFloat(el.value.replace(",", "."));
     if (isNaN(v)) return;
 
     let menge = 1;
@@ -218,7 +247,7 @@ function updateSumme() {
   });
 
   document.getElementById("gesamtpreis").value =
-    sum.toFixed(2) + " €";
+    sum.toFixed(2).replace(".", ",") + " €";
 }
 
 function updateModus() {
@@ -252,44 +281,55 @@ function generatePositionsliste() {
 
   document.querySelectorAll("#container .geraet").forEach(g => {
 
-    const modell = g.querySelector("input").value;
+    const modell = g.querySelector("input").value.trim();
     const preis = g.querySelector(".preis").value;
 
     if (!modell) return;
 
+    const arbeiten = [];
+    g.querySelectorAll("label").forEach(l => {
+      const cb = l.querySelector("input");
+      if (cb && cb.checked) arbeiten.push(l.innerText.trim());
+    });
+
     const div = document.createElement("div");
     div.className = "position";
 
-    div.innerHTML = `<div>${pos} ${modell}</div><div>${preis} €</div>`;
-    liste.appendChild(div);
+    div.innerHTML =
+      `<div>${pos} ${modell} – ${arbeiten.join(", ")}</div>
+       <div>${preis}</div>`;
 
+    liste.appendChild(div);
     pos++;
   });
 
   document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
 
     const menge = t.querySelector("input[type=number]").value;
-    const artikel = t.querySelector("select").value;
+    const beschreibung = t.querySelector("input:nth-child(3)").value;
     const preis = t.querySelector(".preis").value;
 
-    if (!preis) return;
+    if (!beschreibung) return;
 
     const total = (preis * menge).toFixed(2);
 
     const div = document.createElement("div");
     div.className = "position";
 
-    div.innerHTML = `<div>${pos} ${artikel} x${menge}</div><div>${total} €</div>`;
-    liste.appendChild(div);
+    div.innerHTML =
+      `<div>${pos} ${beschreibung} (x${menge})</div>
+       <div>${total} €</div>`;
 
+    liste.appendChild(div);
     pos++;
   });
 }
 
 function drucken() {
 
-  generatePositionsliste();
   updateSumme();
+  generatePositionsliste();
+
   window.print();
 }
 
