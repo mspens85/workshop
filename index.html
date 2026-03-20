@@ -54,14 +54,157 @@ button {
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
 }
-
 @media print {
 
-  button, select { display:none !important; }
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
 
-  body { font-size:11px; }
+  body {
+    font-size: 11px;
+    line-height: 1.3;
+    padding: 0;
+  }
 
-  #footer, #zahlungstext { display:block !important; }
+  h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  h3 {
+    font-size: 13px;
+    margin: 6px 0 3px 0;
+    border-bottom: 1px solid #000;
+  }
+
+  .geraet {
+    border: 1px solid #000;
+    padding: 6px;
+    margin-top: 8px;
+    page-break-inside: avoid;
+  }
+
+  /* 🔥 Checkboxen sauber wie im Angebot */
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  label {
+    display: block;
+    margin: 0;
+  }
+
+  label::before {
+    content: "– ";
+  }
+
+  /* UI Elemente ausblenden */
+  .toggle,
+  button,
+  select,
+  #addBtn,
+  #addToolBtn,
+  #printBtn {
+    display: none !important;
+  }
+
+  /* Inputs wie Text anzeigen */
+  input, textarea {
+    border: none;
+    padding: 1px;
+    margin: 1px 0;
+    font-size: 11px;
+  }
+
+  textarea {
+    height: auto !important;
+    overflow: visible;
+    font-style: italic;
+  }
+
+  /* Kundendaten untereinander */
+  .kunde {
+    display: block !important;
+  }
+
+  .kunde input {
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  /* 🔥 Preise schön rechts */
+  .position {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .position div:last-child {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* 🔥 Tools Tabelle sauber */
+  #toolsTable {
+    display: table !important;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  #toolsTable th,
+  #toolsTable td {
+    border-bottom: 1px solid #000;
+    padding: 3px;
+    font-size: 11px;
+  }
+
+  #toolsTable th {
+    text-align: left;
+  }
+
+  #toolsTable td:last-child,
+  #toolsTable th:last-child {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* 🔥 Gesamtblock */
+  #gesamtBlock {
+    display: block !important;
+    margin-top: 10px;
+  }
+
+  #gesamtpreis {
+    border: none;
+    font-weight: bold;
+  }
+
+  /* 🔥 Zahlungstext (nur Rechnung sichtbar) */
+  #zahlungstext {
+    display: block !important;
+    margin-top: 15px;
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  /* 🔥 Footer */
+  #footer {
+    display: block !important;
+    margin-top: 20px;
+    font-size: 11px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
 }
 </style>
 </head>
