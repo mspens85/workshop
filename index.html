@@ -266,6 +266,10 @@ label {
 
 
 
+//JAVA SCRIPT
+
+  
+
 <script>
   
 const artikelListe = {
@@ -447,6 +451,8 @@ function toggleAngebot() {
 }
 
 function generatePositionsliste() {
+  let pos = 1;
+  
   const liste = document.getElementById("positionsliste");
   liste.innerHTML = "";
 
@@ -470,7 +476,7 @@ function generatePositionsliste() {
       div.className = "position";
 
       const text = document.createElement("div");
-      text.innerText = modell + " – " + arbeiten.join(", ");
+     text.innerText = pos + "  " + modell + " – " + arbeiten.join(", ");pos++;
 
       const price = document.createElement("div");
       price.innerText = preis;
