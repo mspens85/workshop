@@ -299,6 +299,7 @@ function createTool() {
 
   // Menge
   const menge = document.createElement("input");
+  menge.className = "tool-menge";
   menge.placeholder = "Menge";
   menge.type = "number";
   menge.value = "1";
@@ -320,6 +321,7 @@ function createTool() {
 
   // Beschreibung
   const beschreibung = document.createElement("input");
+  beschreibung.className = "tool-beschreibung";
   beschreibung.placeholder = "Beschreibung";
 
   // Preis
@@ -487,14 +489,15 @@ function generatePositionsliste() {
     }
 
   });
-  // Werkzeuge hinzufügen
+ // Werkzeuge hinzufügen
 document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
 
-  const menge = t.querySelector('input[type="number"]')?.value || "1";
-  const beschreibung = t.querySelector('input[placeholder="Beschreibung"]')?.value || "";
+  const menge = t.querySelector(".tool-menge")?.value || "1";
+  const beschreibung = t.querySelector(".tool-beschreibung")?.value || "";
   const preis = t.querySelector(".preis")?.value || "";
 
-  if (beschreibung || preis) {
+  // nur wenn wirklich ein Artikel gewählt wurde
+  if (beschreibung && preis) {
 
     const div = document.createElement("div");
     div.className = "position";
@@ -504,15 +507,12 @@ document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
 
     const price = document.createElement("div");
 
-    // Gesamtpreis berechnen
     let p = parseFloat(preis.replace(",", "."));
     let m = parseFloat(menge);
 
     if (!isNaN(p) && !isNaN(m)) {
       let total = (p * m).toFixed(2).replace(".", ",") + " €";
       price.innerText = total;
-    } else {
-      price.innerText = preis;
     }
 
     div.appendChild(text);
@@ -523,7 +523,7 @@ document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
     pos++;
   }
 
-  });
+});
 }
 
 function drucken() {
