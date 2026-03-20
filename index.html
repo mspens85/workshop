@@ -76,8 +76,16 @@ label input { flex-shrink: 0; }
 .position {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   border-bottom: 1px solid #ccc;
   padding: 2px 0;
+  gap: 10px;
+}
+
+.position div:last-child {
+  white-space: nowrap;
+  text-align: right;
+  min-width: 80px;
 }
 
   .header {
