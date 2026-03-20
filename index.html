@@ -314,7 +314,7 @@ label {
   
 
 <script>
-  
+
 const artikelListe = {
   "CORK2": { name: "Dichtkorken Größe 2", preis: 20 },
   "CORK4": { name: "Dichtkorken Größe 4", preis: 20 },
@@ -337,18 +337,17 @@ const artikelListe = {
   "KOB": { name: "Knockout-Block", preis: 60 },
   "SHIP2": { name: "Versandkosten", preis: 5.49 }
 };
+
+// TOOL
 function createTool() {
   const div = document.createElement("div");
   div.className = "geraet";
 
-  // Menge
   const menge = document.createElement("input");
-  menge.className = "tool-menge";
-  menge.placeholder = "Menge";
   menge.type = "number";
   menge.value = "1";
+  menge.className = "tool-menge";
 
-  // Dropdown
   const artikel = document.createElement("select");
 
   const empty = document.createElement("option");
@@ -363,17 +362,12 @@ function createTool() {
     artikel.appendChild(opt);
   }
 
-  // Beschreibung
   const beschreibung = document.createElement("input");
   beschreibung.className = "tool-beschreibung";
-  beschreibung.placeholder = "Beschreibung";
 
-  // Preis
   const preis = document.createElement("input");
-  preis.placeholder = "Preis €";
   preis.className = "preis";
 
-  // 👉 Automatik beim Auswählen
   artikel.addEventListener("change", function () {
     const data = artikelListe[this.value];
     if (data) {
@@ -383,70 +377,30 @@ function createTool() {
     }
   });
 
-  // 👉 Summe aktualisieren
   preis.addEventListener("input", updateSumme);
   menge.addEventListener("input", updateSumme);
 
-  div.appendChild(menge);
-  div.appendChild(artikel);
-  div.appendChild(beschreibung);
-  div.appendChild(preis);
-
+  div.append(menge, artikel, beschreibung, preis);
   return div;
 }
 
-document.getElementById("addToolBtn").onclick = () => {
-  document.getElementById("toolsContainer").appendChild(createTool());
-};
-  
+// GERÄT
 function createGeraet() {
   const div = document.createElement("div");
   div.className = "geraet";
 
   const modell = document.createElement("input");
-modell.placeholder = "Modell";
+  modell.placeholder = "Modell";
 
-const notizen = document.createElement("textarea");
-notizen.placeholder = "Notizen";
-
-notizen.addEventListener("input", function () {
-  this.style.height = "auto";
-  this.style.height = (this.scrollHeight + 2) + "px";
-});
-  
-  const arbeiten = [
-    "Demontage","Reinigung","Wartung Mechanik","Korkdichtung erneuern",
-    "Politur einfach","Mehrstufige Handpolitur","Gravur entfernen",
-    "Kappenriss schließen","Kappenlippe erneuern",
-    "Clip/Kappenringe vergolden","Kappenstern erneuert",
-    "Feder umschleifen","Schreibprobe"
-  ];
-
-  const arbeitenDiv = document.createElement("div");
-  arbeitenDiv.className = "arbeiten";
-
-  arbeiten.forEach(text => {
-    const label = document.createElement("label");
-    const cb = document.createElement("input");
-    cb.type = "checkbox";
-
-    label.appendChild(cb);
-    label.appendChild(document.createTextNode(" " + text));
-
-    arbeitenDiv.appendChild(label);
-  });
+  const notizen = document.createElement("textarea");
+  notizen.placeholder = "Notizen";
 
   const preis = document.createElement("input");
-  preis.placeholder = "Einzelpreis €";
   preis.className = "preis";
 
   preis.addEventListener("input", updateSumme);
 
-  div.appendChild(modell);
-  div.appendChild(notizen);
-  div.appendChild(arbeitenDiv);
-  div.appendChild(preis);
-
+  div.append(modell, notizen, preis);
   return div;
 }
 
@@ -462,15 +416,8 @@ function updateSumme() {
     if (isNaN(v)) return;
 
     let menge = 1;
-
-    // prüfen ob es ein Tool ist
-    const parent = el.parentElement;
-    const mengeInput = parent.querySelector('input[type="number"]');
-
-    if (mengeInput) {
-      let m = parseFloat(mengeInput.value);
-      if (!isNaN(m)) menge = m;
-    }
+    const m = el.parentElement.querySelector('input[type="number"]');
+    if (m) menge = parseFloat(m.value) || 1;
 
     sum += v * menge;
   });
@@ -479,199 +426,48 @@ function updateSumme() {
     sum.toFixed(2).replace(".", ",") + " €";
 }
 
-function toggleAngebot() {
-  const aktiv = document.getElementById("angebotToggle").checked;
-
-  document.getElementById("title").innerText = aktiv ? "Angebot" : "Werkstattzettel";
-  document.getElementById("gesamtBlock").style.display = aktiv ? "block" : "none";
-  document.getElementById("positionsliste").style.display = aktiv ? "block" : "none";
-  document.getElementById("positionsTitel").style.display = aktiv ? "block" : "none";
-  document.getElementById("addToolBtn").style.display = aktiv ? "block" : "none";
-  document.getElementById("toolsTitel").style.display = aktiv ? "block" : "none";
-  document.getElementById("toolsContainer").style.display = aktiv ? "block" : "none";
-
-  document.querySelectorAll(".preis").forEach(p => {
-    p.style.display = aktiv ? "block" : "none";
-  });
-}
-
+// POSITIONEN
 function generatePositionsliste() {
   let pos = 1;
-  
   const liste = document.getElementById("positionsliste");
   liste.innerHTML = "";
 
   document.querySelectorAll("#container .geraet").forEach(g => {
-
     const modell = g.querySelector("input").value.trim();
-    const preis = g.querySelector(".preis").value;
-
     if (!modell) return;
 
-    const arbeiten = [];
-    g.querySelectorAll("label").forEach(label => {
-      const cb = label.querySelector("input");
-      if (cb && cb.checked) {
-        arbeiten.push(label.innerText.trim());
-      }
-    });
+    const preis = g.querySelector(".preis").value;
 
     const div = document.createElement("div");
     div.className = "position";
 
-    const text = document.createElement("div");
-    text.innerText = pos + "  " + modell + " – " + arbeiten.join(", ");
-
-    const price = document.createElement("div");
-
-    let v = parseFloat(preis.replace(",", "."));
-    if (!isNaN(v)) {
-      price.innerText = v.toFixed(2).replace(".", ",") + " €";
-    }
-
-    div.appendChild(text);
-    div.appendChild(price);
-    liste.appendChild(div);
-
-    pos++;
-  });
-
-  return pos; // 👉 WICHTIG
-}
-
-  
-function generateToolsTable(startPos) {
-
-  const table = document.getElementById("toolsTable");
-  const tbody = table.querySelector("tbody");
-  tbody.innerHTML = "";
-
-  let pos = startPos;
-  let hasTools = false;
-
-  document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
-
-    const menge = t.querySelector(".tool-menge")?.value;
-    const beschreibung = t.querySelector(".tool-beschreibung")?.value.trim();
-    const preis = t.querySelector(".preis")?.value;
-    const artikelNr = t.querySelector("select")?.value || "";
-
-    if (!beschreibung) return;
-
-    let p = parseFloat(preis.replace(",", "."));
-    let m = parseFloat(menge);
-
-    if (isNaN(p) || isNaN(m)) return;
-
-    hasTools = true;
-
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${pos}</td>
-      <td>${artikelNr}</td>
-      <td>${beschreibung}</td>
-      <td>${m}</td>
-      <td>${p.toFixed(2).replace(".", ",")} €</td>
-      <td>${(p * m).toFixed(2).replace(".", ",")} €</td>
+    div.innerHTML = `
+      <div>${pos} ${modell}</div>
+      <div>${preis}</div>
     `;
 
-    tbody.appendChild(tr);
-
+    liste.appendChild(div);
     pos++;
   });
-
-  document.getElementById("toolsTableTitle").style.display = hasTools ? "block" : "none";
-  table.style.display = hasTools ? "table" : "none";
 
   return pos;
 }
 
-  
-<script>
-
+// DRUCKEN
 function drucken() {
 
-  // 👉 Prüfen ob Werkzeuge vorhanden sind
-  let hasTools = false;
-
-  document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
-    const beschreibung = t.querySelector(".tool-beschreibung");
-    if (beschreibung && beschreibung.value.trim()) {
-      hasTools = true;
-    }
-  });
-
-  // 👉 Werkzeuge ausblenden wenn leer
-  if (!hasTools) {
-    document.getElementById("toolsTitel").style.display = "none";
-    document.getElementById("toolsContainer").style.display = "none";
-  }
-
-  // 👉 Prüfen ob Geräte vorhanden sind
-  let hasGeraet = false;
-
-  document.querySelectorAll("#container .geraet").forEach(g => {
-    const modell = g.querySelector("input");
-    if (modell && modell.value.trim()) {
-      hasGeraet = true;
-    }
-  });
-
-  if (!hasGeraet) {
-    document.getElementById("geraeteTitel").style.display = "none";
-  }
-
-  // 👉 Textareas korrekt skalieren
-  document.querySelectorAll("textarea").forEach(el => {
-    el.style.height = "auto";
-    el.style.height = el.scrollHeight + "px";
-  });
-
-  // 👉 Notizen Label
-  document.querySelectorAll("textarea").forEach(el => {
-    if (el.value.trim()) {
-      el.value = "Notizen: " + el.value;
-    }
-  });
-
-  // 👉 Nur angehaktes anzeigen
-  document.querySelectorAll(".geraet label").forEach(label => {
-    const cb = label.querySelector("input");
-    if (cb && !cb.checked) label.style.display = "none";
-  });
-
-  // 👉 Leere Felder ausblenden
-  document.querySelectorAll("input, textarea").forEach(el => {
-    if (!el.value) el.style.display = "none";
-  });
-
-  // 👉 Preise formatieren
-  document.querySelectorAll(".preis").forEach(el => {
-    if (el.value) {
-      let v = parseFloat(el.value.replace(",", "."));
-      if (!isNaN(v)) {
-        el.value = v.toFixed(2).replace(".", ",") + " €";
-      }
-    }
-  });
-
-  // 👉 Positionen + Tools
   let nextPos = generatePositionsliste();
   generateToolsTable(nextPos);
 
-  // 👉 PRINT
   window.print();
 }
 
-</script>
-
-// Events
-
-document.getElementById("addBtn").addEventListener("click", addGeraet);
-document.getElementById("printBtn").addEventListener("click", drucken);
-document.getElementById("angebotToggle").addEventListener("change", toggleAngebot);
-
+// EVENTS
+document.getElementById("addBtn").onclick = addGeraet;
+document.getElementById("addToolBtn").onclick = () => {
+  document.getElementById("toolsContainer").appendChild(createTool());
+};
+document.getElementById("printBtn").onclick = drucken;
 
 </script>
 
