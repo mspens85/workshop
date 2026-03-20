@@ -588,17 +588,29 @@ function generateToolsTable(startPos) {
 }
 
   
+<script>
+
 function drucken() {
-  
 
-// 👉 Werkzeuge-Titel & Container ausblenden wenn leer
-if (!hasTools) {
-  document.getElementById("toolsTitel").style.display = "none";
-  document.getElementById("toolsContainer").style.display = "none";
-}
+  // 👉 Prüfen ob Werkzeuge vorhanden sind
+  let hasTools = false;
 
-  // 👉 Prüfen ob Geräte Inhalt haben
+  document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
+    const beschreibung = t.querySelector(".tool-beschreibung");
+    if (beschreibung && beschreibung.value.trim()) {
+      hasTools = true;
+    }
+  });
+
+  // 👉 Werkzeuge ausblenden wenn leer
+  if (!hasTools) {
+    document.getElementById("toolsTitel").style.display = "none";
+    document.getElementById("toolsContainer").style.display = "none";
+  }
+
+  // 👉 Prüfen ob Geräte vorhanden sind
   let hasGeraet = false;
+
   document.querySelectorAll("#container .geraet").forEach(g => {
     const modell = g.querySelector("input");
     if (modell && modell.value.trim()) {
@@ -606,18 +618,17 @@ if (!hasTools) {
     }
   });
 
-  // 👉 Geräte-Titel ausblenden wenn leer
   if (!hasGeraet) {
     document.getElementById("geraeteTitel").style.display = "none";
   }
 
-  // 👉 Textareas korrekt schrumpfen
+  // 👉 Textareas korrekt skalieren
   document.querySelectorAll("textarea").forEach(el => {
     el.style.height = "auto";
     el.style.height = el.scrollHeight + "px";
   });
 
-  // 👉 Notizen Label hinzufügen
+  // 👉 Notizen Label
   document.querySelectorAll("textarea").forEach(el => {
     if (el.value.trim()) {
       el.value = "Notizen: " + el.value;
@@ -645,13 +656,15 @@ if (!hasTools) {
     }
   });
 
+  // 👉 Positionen + Tools
   let nextPos = generatePositionsliste();
-generateToolsTable(nextPos);
+  generateToolsTable(nextPos);
 
-
-
+  // 👉 PRINT
   window.print();
 }
+
+</script>
 
 // Events
 
