@@ -501,9 +501,12 @@ function generatePositionsliste() {
   const liste = document.getElementById("positionsliste");
   liste.innerHTML = "";
 
- document.querySelectorAll("#container .geraet").forEach(g => {
+  document.querySelectorAll("#container .geraet").forEach(g => {
 
-    const modell = g.querySelector("input").value;
+    const modell = g.querySelector("input").value.trim();
+    const preis = g.querySelector(".preis").value;
+
+    if (!modell) return;
 
     const arbeiten = [];
     g.querySelectorAll("label").forEach(label => {
@@ -513,67 +516,31 @@ function generatePositionsliste() {
       }
     });
 
-    const preis = g.querySelector(".preis").value;
+    const div = document.createElement("div");
+    div.className = "position";
 
-    if (modell.trim() !== "") {
+    const text = document.createElement("div");
+    text.innerText = pos + "  " + modell + " – " + arbeiten.join(", ");
 
-      const div = document.createElement("div");
-      div.className = "position";
+    const price = document.createElement("div");
 
-      const text = document.createElement("div");
-     text.innerText = pos + "  " + modell + " – " + arbeiten.join(", ");pos++;
-
-      const price = document.createElement("div");
-      if (!preis) return;
-      let v = parseFloat(preis.replace(",", "."));
-if (!isNaN(v)) {
-  price.innerText = v.toFixed(2).replace(".", ",") + " €";
-}
-
-      div.appendChild(text);
-      div.appendChild(price);
-
-      liste.appendChild(div);
+    let v = parseFloat(preis.replace(",", "."));
+    if (!isNaN(v)) {
+      price.innerText = v.toFixed(2).replace(".", ",") + " €";
     }
 
+    div.appendChild(text);
+    div.appendChild(price);
+    liste.appendChild(div);
+
+    pos++;
   });
- document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
 
-  const mengeEl = t.querySelector(".tool-menge");
-  const beschreibungEl = t.querySelector(".tool-beschreibung");
-  const preisEl = t.querySelector(".preis");
-
-  if (!beschreibungEl || !preisEl) return;
-
-  const menge = mengeEl.value;
-  const beschreibung = beschreibungEl.value.trim();
-  const preis = preisEl.value.trim();
-
-  // 👉 NUR wenn wirklich Artikel gewählt wurde
-  if (beschreibung === "") return;
-
-  let p = parseFloat(preis.replace(",", "."));
-  let m = parseFloat(menge);
-
-  if (isNaN(p) || isNaN(m)) return;
-
-  const div = document.createElement("div");
-  div.className = "position";
-
-  const text = document.createElement("div");
-  text.innerText = pos + "  " + beschreibung + " (x" + m + ")";
-
-  const price = document.createElement("div");
-  price.innerText = (p * m).toFixed(2).replace(".", ",") + " €";
-
-  div.appendChild(text);
-  div.appendChild(price);
-  liste.appendChild(div);
-
-return pos;
-});
+  return pos; // 👉 WICHTIG
 }
-  function generateToolsTable(startPos) {
+
+  
+function generateToolsTable(startPos) {
 
   const table = document.getElementById("toolsTable");
   const tbody = table.querySelector("tbody");
@@ -582,24 +549,47 @@ return pos;
   let pos = startPos;
   let hasTools = false;
 
+  document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
 
+    const menge = t.querySelector(".tool-menge")?.value;
+    const beschreibung = t.querySelector(".tool-beschreibung")?.value.trim();
+    const preis = t.querySelector(".preis")?.value;
+    const artikelNr = t.querySelector("select")?.value || "";
 
-  // anzeigen oder verstecken
+    if (!beschreibung) return;
+
+    let p = parseFloat(preis.replace(",", "."));
+    let m = parseFloat(menge);
+
+    if (isNaN(p) || isNaN(m)) return;
+
+    hasTools = true;
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${pos}</td>
+      <td>${artikelNr}</td>
+      <td>${beschreibung}</td>
+      <td>${m}</td>
+      <td>${p.toFixed(2).replace(".", ",")} €</td>
+      <td>${(p * m).toFixed(2).replace(".", ",")} €</td>
+    `;
+
+    tbody.appendChild(tr);
+
+    pos++;
+  });
+
   document.getElementById("toolsTableTitle").style.display = hasTools ? "block" : "none";
   table.style.display = hasTools ? "table" : "none";
 
   return pos;
 }
+
+  
 function drucken() {
   
-  // 👉 Prüfen ob Werkzeuge vorhanden sind
-let hasTools = false;
-  document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
-  const beschreibung = t.querySelector(".tool-beschreibung");
-  if (beschreibung && beschreibung.value.trim()) {
-    hasTools = true;
-  }
-});
 
 // 👉 Werkzeuge-Titel & Container ausblenden wenn leer
 if (!hasTools) {
