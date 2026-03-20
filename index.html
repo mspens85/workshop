@@ -457,7 +457,7 @@ function generatePositionsliste() {
   const liste = document.getElementById("positionsliste");
   liste.innerHTML = "";
 
-  document.querySelectorAll(".geraet").forEach(g => {
+ document.querySelectorAll("#container .geraet").forEach(g => {
 
     const modell = g.querySelector("input").value;
 
@@ -471,7 +471,7 @@ function generatePositionsliste() {
 
     const preis = g.querySelector(".preis").value;
 
-    if (modell || arbeiten.length || preis) {
+    if (modell.trim() !== "") {
 
       const div = document.createElement("div");
       div.className = "position";
@@ -489,40 +489,40 @@ function generatePositionsliste() {
     }
 
   });
- // Werkzeuge hinzufügen
-document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
+ document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
 
-  const menge = t.querySelector(".tool-menge")?.value || "1";
-  const beschreibung = t.querySelector(".tool-beschreibung")?.value || "";
-  const preis = t.querySelector(".preis")?.value || "";
+  const mengeEl = t.querySelector(".tool-menge");
+  const beschreibungEl = t.querySelector(".tool-beschreibung");
+  const preisEl = t.querySelector(".preis");
 
-  // nur wenn wirklich ein Artikel gewählt wurde
-  if (beschreibung && preis) {
+  if (!beschreibungEl || !preisEl) return;
 
-    const div = document.createElement("div");
-    div.className = "position";
+  const menge = mengeEl.value;
+  const beschreibung = beschreibungEl.value.trim();
+  const preis = preisEl.value.trim();
 
-    const text = document.createElement("div");
-    text.innerText = pos + "  " + beschreibung + " (x" + menge + ")";
+  // 👉 NUR wenn wirklich Artikel gewählt wurde
+  if (beschreibung === "") return;
 
-    const price = document.createElement("div");
+  let p = parseFloat(preis.replace(",", "."));
+  let m = parseFloat(menge);
 
-    let p = parseFloat(preis.replace(",", "."));
-    let m = parseFloat(menge);
+  if (isNaN(p) || isNaN(m)) return;
 
-    if (!isNaN(p) && !isNaN(m)) {
-      let total = (p * m).toFixed(2).replace(".", ",") + " €";
-      price.innerText = total;
-    }
+  const div = document.createElement("div");
+  div.className = "position";
 
-    div.appendChild(text);
-    div.appendChild(price);
+  const text = document.createElement("div");
+  text.innerText = pos + "  " + beschreibung + " (x" + m + ")";
 
-    liste.appendChild(div);
+  const price = document.createElement("div");
+  price.innerText = (p * m).toFixed(2).replace(".", ",") + " €";
 
-    pos++;
-  }
+  div.appendChild(text);
+  div.appendChild(price);
+  liste.appendChild(div);
 
+  pos++;
 });
 }
 
