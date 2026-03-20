@@ -487,6 +487,43 @@ function generatePositionsliste() {
     }
 
   });
+  // Werkzeuge hinzufügen
+document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
+
+  const menge = t.querySelector('input[type="number"]')?.value || "1";
+  const beschreibung = t.querySelector('input[placeholder="Beschreibung"]')?.value || "";
+  const preis = t.querySelector(".preis")?.value || "";
+
+  if (beschreibung || preis) {
+
+    const div = document.createElement("div");
+    div.className = "position";
+
+    const text = document.createElement("div");
+    text.innerText = pos + "  " + beschreibung + " (x" + menge + ")";
+
+    const price = document.createElement("div");
+
+    // Gesamtpreis berechnen
+    let p = parseFloat(preis.replace(",", "."));
+    let m = parseFloat(menge);
+
+    if (!isNaN(p) && !isNaN(m)) {
+      let total = (p * m).toFixed(2).replace(".", ",") + " €";
+      price.innerText = total;
+    } else {
+      price.innerText = preis;
+    }
+
+    div.appendChild(text);
+    div.appendChild(price);
+
+    liste.appendChild(div);
+
+    pos++;
+  }
+
+  });
 }
 
 function drucken() {
