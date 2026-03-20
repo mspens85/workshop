@@ -82,12 +82,12 @@ label input { flex-shrink: 0; }
   gap: 10px;
 }
 
-.position div:first-child {
+.position div:last-child {
   white-space: nowrap;
   text-align: right;
   min-width: 80px;
 }
-
+  
   .header {
   display: flex;
   justify-content: space-between;
@@ -524,7 +524,10 @@ function generatePositionsliste() {
      text.innerText = pos + "  " + modell + " – " + arbeiten.join(", ");pos++;
 
       const price = document.createElement("div");
-      price.innerText = preis;
+      let v = parseFloat(preis.replace(",", "."));
+if (!isNaN(v)) {
+  price.innerText = v.toFixed(2).replace(".", ",") + " €";
+}
 
       div.appendChild(text);
       div.appendChild(price);
@@ -566,7 +569,7 @@ function generatePositionsliste() {
   div.appendChild(price);
   liste.appendChild(div);
 
-  pos++;
+  pos++; return pos;
 });
 }
 
@@ -574,18 +577,7 @@ function drucken() {
   
   // 👉 Prüfen ob Werkzeuge vorhanden sind
 let hasTools = false;
-
-document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
-  const beschreibung = t.querySelector("input[placeholder='Beschreibung']");
-  const preis = t.querySelector(".preis");
-
-  if (
-    (beschreibung && beschreibung.value.trim()) ||
-    (preis && preis.value.trim())
-  ) {
-    hasTools = true;
-  }
-});
+  
 
 // 👉 Werkzeuge-Titel & Container ausblenden wenn leer
 if (!hasTools) {
