@@ -216,7 +216,26 @@ label {
   select {
   display: none !important;
 }
+#toolsTable {
+  display: table !important;
+  margin-top: 10px;
+}
 
+#toolsTable th,
+#toolsTable td {
+  border-bottom: 1px solid #000;
+  padding: 3px;
+}
+
+#toolsTable th {
+  text-align: left;
+}
+
+#toolsTable td:last-child,
+#toolsTable th:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
   
   
 }
@@ -264,6 +283,23 @@ label {
 <h3 id="positionsTitel" style="display:none;">Positionen</h3>
 <div id="positionsliste" style="display:none;"></div>
 
+<h3 id="toolsTableTitle" style="display:none;">Werkzeuge</h3>
+
+<table id="toolsTable" style="display:none; width:100%; border-collapse: collapse; font-size:12px;">
+  <thead>
+    <tr>
+      <th>Pos</th>
+      <th>Art.-Nr</th>
+      <th>Beschreibung</th>
+      <th>Menge</th>
+      <th>Einzelpreis</th>
+      <th>Gesamt</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+  
 <div id="gesamtBlock" style="display:none;">
   <h3>Gesamtpreis</h3>
   <input id="gesamtpreis" readonly>
@@ -605,7 +641,58 @@ if (!hasTools) {
     }
   });
 
-  generatePositionsliste();
+  let nextPos = generatePositionsliste();
+generateToolsTable(nextPos);
+
+  function generateToolsTable(startPos) {
+
+  const table = document.getElementById("toolsTable");
+  const tbody = table.querySelector("tbody");
+  tbody.innerHTML = "";
+
+  let pos = startPos;
+  let hasTools = false;
+
+  document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
+
+    const menge = t.querySelector(".tool-menge")?.value;
+    const beschreibung = t.querySelector(".tool-beschreibung")?.value.trim();
+    const preis = t.querySelector(".preis")?.value;
+    const artikelSelect = t.querySelector("select");
+
+    const artikelNr = artikelSelect?.value || "";
+
+    if (!beschreibung) return;
+
+    let p = parseFloat(preis.replace(",", "."));
+    let m = parseFloat(menge);
+
+    if (isNaN(p) || isNaN(m)) return;
+
+    hasTools = true;
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${pos}</td>
+      <td>${artikelNr}</td>
+      <td>${beschreibung}</td>
+      <td>${m}</td>
+      <td>${p.toFixed(2).replace(".", ",")} €</td>
+      <td>${(p * m).toFixed(2).replace(".", ",")} €</td>
+    `;
+
+    tbody.appendChild(tr);
+
+    pos++;
+  });
+
+  // anzeigen oder verstecken
+  document.getElementById("toolsTableTitle").style.display = hasTools ? "block" : "none";
+  table.style.display = hasTools ? "table" : "none";
+
+  return pos;
+}
 
   window.print();
 }
