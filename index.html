@@ -212,12 +212,11 @@ body.modus-rechnung #footer {
   font-size: 11px;
   line-height: 1.3;
 
-  /* 🔥 WICHTIG */
   page-break-inside: avoid;
   break-inside: avoid;
 
-  /* 👉 Abstand zum Footer erzwingen */
-  margin-bottom: 120px;
+  /* 🔥 NEU: verhindert Überlappung komplett */
+  page-break-after: always;
 }
 
   /* ================= FOOTER ================= */
