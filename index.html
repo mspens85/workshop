@@ -91,7 +91,7 @@ body.modus-rechnung #footer {
     padding: 0;
 
     /* 👉 Platz für echten Footer */
-    padding-bottom: 160px;
+    padding-bottom: 0px;
   }
 
   h2 {
@@ -220,20 +220,16 @@ body.modus-rechnung #footer {
   }
 
   /* ================= FOOTER ================= */
+#footer {
+  display: block !important;
+  margin-top: 40px;
 
-  #footer {
-    display: block !important;
+  /* verhindert Seitenumbruch mitten im Footer */
+  page-break-inside: avoid;
+  break-inside: avoid;
 
-    position: fixed;
-    bottom: 12mm;
-    left: 12mm;
-    right: 12mm;
-
-    font-size: 10px;
-
-    /* ❗ verhindert Überlappung visuell */
-    background: white;
-  }
+  font-size: 10px;
+}
 
   .footer-grid {
     display: grid;
