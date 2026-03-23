@@ -64,7 +64,7 @@ body.modus-rechnung #footer {
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
 }
-  
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -76,7 +76,8 @@ body.modus-rechnung #footer {
   height: 50px;
 }
 
-/* 🔥 WICHTIG: Platz für Footer reservieren */
+/* ================= PRINT ================= */
+
 @media print {
 
   @page {
@@ -89,8 +90,8 @@ body.modus-rechnung #footer {
     line-height: 1.3;
     padding: 0;
 
-    /* Platz für Footer */
-    padding-bottom: 110px;
+    /* 👉 Platz für echten Footer */
+    padding-bottom: 120px;
   }
 
   h2 {
@@ -111,6 +112,7 @@ body.modus-rechnung #footer {
     page-break-inside: avoid;
   }
 
+  /* Checkboxen → Text */
   input[type="checkbox"] {
     display: none;
   }
@@ -134,6 +136,7 @@ body.modus-rechnung #footer {
     display: none !important;
   }
 
+  /* Inputs wie Text */
   input, textarea {
     border: none;
     padding: 1px;
@@ -147,6 +150,7 @@ body.modus-rechnung #footer {
     font-style: italic;
   }
 
+  /* Kundendaten */
   .kunde {
     display: block !important;
   }
@@ -160,6 +164,7 @@ body.modus-rechnung #footer {
     line-height: 1.2;
   }
 
+  /* Preise rechts */
   .position {
     display: flex;
     justify-content: space-between;
@@ -185,10 +190,6 @@ body.modus-rechnung #footer {
     font-size: 11px;
   }
 
-  #toolsTable th {
-    text-align: left;
-  }
-
   #toolsTable td:last-child,
   #toolsTable th:last-child {
     text-align: right;
@@ -206,17 +207,19 @@ body.modus-rechnung #footer {
     font-weight: bold;
   }
 
-  /* 🔥 Zahlungstext (IMMER über Footer halten) */
+  /* Zahlungstext */
   #zahlungstext {
     display: block !important;
     margin-top: 15px;
     font-size: 11px;
     line-height: 1.3;
 
+    /* ❗ verhindert Seitenumbruch im Text */
     page-break-inside: avoid;
   }
 
-  /* 🔥 ECHTER Footer */
+  /* ================= FOOTER ================= */
+
   #footer {
     display: block !important;
 
@@ -234,10 +237,6 @@ body.modus-rechnung #footer {
     gap: 10px;
   }
 
-  /* 🔥 GANZ WICHTIG: Footer NICHT doppelt */
-  #footer + * {
-    display: none !important;
-  }
 }
 </style>
 </head>
@@ -249,8 +248,6 @@ body.modus-rechnung #footer {
     <h2 id="title">Werkstattzettel</h2>
   </div>
 </div>
-
-<h2 id="title">Werkstattzettel</h2>
 
 <select id="modus">
   <option value="werkstatt">Werkstattzettel</option>
@@ -455,25 +452,6 @@ function updateSumme() {
     sum.toFixed(2).replace(".", ",") + " €";
 }
   
-function updateModus() {
-
-  const m = document.getElementById("modus").value;
-
-  document.body.classList.remove("werkstatt","angebot","rechnung");
-  document.body.classList.add(m);
-
-  document.getElementById("title").innerText =
-    m === "rechnung" ? "Rechnung" :
-    m === "angebot" ? "Angebot" : "Werkstattzettel";
-
-  const aktiv = m !== "werkstatt";
-
-  document.getElementById("gesamtBlock").style.display = aktiv ? "block":"none";
-  document.getElementById("positionsTitel").style.display = aktiv ? "block":"none";
-
-  document.getElementById("toolsTitel").style.display = aktiv ? "block":"none";
-  document.getElementById("addToolBtn").style.display = aktiv ? "block":"none";
-}
 
 function updateModus() {
 
