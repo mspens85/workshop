@@ -48,7 +48,17 @@ button {
   border-bottom: 1px solid #ccc;
 }
 
-#footer, #zahlungstext { display:none; margin-top:20px; font-size:12px; }
+/* Standard: alles aus */
+#zahlungstext,
+#footer {
+  display: none !important;
+}
+
+/* Nur im Rechnungsmodus anzeigen */
+body.modus-rechnung #zahlungstext,
+body.modus-rechnung #footer {
+  display: block !important;
+}
 
 .footer-grid {
   display:grid;
@@ -419,6 +429,9 @@ function updateSumme() {
 function updateModus() {
 
   const m = document.getElementById("modus").value;
+
+  document.body.classList.remove("modus-werkstatt","modus-angebot","modus-rechnung");
+  document.body.classList.add("modus-" + m);
 
   document.getElementById("title").innerText =
     m === "rechnung" ? "Rechnung" :
