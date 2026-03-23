@@ -89,8 +89,8 @@ body.modus-rechnung #footer {
     line-height: 1.3;
     padding: 0;
 
-    /* 👉 Platz für Footer */
-    padding-bottom: 90px;
+    /* Platz für Footer */
+    padding-bottom: 110px;
   }
 
   h2 {
@@ -124,6 +124,7 @@ body.modus-rechnung #footer {
     content: "– ";
   }
 
+  /* UI ausblenden */
   .toggle,
   button,
   select,
@@ -169,6 +170,7 @@ body.modus-rechnung #footer {
     white-space: nowrap;
   }
 
+  /* Tools Tabelle */
   #toolsTable {
     display: table !important;
     width: 100%;
@@ -193,6 +195,7 @@ body.modus-rechnung #footer {
     white-space: nowrap;
   }
 
+  /* Gesamt */
   #gesamtBlock {
     display: block !important;
     margin-top: 10px;
@@ -203,14 +206,17 @@ body.modus-rechnung #footer {
     font-weight: bold;
   }
 
+  /* 🔥 Zahlungstext (IMMER über Footer halten) */
   #zahlungstext {
     display: block !important;
     margin-top: 15px;
     font-size: 11px;
     line-height: 1.3;
+
+    page-break-inside: avoid;
   }
 
-  /* 🔥 ECHTE FUSSZEILE */
+  /* 🔥 ECHTER Footer */
   #footer {
     display: block !important;
 
@@ -226,6 +232,11 @@ body.modus-rechnung #footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
+  }
+
+  /* 🔥 GANZ WICHTIG: Footer NICHT doppelt */
+  #footer + * {
+    display: none !important;
   }
 }
 </style>
