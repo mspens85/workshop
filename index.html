@@ -224,6 +224,10 @@ body.modus-rechnung #footer {
     margin-bottom: 40px;
   }
 
+  #positionsliste {
+  display: none !important;
+}
+
   /* ================= FOOTER ================= */
 #footer {
   display: block !important;
@@ -502,15 +506,17 @@ function updateModus() {
 function generatePositionsliste() {
 
   let pos = 1;
-  const liste = document.getElementById("positionsliste");
-  liste.innerHTML = "";
 
+  const tbody = document.querySelector("#toolsTable tbody");
+  tbody.innerHTML = "";
+
+  // ===== GERÄTE =====
   document.querySelectorAll("#container .geraet").forEach(g => {
 
     const modell = g.querySelector("input").value.trim();
     const preis = g.querySelector(".preis").value;
 
-    if (!modell) return;
+    if (!modell || !preis) return;
 
     const arbeiten = [];
     g.querySelectorAll("label").forEach(l => {
@@ -518,42 +524,54 @@ function generatePositionsliste() {
       if (cb && cb.checked) arbeiten.push(l.innerText.trim());
     });
 
-    const div = document.createElement("div");
-    div.className = "position";
+    const tr = document.createElement("tr");
 
-    div.innerHTML =
-      `<div>${pos} ${modell} – ${arbeiten.join(", ")}</div>
-      <div>${preis} €</div>`;
+    tr.innerHTML = `
+      <td>${pos}</td>
+      <td>-</td>
+      <td>${modell} – ${arbeiten.join(", ")}</td>
+      <td>1</td>
+      <td>${preis}</td>
+      <td>${preis}</td>
+    `;
 
-    liste.appendChild(div);
+    tbody.appendChild(tr);
     pos++;
   });
 
+  // ===== WERKZEUGE =====
   document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
 
     const menge = t.querySelector("input[type=number]").value;
+    const select = t.querySelector("select");
+    const artikelNr = select.value;
     const beschreibung = t.querySelector("input:nth-child(3)").value;
     const preis = t.querySelector(".preis").value;
 
-    if (!beschreibung) return;
+    if (!beschreibung || !preis) return;
 
     let p = parseFloat(preis.replace(",", "."));
     let m = parseFloat(menge);
 
-if (isNaN(p) || isNaN(m)) return;
+    if (isNaN(p) || isNaN(m)) return;
 
-const total = (p * m).toFixed(2).replace(".", ",");
+    const total = (p * m).toFixed(2).replace(".", ",");
 
-    const div = document.createElement("div");
-    div.className = "position";
+    const tr = document.createElement("tr");
 
-    div.innerHTML =
-      `<div>${pos} ${beschreibung} (x${menge})</div>
-       <div>${total} €</div>`;
+    tr.innerHTML = `
+      <td>${pos}</td>
+      <td>${artikelNr || "-"}</td>
+      <td>${beschreibung}</td>
+      <td>${menge}</td>
+      <td>${preis}</td>
+      <td>${total} €</td>
+    `;
 
-    liste.appendChild(div);
+    tbody.appendChild(tr);
     pos++;
   });
+}
 }
 
 function drucken() {
