@@ -497,12 +497,10 @@ function updateModus() {
 
 function generatePositionsliste() {
 
-  const tbody = document.querySelector("#toolsTable tbody");
-  tbody.innerHTML = "";
-
   let pos = 1;
+  const liste = document.getElementById("positionsliste");
+  liste.innerHTML = "";
 
-  // GERÄTE
   document.querySelectorAll("#container .geraet").forEach(g => {
 
     const modell = g.querySelector("input").value.trim();
@@ -516,53 +514,16 @@ function generatePositionsliste() {
       if (cb && cb.checked) arbeiten.push(l.innerText.trim());
     });
 
-    const tr = document.createElement("tr");
+    const div = document.createElement("div");
+    div.className = "position";
 
-    tr.innerHTML = `
-      <td>${pos}</td>
-      <td>-</td>
-      <td>${modell} – ${arbeiten.join(", ")}</td>
-      <td>1</td>
-      <td>${preis} €</td>
-      <td>${preis} €</td>
-    `;
+    div.innerHTML =
+      `<div>${pos} ${modell} – ${arbeiten.join(", ")}</div>
+       <div>${preis}</div>`;
 
-    tbody.appendChild(tr);
+    liste.appendChild(div);
     pos++;
   });
-
-  // TOOLS
-  document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
-
-    const menge = t.querySelector("input[type=number]").value;
-    const beschreibung = t.querySelector("input:nth-child(3)").value;
-    const preis = t.querySelector(".preis").value;
-    const artikel = t.querySelector("select").value;
-
-    if (!beschreibung) return;
-
-    let p = parseFloat(preis.replace(",", "."));
-    let m = parseFloat(menge);
-
-    if (isNaN(p) || isNaN(m)) return;
-
-    const total = (p * m).toFixed(2).replace(".", ",");
-
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${pos}</td>
-      <td>${artikel}</td>
-      <td>${beschreibung}</td>
-      <td>${menge}</td>
-      <td>${preis} €</td>
-      <td>${total} €</td>
-    `;
-
-    tbody.appendChild(tr);
-    pos++;
-  });
-}
 
   document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
 
