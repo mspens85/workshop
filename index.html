@@ -548,6 +548,32 @@ function generatePositionsliste() {
 
     tbody.appendChild(tr);
     pos++;
+      // ===== GESAMTPREIS =====
+  let sum = 0;
+
+  document.querySelectorAll(".preis").forEach(el => {
+    let v = parseFloat(el.value.replace(",", "."));
+    if (isNaN(v)) return;
+
+    let menge = 1;
+    const m = el.parentElement.querySelector("input[type=number]");
+    if (m) menge = parseFloat(m.value) || 1;
+
+    sum += v * menge;
+  });
+
+  const trSum = document.createElement("tr");
+
+  trSum.innerHTML = `
+    <td colspan="5" style="text-align:right; font-weight:bold; border-top:2px solid #000;">
+      Gesamt:
+    </td>
+    <td style="font-weight:bold; border-top:2px solid #000;">
+      ${formatEuro(sum)}
+    </td>
+  `;
+
+  tbody.appendChild(trSum);
   });
 
 
