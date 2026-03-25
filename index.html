@@ -508,6 +508,12 @@ function updateModus() {
 
 }
 
+    function formatEuro(value) {
+  let v = parseFloat(value.toString().replace(",", "."));
+  if (isNaN(v)) return "";
+  return v.toFixed(2).replace(".", ",") + " €";
+}
+
 function generatePositionsliste() {
 
   let pos = 1;
@@ -544,11 +550,7 @@ function generatePositionsliste() {
     pos++;
   });
 
-  function formatEuro(value) {
-  let v = parseFloat(value.toString().replace(",", "."));
-  if (isNaN(v)) return "";
-  return v.toFixed(2).replace(".", ",") + " €";
-}
+
 
   // ===== WERKZEUGE =====
   document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
@@ -575,8 +577,8 @@ function generatePositionsliste() {
       <td>${artikelNr || "-"}</td>
       <td>${beschreibung}</td>
       <td>${menge}</td>
-      <td>${preis}</td>
-      <td>${total} €</td>
+      <td>${formatEuro(preis)}</td>
+      <td>${formatEuro(total)}</td>
     `;
 
     tbody.appendChild(tr);
