@@ -768,7 +768,10 @@ function drucken() {
   window.print();
 }
 
-document.getElementById("modus").addEventListener("change", updateModus);
+document.getElementById("modus").addEventListener("change", () => {
+  updateModus();
+  updateSprache(); // 👈 DAS FEHLT
+});
 
 document.getElementById("datum").value =
   new Date().toLocaleDateString("de-DE");
