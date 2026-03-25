@@ -319,6 +319,10 @@ body.modus-rechnung #geraeteTitel {
 <tbody></tbody>
 </table>
 
+<div id="gesamtBlock" style="display:none;">
+<h3>Gesamtpreis</h3>
+<input id="gesamtpreis" readonly>
+</div>
 
 <div id="zahlungstext">
 Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer an das unten angegebene Konto oder per PayPal an @penmarco.<br><br>
@@ -496,10 +500,12 @@ function updateModus() {
 
   const aktiv = m !== "werkstatt";
 
+  document.getElementById("gesamtBlock").style.display = aktiv ? "block":"none";
+  document.getElementById("positionsTitel").style.display = aktiv ? "block":"none";
 
-document.getElementById("toolsTitel").style.display = isWerkstatt ? "none" : "block";
-document.getElementById("addToolBtn").style.display = isWerkstatt ? "none" : "block";
-document.getElementById("toolsContainer").style.display = isWerkstatt ? "none" : "block";
+  document.getElementById("toolsTitel").style.display = aktiv ? "block":"none";
+  document.getElementById("addToolBtn").style.display = aktiv ? "block":"none";
+
 }
 
     function formatEuro(value) {
@@ -598,20 +604,10 @@ document.querySelectorAll(".preis").forEach(el => {
 const trSum = document.createElement("tr");
 
 trSum.innerHTML = `
-  <td colspan="5" style="
-    text-align:right;
-    font-weight:bold;
-    border-top:3px solid #000;
-    padding-top:6px;
-  ">
+  <td colspan="5" style="text-align:right; font-weight:bold; border-top:2px solid #000;">
     Gesamt:
   </td>
-  <td style="
-    font-weight:bold;
-    border-top:3px solid #000;
-    padding-top:6px;
-    text-align:right;
-  ">
+  <td style="font-weight:bold; border-top:2px solid #000;">
     ${formatEuro(sum)}
   </td>
 `;
