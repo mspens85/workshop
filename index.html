@@ -603,11 +603,20 @@ function generatePositionsliste() {
 
     if (!modell || !preis) return;
 
-    const arbeiten = [];
-    g.querySelectorAll("label").forEach(l => {
-      const cb = l.querySelector("input");
-      if (cb && cb.checked) arbeiten.push(l.innerText.trim());
-    });
+const arbeiten = [];
+g.querySelectorAll("label").forEach(l => {
+  const cb = l.querySelector("input");
+  if (cb && cb.checked) {
+
+    let text = l.innerText.trim();
+
+    if (aktuelleSprache === "en" && document.body.classList.contains("modus-rechnung")) {
+      text = translateArbeiten(text);
+    }
+
+    arbeiten.push(text);
+  }
+});
 
     const tr = document.createElement("tr");
 
@@ -768,6 +777,32 @@ function translateArtikel(text) {
 
   return map[text] || text; // fallback
 }
+
+  function translateArbeiten(text) {
+
+  const map = {
+    "Demontage": "Disassembly",
+    "Reinigung": "Cleaning",
+    "Wartung Mechanik": "Mechanical service",
+    "Korkdichtung erneuern": "Replace cork seal",
+
+    "Politur einfach": "Basic polishing",
+    "Mehrstufige Handpolitur": "Multi-stage hand polishing",
+    "Gravur entfernen": "Remove engraving",
+
+    "Kappenriss schließen": "Repair cap crack",
+    "Kappenlippe erneuern": "Restore cap lip",
+
+    "Clip/Kappenringe vergolden": "Gold plating clip/cap rings",
+    "Kappenstern erneuert": "Cap star replaced",
+
+    "Feder umschleifen": "Nib regrind",
+    "Schreibprobe": "Writing test"
+  };
+
+  return map[text] || text;
+}
+
 
   document.getElementById("sprache").addEventListener("change", updateSprache);
 function drucken() {
