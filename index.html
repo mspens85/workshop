@@ -225,6 +225,14 @@ body.modus-rechnung #footer {
   display: none !important;
 }
 
+  h3:first-of-type {
+  display: none !important;
+}
+
+  #toolsTable {
+  margin-top: 0;
+}
+
   /* ================= FOOTER ================= */
 #footer {
   display: block !important;
@@ -528,13 +536,19 @@ function generatePositionsliste() {
       <td>-</td>
       <td>${modell} – ${arbeiten.join(", ")}</td>
       <td>1</td>
-      <td>${preis} €</td>
-      <td>${preis} €</td>
+<td>${formatEuro(preis)}</td>
+<td>${formatEuro(preis)}</td>
     `;
 
     tbody.appendChild(tr);
     pos++;
   });
+
+  function formatEuro(value) {
+  let v = parseFloat(value.toString().replace(",", "."));
+  if (isNaN(v)) return "";
+  return v.toFixed(2).replace(".", ",") + " €";
+}
 
   // ===== WERKZEUGE =====
   document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
