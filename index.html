@@ -540,19 +540,26 @@ const datum = document.getElementById("datum");
 const rn = document.getElementById("rechnungsnummer");
 
 if (m === "werkstatt") {
+
+  // Prefix entfernen (egal ob vorhanden oder nicht)
+  datum.value = datum.value.replace(/^Datum:\s*/, "");
+  rn.value = rn.value.replace(/^Rechnungsnummer:\s*/, "");
+
   datum.placeholder = "Datum";
   rn.placeholder = "Rechnungsnummer";
 
-  // Werte ohne Prefix anzeigen
-  datum.value = datum.value.replace("Datum: ", "");
-  rn.value = rn.value.replace("Rechnungsnummer: ", "");
 } else {
-  if (datum.value && !datum.value.startsWith("Datum:"))
-    datum.value = "Datum: " + datum.value;
 
-  if (rn.value && !rn.value.startsWith("Rechnungsnummer:"))
-    rn.value = "Rechnungsnummer: " + rn.value;
-  
+  // Datum IMMER mit Prefix anzeigen
+  if (!datum.value.startsWith("Datum:")) {
+    datum.value = "Datum: " + datum.value.replace(/^Datum:\s*/, "");
+  }
+
+  // Rechnungsnummer IMMER mit Prefix anzeigen
+  if (!rn.value.startsWith("Rechnungsnummer:")) {
+    rn.value = "Rechnungsnummer: " + rn.value.replace(/^Rechnungsnummer:\s*/, "");
+  }
+
 }
 }
 
