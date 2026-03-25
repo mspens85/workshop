@@ -735,28 +735,38 @@ Gemäß § 19 Abs. 1 UstG wird keine Umsatzsteuer ausgewiesen.
   }
 }
 
-  function translateArtikel(text) {
+function translateArtikel(text) {
 
   const map = {
-    "Dichtkorken": "Sealing cork",
-    "Werkzeug": "Tool",
-    "Federeinheit": "Nib unit",
-    "antik": "vintage",
-    "modern": "modern",
-    "Größe": "size",
+    "Dichtkorken Größe 2": "Sealing cork size 2",
+    "Dichtkorken Größe 4": "Sealing cork size 4",
+    "Dichtkorken Größe 6": "Sealing cork size 6",
+    "Dichtkorken Größe 9": "Sealing cork size 9",
+
+    "Werkzeug für die Kolbeneinheit modern": "Piston tool modern",
+    "Werkzeug für die Kolbeneinheit antik": "Piston tool vintage",
+
+    "Federeinheit Werkzeug modern Größe 6": "Nib unit tool modern size 6",
+    "Federeinheit Werkzeug modern Größe 9": "Nib unit tool modern size 9",
+
+    "Federeinheit Werkzeug antik Größe 2": "Nib unit tool vintage size 2",
+    "Federeinheit Werkzeug antik Größe 4": "Nib unit tool vintage size 4",
+    "Federeinheit Werkzeug antik Größe 6": "Nib unit tool vintage size 6",
+    "Federeinheit Werkzeug antik Größe 9": "Nib unit tool vintage size 9",
+
+    "Werkzeug Korkmutter": "Cork nut tool",
+    "Eindrückhilfe Dichtkorken": "Cork insertion tool",
+    "Hartgummimutter": "Hard rubber nut",
+
     "Schmierfett": "Grease",
     "Dichtwachs": "Sealing wax",
+
     "Knockout-Block": "Knockout block",
+
     "Versandkosten": "Shipping"
   };
 
-  let result = text;
-
-  for (let key in map) {
-    result = result.replaceAll(key, map[key]);
-  }
-
-  return result;
+  return map[text] || text; // fallback
 }
 
   document.getElementById("sprache").addEventListener("change", updateSprache);
