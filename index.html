@@ -319,10 +319,6 @@ body.modus-rechnung #geraeteTitel {
 <tbody></tbody>
 </table>
 
-<div id="gesamtBlock" style="display:none;">
-<h3>Gesamtpreis</h3>
-<input id="gesamtpreis" readonly>
-</div>
 
 <div id="zahlungstext">
 Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer an das unten angegebene Konto oder per PayPal an @penmarco.<br><br>
@@ -604,10 +600,20 @@ document.querySelectorAll(".preis").forEach(el => {
 const trSum = document.createElement("tr");
 
 trSum.innerHTML = `
-  <td colspan="5" style="text-align:right; font-weight:bold; border-top:2px solid #000;">
+  <td colspan="5" style="
+    text-align:right;
+    font-weight:bold;
+    border-top:3px solid #000;
+    padding-top:6px;
+  ">
     Gesamt:
   </td>
-  <td style="font-weight:bold; border-top:2px solid #000;">
+  <td style="
+    font-weight:bold;
+    border-top:3px solid #000;
+    padding-top:6px;
+    text-align:right;
+  ">
     ${formatEuro(sum)}
   </td>
 `;
