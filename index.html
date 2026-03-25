@@ -319,11 +319,6 @@ body.modus-rechnung #geraeteTitel {
 <tbody></tbody>
 </table>
 
-<div id="gesamtBlock" style="display:none;">
-<h3>Gesamtpreis</h3>
-<input id="gesamtpreis" readonly>
-</div>
-
 <div id="zahlungstext">
 Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer an das unten angegebene Konto oder per PayPal an @penmarco.<br><br>
 Der Versand erfolgt nach Zahlungseingang.<br><br>
@@ -482,8 +477,6 @@ function updateSumme() {
     sum += v * menge;
   });
 
-  document.getElementById("gesamtpreis").value =
-    sum.toFixed(2).replace(".", ",") + " €";
 }
   
 
@@ -500,7 +493,6 @@ function updateModus() {
 
   const aktiv = m !== "werkstatt";
 
-  document.getElementById("gesamtBlock").style.display = aktiv ? "block":"none";
   document.getElementById("positionsTitel").style.display = aktiv ? "block":"none";
 
   document.getElementById("toolsTitel").style.display = aktiv ? "block":"none";
