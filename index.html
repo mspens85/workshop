@@ -76,6 +76,20 @@ body.modus-rechnung #footer {
   height: 50px;
 }
 
+  .kunde-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.kunde-links {
+  flex: 1;
+}
+
+.kunde-rechts {
+  width: 220px;
+  text-align: right;
+}
 
 /* ================= PRINT ================= */
 
@@ -232,6 +246,23 @@ body.modus-rechnung #footer {
   #toolsTable {
   margin-top: 0;
 }
+  .kunde-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.kunde-links {
+  width: 60%;
+}
+
+.kunde-rechts {
+  width: 35%;
+  text-align: right;
+}
+
+.kunde-rechts input {
+  text-align: right;
+}
 
   /* ================= FOOTER ================= */
 #footer {
@@ -290,13 +321,19 @@ body.modus-rechnung #geraeteTitel {
 </select>
 
 <h3>Kundendaten</h3>
-<div class="kunde">
-  <input placeholder="Name">
-  <input placeholder="Straße">
-  <input placeholder="PLZ / Ort">
-  <input placeholder="Land">
-  <input id="datum">
-  <input id="rechnungsnummer" placeholder="Rechnungsnummer">
+
+<div class="kunde-wrapper">
+  <div class="kunde-links">
+    <input placeholder="Name">
+    <input placeholder="Straße">
+    <input placeholder="PLZ / Ort">
+    <input placeholder="Land">
+  </div>
+
+  <div class="kunde-rechts">
+    <input id="datum" placeholder="Datum">
+    <input id="rechnungsnummer" placeholder="Rechnungsnummer">
+  </div>
 </div>
 
 <h3 id="geraeteTitel">Geräte</h3>
@@ -498,6 +535,25 @@ function updateModus() {
   document.getElementById("toolsTitel").style.display = aktiv ? "block":"none";
   document.getElementById("addToolBtn").style.display = aktiv ? "block":"none";
 
+  
+const datum = document.getElementById("datum");
+const rn = document.getElementById("rechnungsnummer");
+
+if (m === "werkstatt") {
+  datum.placeholder = "Datum";
+  rn.placeholder = "Rechnungsnummer";
+
+  // Werte ohne Prefix anzeigen
+  datum.value = datum.value.replace("Datum: ", "");
+  rn.value = rn.value.replace("Rechnungsnummer: ", "");
+} else {
+  if (datum.value && !datum.value.startsWith("Datum:"))
+    datum.value = "Datum: " + datum.value;
+
+  if (rn.value && !rn.value.startsWith("Rechnungsnummer:"))
+    rn.value = "Rechnungsnummer: " + rn.value;
+  
+}
 }
 
     function formatEuro(value) {
