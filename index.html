@@ -328,6 +328,11 @@ body.modus-rechnung #geraeteTitel {
   <option value="rechnung">Rechnung</option>
 </select>
 
+  <select id="sprache">
+  <option value="de">Deutsch</option>
+  <option value="en">English</option>
+</select>
+
 <h3>Kundendaten</h3>
 
 <div class="kunde-wrapper">
@@ -393,6 +398,8 @@ Bankverbindung<br>Institut: Comdirect Bank<br>IBAN: DE43 2004 1133 0201 3571 00<
 
 <script>
 
+  let aktuelleSprache = "de";
+  
 const artikelListe = {
   "CORK2": { name: "Dichtkorken Größe 2", preis: 20 },
   "CORK4": { name: "Dichtkorken Größe 4", preis: 20 },
@@ -643,7 +650,9 @@ function generatePositionsliste() {
     tr.innerHTML = `
       <td>${pos}</td>
       <td>${artikelNr || "-"}</td>
-      <td>${beschreibung}</td>
+      <td>${aktuelleSprache === "en" && document.body.classList.contains("modus-rechnung")
+  ? translateArtikel(beschreibung)
+  : beschreibung}</td>
       <td>${menge}</td>
       <td>${formatEuro(preis)}</td>
       <td>${formatEuro(total)}</td>
@@ -654,7 +663,6 @@ function generatePositionsliste() {
   });
 
   
-// ✅ HIER HIN (RICHTIG!)
 let sum = 0;
 
 document.querySelectorAll(".preis").forEach(el => {
@@ -682,6 +690,76 @@ trSum.innerHTML = `
 tbody.appendChild(trSum);
 }
 
+
+  function updateSprache() {
+
+  aktuelleSprache = document.getElementById("sprache").value;
+
+  const m = document.getElementById("modus").value;
+  const datum = document.getElementById("datum");
+  const rn = document.getElementById("rechnungsnummer");
+
+  // 👉 NUR im Rechnungsmodus Englisch aktivieren
+  if (m === "rechnung" && aktuelleSprache === "en") {
+
+    // Datum / Rechnungsnummer
+    datum.value = datum.value.replace(/^Datum:\s*/, "").replace(/^Date:\s*/, "");
+    rn.value = rn.value.replace(/^Rechnungsnummer:\s*/, "").replace(/^Invoice number:\s*/, "");
+
+    datum.value = "Date: " + datum.value;
+    rn.value = "Invoice number: " + rn.value;
+
+    // Zahlungstext
+    document.getElementById("zahlungstext").innerHTML = `
+Please transfer the total amount stating the invoice number to the bank account below or via PayPal to @penmarco.<br><br>
+Shipping will take place after receipt of payment.<br><br>
+According to § 19 (1) UStG no VAT is charged.
+    `;
+
+  } else {
+
+    // Deutsch zurücksetzen
+    datum.value = datum.value.replace(/^Date:\s*/, "").replace(/^Datum:\s*/, "");
+    rn.value = rn.value.replace(/^Invoice number:\s*/, "").replace(/^Rechnungsnummer:\s*/, "");
+
+    if (m !== "werkstatt") {
+      datum.value = "Datum: " + datum.value;
+      rn.value = "Rechnungsnummer: " + rn.value;
+    }
+
+    document.getElementById("zahlungstext").innerHTML = `
+Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer an das unten angegebene Konto oder per PayPal an @penmarco.<br><br>
+Der Versand erfolgt nach Zahlungseingang.<br><br>
+Gemäß § 19 Abs. 1 UstG wird keine Umsatzsteuer ausgewiesen.
+    `;
+  }
+}
+
+  function translateArtikel(text) {
+
+  const map = {
+    "Dichtkorken": "Sealing cork",
+    "Werkzeug": "Tool",
+    "Federeinheit": "Nib unit",
+    "antik": "vintage",
+    "modern": "modern",
+    "Größe": "size",
+    "Schmierfett": "Grease",
+    "Dichtwachs": "Sealing wax",
+    "Knockout-Block": "Knockout block",
+    "Versandkosten": "Shipping"
+  };
+
+  let result = text;
+
+  for (let key in map) {
+    result = result.replaceAll(key, map[key]);
+  }
+
+  return result;
+}
+
+  document.getElementById("sprache").addEventListener("change", updateSprache);
 function drucken() {
 
   updateSumme();
