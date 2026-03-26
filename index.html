@@ -605,22 +605,16 @@ function updateModus() {
   document.getElementById("toolsTitel").style.display = aktiv ? "block":"none";
   document.getElementById("addToolBtn").style.display = aktiv ? "block":"none";
 
-const datum = document.getElementById("datum");
-const rn = document.getElementById("rechnungsnummer");
+  const datum = document.getElementById("datum");
+  const rn = document.getElementById("rechnungsnummer");
 
-// 👉 NUR Prefix entfernen (neutral halten!)
-datum.value = datum.value
-  .replace(/^Datum:\s*/, "")
-  .replace(/^Date:\s*/, "");
+  datum.value = datum.value
+    .replace(/^Datum:\s*/, "")
+    .replace(/^Date:\s*/, "");
 
-rn.value = rn.value
-  .replace(/^Rechnungsnummer:\s*/, "")
-  .replace(/^Invoice number:\s*/, "");
-}
-    function formatEuro(value) {
-  let v = parseFloat(value.toString().replace(",", "."));
-  if (isNaN(v)) return "";
-  return v.toFixed(2).replace(".", ",") + " €";
+  rn.value = rn.value
+    .replace(/^Rechnungsnummer:\s*/, "")
+    .replace(/^Invoice number:\s*/, "");
 }
 
 function generatePositionsliste() {
