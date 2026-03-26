@@ -592,44 +592,30 @@ function updateModus() {
   document.body.classList.remove("modus-werkstatt","modus-angebot","modus-rechnung");
   document.body.classList.add("modus-" + m);
 
-document.getElementById("title").innerText =
-  m === "rechnung"
-    ? (aktuelleSprache === "en" ? "Invoice" : "Rechnung")
-  : m === "angebot"
-    ? (aktuelleSprache === "en" ? "Quotation" : "Angebot")
-  : (aktuelleSprache === "en" ? "Workshop sheet" : "Werkstattzettel");
+  document.getElementById("title").innerText =
+    m === "rechnung"
+      ? (aktuelleSprache === "en" ? "Invoice" : "Rechnung")
+    : m === "angebot"
+      ? (aktuelleSprache === "en" ? "Quotation" : "Angebot")
+    : (aktuelleSprache === "en" ? "Workshop sheet" : "Werkstattzettel");
 
   const aktiv = m !== "werkstatt";
 
   document.getElementById("positionsTitel").style.display = aktiv ? "block":"none";
-
   document.getElementById("toolsTitel").style.display = aktiv ? "block":"none";
   document.getElementById("addToolBtn").style.display = aktiv ? "block":"none";
 
-  
-const datum = document.getElementById("datum");
-const rn = document.getElementById("rechnungsnummer");
+  const datum = document.getElementById("datum");
+  const rn = document.getElementById("rechnungsnummer");
 
-// 👉 Nur Prefixe entfernen – KEINE Sprache setzen
-datum.value = datum.value
-  .replace(/^Datum:\s*/, "")
-  .replace(/^Date:\s*/, "");
+  // 👉 NUR Prefix entfernen (neutral halten!)
+  datum.value = datum.value
+    .replace(/^Datum:\s*/, "")
+    .replace(/^Date:\s*/, "");
 
-rn.value = rn.value
-  .replace(/^Rechnungsnummer:\s*/, "")
-  .replace(/^Invoice number:\s*/, ""); else {
-
-  // Datum IMMER mit Prefix anzeigen
-  if (!datum.value.startsWith("Datum:")) {
-    datum.value = "Datum: " + datum.value.replace(/^Datum:\s*/, "");
-  }
-
-  // Rechnungsnummer IMMER mit Prefix anzeigen
-  if (!rn.value.startsWith("Rechnungsnummer:")) {
-    rn.value = "Rechnungsnummer: " + rn.value.replace(/^Rechnungsnummer:\s*/, "");
-  }
-
-}
+  rn.value = rn.value
+    .replace(/^Rechnungsnummer:\s*/, "")
+    .replace(/^Invoice number:\s*/, "");
 }
 
     function formatEuro(value) {
