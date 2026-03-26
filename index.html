@@ -117,6 +117,13 @@ body.modus-rechnung #footer {
   flex-direction: column;
 }
 
+  .firma-briefkopf {
+  font-size: 10px;
+  color: #444;
+  margin-bottom: 6px;
+  margin-left: 2px; /* leicht eingerückt wie bei Fensterbrief */
+}
+
 /* ================= PRINT ================= */
 
 @media print {
@@ -272,6 +279,12 @@ body.modus-rechnung #footer {
   #toolsTable {
   margin-top: 0;
 }
+
+  <div class="firma-briefkopf">
+  MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg
+</div>
+
+<div class="kunde-wrapper">
   .kunde-wrapper {
   display: flex;
   justify-content: space-between;
@@ -387,9 +400,6 @@ body.modus-rechnung #geraeteTitel {
 <div class="header">
 
   <div class="logo-block">
-    <div class="firma">
-      MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg
-    </div>
     <img src="logo.png" class="logo">
   </div>
 
