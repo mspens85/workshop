@@ -610,16 +610,14 @@ document.getElementById("title").innerText =
 const datum = document.getElementById("datum");
 const rn = document.getElementById("rechnungsnummer");
 
-if (m === "werkstatt") {
+// 👉 Nur Prefixe entfernen – KEINE Sprache setzen
+datum.value = datum.value
+  .replace(/^Datum:\s*/, "")
+  .replace(/^Date:\s*/, "");
 
-  // Prefix entfernen (egal ob vorhanden oder nicht)
-  datum.value = datum.value.replace(/^Datum:\s*/, "");
-  rn.value = rn.value.replace(/^Rechnungsnummer:\s*/, "");
-
-  datum.placeholder = "Datum";
-  rn.placeholder = "Rechnungsnummer";
-
-} else {
+rn.value = rn.value
+  .replace(/^Rechnungsnummer:\s*/, "")
+  .replace(/^Invoice number:\s*/, ""); else {
 
   // Datum IMMER mit Prefix anzeigen
   if (!datum.value.startsWith("Datum:")) {
@@ -787,10 +785,17 @@ According to § 19 (1) UStG no VAT is charged.
     datum.value = datum.value.replace(/^Date:\s*/, "").replace(/^Datum:\s*/, "");
     rn.value = rn.value.replace(/^Invoice number:\s*/, "").replace(/^Rechnungsnummer:\s*/, "");
 
-    if (m !== "werkstatt") {
-      datum.value = "Datum: " + datum.value;
-      rn.value = "Rechnungsnummer: " + rn.value;
-    }
+if (m === "rechnung" || m === "angebot") {
+
+  if (aktuelleSprache === "en") {
+    datum.value = "Date: " + datum.value;
+    rn.value = "Invoice number: " + rn.value;
+  } else {
+    datum.value = "Datum: " + datum.value;
+    rn.value = "Rechnungsnummer: " + rn.value;
+  }
+
+}
 
     document.getElementById("zahlungstext").innerHTML = `
 Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer an das unten angegebene Konto oder per PayPal an @penmarco.<br><br>
