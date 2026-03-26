@@ -605,6 +605,7 @@ function generatePositionsliste() {
 
     const modell = g.querySelector("input").value.trim();
     const preis = g.querySelector(".preis").value;
+    const notizen = g.querySelector("textarea").value.trim();
 
     if (!modell || !preis) return;
 
@@ -628,7 +629,10 @@ g.querySelectorAll("label").forEach(l => {
     tr.innerHTML = `
       <td>${pos}</td>
       <td>REPA</td>
-      <td>${modell} – ${arbeiten.join(", ")}</td>
+      <td>
+  ${modell} – ${arbeiten.join(", ")}
+  ${notizen ? "<br><i>" + notizen + "</i>" : ""}
+</td>
       <td>1</td>
 <td>${formatEuro(preis)}</td>
 <td>${formatEuro(preis)}</td>
