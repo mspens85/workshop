@@ -272,6 +272,49 @@ body.modus-rechnung #footer {
   display: none;
 }
 
+  #toolsTable th {
+  text-align: left;
+  font-weight: bold;
+}
+
+#toolsTable th:nth-child(1),
+#toolsTable td:nth-child(1) {
+  text-align: center; /* Pos */
+  width: 40px;
+}
+
+#toolsTable th:nth-child(2),
+#toolsTable td:nth-child(2) {
+  text-align: center; /* Item no. */
+  width: 80px;
+}
+
+#toolsTable th:nth-child(3),
+#toolsTable td:nth-child(3) {
+  text-align: left; /* Beschreibung */
+}
+
+#toolsTable th:nth-child(4),
+#toolsTable td:nth-child(4) {
+  text-align: center; /* Qty */
+  width: 60px;
+}
+
+#toolsTable th:nth-child(5),
+#toolsTable td:nth-child(5),
+#toolsTable th:nth-child(6),
+#toolsTable td:nth-child(6) {
+  text-align: right; /* Preise */
+  width: 90px;
+}
+#toolsTable {
+  table-layout: fixed;
+}
+
+  #toolsTable td:nth-child(3) {
+  word-wrap: break-word;
+}
+  
   /* ================= FOOTER ================= */
 #footer {
   display: block !important;
