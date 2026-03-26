@@ -80,6 +80,7 @@ body.modus-rechnung #footer {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  margin-bottom: 35px;
 }
 
 .kunde-links {
@@ -89,6 +90,12 @@ body.modus-rechnung #footer {
 .kunde-rechts {
   width: 220px;
   text-align: right;
+}
+
+  .firma {
+  font-size: 11px;
+  margin-top: 5px;
+  line-height: 1.3;
 }
 
 /* ================= PRINT ================= */
@@ -358,8 +365,14 @@ body.modus-rechnung #geraeteTitel {
 </head>
 
 <body>
-  <div class="header">
-  <img src="logo.png" class="logo">
+<div class="header">
+  <div>
+    <img src="logo.png" class="logo">
+    <div class="firma">
+      MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg
+    </div>
+  </div>
+
   <div>
     <h2 id="title">Werkstattzettel</h2>
   </div>
