@@ -592,9 +592,12 @@ function updateModus() {
   document.body.classList.remove("modus-werkstatt","modus-angebot","modus-rechnung");
   document.body.classList.add("modus-" + m);
 
-  document.getElementById("title").innerText =
-    m === "rechnung" ? "Rechnung" :
-    m === "angebot" ? "Angebot" : "Werkstattzettel";
+document.getElementById("title").innerText =
+  m === "rechnung"
+    ? (aktuelleSprache === "en" ? "Invoice" : "Rechnung")
+  : m === "angebot"
+    ? (aktuelleSprache === "en" ? "Quotation" : "Angebot")
+  : (aktuelleSprache === "en" ? "Workshop sheet" : "Werkstattzettel");
 
   const aktiv = m !== "werkstatt";
 
@@ -814,6 +817,7 @@ if (m === "rechnung" && aktuelleSprache === "en") {
   document.getElementById("th_price").innerText = "Einzelpreis";
   document.getElementById("th_total").innerText = "Gesamt";
 }
+    updateModus();
 }
 
 function translateArtikel(text) {
