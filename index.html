@@ -616,7 +616,11 @@ function updateModus() {
     .replace(/^Rechnungsnummer:\s*/, "")
     .replace(/^Invoice number:\s*/, "");
 }
-
+function formatEuro(value) {
+  let v = parseFloat(value.toString().replace(",", "."));
+  if (isNaN(v)) return "";
+  return v.toFixed(2).replace(".", ",") + " €";
+}
 function generatePositionsliste() {
 
   let pos = 1;
