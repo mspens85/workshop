@@ -616,7 +616,7 @@ datum.value = datum.value
 rn.value = rn.value
   .replace(/^Rechnungsnummer:\s*/, "")
   .replace(/^Invoice number:\s*/, "");
-
+}
     function formatEuro(value) {
   let v = parseFloat(value.toString().replace(",", "."));
   if (isNaN(v)) return "";
