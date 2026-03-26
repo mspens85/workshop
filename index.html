@@ -6,6 +6,11 @@
 <title>MS Pens</title>
 
 <style>
+
+  img {
+  width: auto !important;
+  height: auto !important;
+}
 body { font-family: Arial; padding: 15px; }
 
 input, textarea, select {
@@ -76,10 +81,11 @@ body.modus-rechnung #footer {
 }
 
 .logo {
-  height: 85px;
-  width: auto;
+  height: 85px !important;
+  width: auto !important;
   max-width: 100%;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
   .kunde-wrapper {
