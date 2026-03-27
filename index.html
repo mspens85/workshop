@@ -576,13 +576,18 @@ function addGeraet() {
     "Feder umschleifen","Schreibprobe"
   ];
 
-  arbeiten.forEach(text => {
-    const label = document.createElement("label");
-    const cb = document.createElement("input");
-    cb.type = "checkbox";
-    label.append(cb, document.createTextNode(" " + text));
-    arbeitenDiv.appendChild(label);
-  });
+arbeiten.forEach(text => {
+  const label = document.createElement("label");
+
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+
+  const span = document.createElement("span");
+  span.textContent = text;
+
+  label.append(cb, span);
+  arbeitenDiv.appendChild(label);
+});
 
   const preis = document.createElement("input");
   preis.className = "preis";
