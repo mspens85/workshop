@@ -169,10 +169,20 @@ body.modus-rechnung #footer {
     display: none;
   }
 
-  label {
-    display: block;
-    margin: 0;
-  }
+label {
+  display: none;
+  margin: 0;
+}
+
+/* Nur angehakte anzeigen */
+input[type="checkbox"]:checked + * {
+  display: inline;
+}
+
+/* oder sauberer: */
+label:has(input[type="checkbox"]:checked) {
+  display: block;
+}
 
   label::before {
     content: "– ";
@@ -359,6 +369,13 @@ body.modus-rechnung #footer {
   font-size: 9px;
   color: #444;
   margin-bottom: 6px;
+}
+  
+  /* ❗ Werkstattzettel: unnötige Elemente ausblenden */
+body.modus-werkstatt #toolsTable,
+body.modus-werkstatt #zahlungstext,
+body.modus-werkstatt #footer {
+  display: none !important;
 }
   
   /* ================= FOOTER ================= */
