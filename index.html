@@ -163,8 +163,6 @@ body.modus-rechnung #footer {
     font-size: 11px;
     line-height: 1.3;
     padding: 0;
-
-    /* 👉 Platz für echten Footer */
     padding-bottom: 0px;
   }
 
@@ -186,27 +184,25 @@ body.modus-rechnung #footer {
     page-break-inside: avoid;
   }
 
-  /* Checkboxen → Text */
-  input[type="checkbox"] {
+  /* ✅ CHECKBOX FIX (OHNE :has) */
+  .arbeiten input[type="checkbox"] {
     display: none;
   }
 
-label {
-  display: none;
-  margin: 0;
-}
+  .arbeiten label {
+    display: none;
+    margin: 0;
+  }
 
-/* Nur angehakte anzeigen */
-input[type="checkbox"]:checked + * {
-  display: inline;
-}
+  .arbeiten span {
+    display: none;
+  }
 
-/* oder sauberer: */
-label:has(input[type="checkbox"]:checked) {
-  display: block;
-}
+  .arbeiten input[type="checkbox"]:checked + span {
+    display: inline;
+  }
 
-  label::before {
+  .arbeiten input[type="checkbox"]:checked + span::before {
     content: "– ";
   }
 
@@ -248,7 +244,7 @@ label:has(input[type="checkbox"]:checked) {
     line-height: 1.2;
   }
 
-  /* Preise rechts */
+  /* Preise */
   .position {
     display: flex;
     justify-content: space-between;
@@ -259,12 +255,17 @@ label:has(input[type="checkbox"]:checked) {
     white-space: nowrap;
   }
 
-  /* Tools Tabelle */
-  #toolsTable {
+  /* ✅ TABELLE NUR BEI ANGEBOT + RECHNUNG */
+  body.modus-rechnung #toolsTable,
+  body.modus-angebot #toolsTable {
     display: table !important;
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 0;
+  }
+
+  body.modus-werkstatt #toolsTable {
+    display: none !important;
   }
 
   #toolsTable th,
@@ -280,137 +281,117 @@ label:has(input[type="checkbox"]:checked) {
     white-space: nowrap;
   }
 
-
-  /* Gesamt */
-  #gesamtBlock {
-    display: block !important;
-    margin-top: 10px;
-  }
-
-  #gesamtpreis {
-    border: none;
+  #toolsTable th {
+    text-align: left;
     font-weight: bold;
   }
-  #zahlungstext {
+
+  #toolsTable {
+    table-layout: fixed;
+  }
+
+  #toolsTable td:nth-child(3) {
+    word-wrap: break-word;
+  }
+
+  /* Spaltenbreiten */
+  #toolsTable th:nth-child(1),
+  #toolsTable td:nth-child(1) {
+    text-align: center;
+    width: 40px;
+  }
+
+  #toolsTable th:nth-child(2),
+  #toolsTable td:nth-child(2) {
+    text-align: center;
+    width: 80px;
+  }
+
+  #toolsTable th:nth-child(4),
+  #toolsTable td:nth-child(4) {
+    text-align: center;
+    width: 60px;
+  }
+
+  #toolsTable th:nth-child(5),
+  #toolsTable td:nth-child(5),
+  #toolsTable th:nth-child(6),
+  #toolsTable td:nth-child(6) {
+    text-align: right;
+    width: 90px;
+  }
+
+  /* ✅ ZAHLUNGSTEXT NUR RECHNUNG */
+  body.modus-rechnung #zahlungstext {
     display: block !important;
     margin-top: 15px;
     font-size: 11px;
     line-height: 1.3;
-
     page-break-inside: avoid;
     break-inside: avoid;
-
-    /* ❗ KEIN page-break-after mehr */
     margin-bottom: 40px;
   }
 
+  body.modus-werkstatt #zahlungstext,
+  body.modus-angebot #zahlungstext {
+    display: none !important;
+  }
+
+  /* Positionsliste aus */
   #positionsliste {
-  display: none !important;
-}
+    display: none !important;
+  }
 
   h3:first-of-type {
-  display: none !important;
-}
+    display: none !important;
+  }
 
-  #toolsTable {
-  margin-top: 0;
-}
-
-
+  /* Layout Kunde */
   .kunde-wrapper {
-  display: flex;
-  justify-content: space-between;
-}
+    display: flex;
+    justify-content: space-between;
+  }
 
-.kunde-links {
-  width: 60%;
-}
+  .kunde-links {
+    width: 60%;
+  }
 
-.kunde-rechts {
-  width: 35%;
-  text-align: right;
-}
+  .kunde-rechts {
+    width: 35%;
+    text-align: right;
+  }
 
-.kunde-rechts input {
-  text-align: right;
-}
+  .kunde-rechts input {
+    text-align: right;
+  }
 
-  .kunde-links input {
-  display: block;
-}
-
-.kunde-links input:placeholder-shown:not(:focus) {
-  display: none;
-}
-
-  #toolsTable th {
-  text-align: left;
-  font-weight: bold;
-}
-
-#toolsTable th:nth-child(1),
-#toolsTable td:nth-child(1) {
-  text-align: center; /* Pos */
-  width: 40px;
-}
-
-#toolsTable th:nth-child(2),
-#toolsTable td:nth-child(2) {
-  text-align: center; /* Item no. */
-  width: 80px;
-}
-
-#toolsTable th:nth-child(3),
-#toolsTable td:nth-child(3) {
-  text-align: left; /* Beschreibung */
-}
-
-#toolsTable th:nth-child(4),
-#toolsTable td:nth-child(4) {
-  text-align: center; /* Qty */
-  width: 60px;
-}
-
-#toolsTable th:nth-child(5),
-#toolsTable td:nth-child(5),
-#toolsTable th:nth-child(6),
-#toolsTable td:nth-child(6) {
-  text-align: right; /* Preise */
-  width: 90px;
-}
-#toolsTable {
-  table-layout: fixed;
-}
-
-  #toolsTable td:nth-child(3) {
-  word-wrap: break-word;
-}
+  .kunde-links input:placeholder-shown:not(:focus) {
+    display: none;
+  }
 
   .firma-briefkopf {
-  display: block !important;
-  font-size: 9px;
-  color: #444;
-  margin-bottom: 6px;
-}
-  
-  /* ❗ Werkstattzettel: unnötige Elemente ausblenden */
-body.modus-werkstatt #toolsTable,
-body.modus-werkstatt #zahlungstext,
-body.modus-werkstatt #footer {
-  display: none !important;
-}
-  
-  /* ================= FOOTER ================= */
-#footer {
-  display: block !important;
-  margin-top: 40px;
+    display: block !important;
+    font-size: 9px;
+    color: #444;
+    margin-bottom: 6px;
+  }
 
-  /* verhindert Seitenumbruch mitten im Footer */
-  page-break-inside: avoid;
-  break-inside: avoid;
+  /* FOOTER */
+  body.modus-rechnung #footer {
+    display: block !important;
+  }
 
-  font-size: 10px;
-}
+  body.modus-werkstatt #footer,
+  body.modus-angebot #footer {
+    display: none !important;
+  }
+
+  #footer {
+    margin-top: 40px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    font-size: 10px;
+  }
 
   .footer-grid {
     display: grid;
@@ -418,25 +399,24 @@ body.modus-werkstatt #footer {
     gap: 10px;
   }
 
-    /* Angebot + Rechnung → nur Positionsliste */
-
-body.modus-angebot #container,
-body.modus-rechnung #container,
-body.modus-angebot #toolsContainer,
-body.modus-rechnung #toolsContainer,
-body.modus-angebot #toolsTitel,
-body.modus-rechnung #toolsTitel,
-body.modus-angebot #addToolBtn,
-body.modus-rechnung #addToolBtn,
-body.modus-angebot button[onclick="addGeraet()"],
-body.modus-rechnung button[onclick="addGeraet()"] {
-  display: none !important;
-}
+  /* Angebot + Rechnung → Eingabe UI aus */
+  body.modus-angebot #container,
+  body.modus-rechnung #container,
+  body.modus-angebot #toolsContainer,
+  body.modus-rechnung #toolsContainer,
+  body.modus-angebot #toolsTitel,
+  body.modus-rechnung #toolsTitel,
+  body.modus-angebot #addToolBtn,
+  body.modus-rechnung #addToolBtn,
+  body.modus-angebot button[onclick="addGeraet()"],
+  body.modus-rechnung button[onclick="addGeraet()"] {
+    display: none !important;
+  }
 
   body.modus-angebot #geraeteTitel,
-body.modus-rechnung #geraeteTitel {
-  display: none !important;
-}
+  body.modus-rechnung #geraeteTitel {
+    display: none !important;
+  }
 
 }
 </style>
