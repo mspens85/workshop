@@ -944,8 +944,14 @@ function translateArtikel(text) {
   document.getElementById("sprache").addEventListener("change", updateSprache);
 function drucken() {
 
+  const modus = document.getElementById("modus").value;
+
   updateSumme();
-  generatePositionsliste();
+
+  // ❗ Nur bei Angebot & Rechnung
+  if (modus === "angebot" || modus === "rechnung") {
+    generatePositionsliste();
+  }
 
   window.print();
 }
