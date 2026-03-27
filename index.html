@@ -39,12 +39,34 @@ textarea { resize: none; }
 .arbeiten {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 6px 20px; /* vertikal / horizontal Abstand */
+  margin-top: 5px;
 }
 
+.arbeiten label {
+  display: flex;
+  align-items: center;
+  gap: 6px;          /* Abstand Checkbox → Text */
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.arbeiten input[type="checkbox"] {
+  width: auto;       /* verhindert Stretch */
+  margin: 0;
+  transform: scale(1.1); /* leicht größer = angenehmer */
+}
+  .arbeiten label:hover {
+  background: #f5f5f5;
+  border-radius: 6px;
+  padding: 2px 4px;
+}
 button {
-  padding: 10px;
-  margin-top: 10px;
-  width: 50%;
+  padding: 10px 20px;
+  margin: 10px auto;   /* 👉 zentriert horizontal */
+  display: block;      /* 👉 wichtig für margin:auto */
+  width: auto;         /* 👉 nicht mehr 50% */
+  min-width: 200px;    /* 👉 optional für gleichmäßige Größe */
 }
 
 .position {
