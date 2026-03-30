@@ -164,15 +164,10 @@ body.modus-rechnung #footer {
     page-break-inside: avoid;
   }
 
-  /* Checkboxen → Text */
-  input[type="checkbox"] {
-    display: none;
-  }
-
-  label {
-    display: block;
-    margin: 0;
-  }
+/* Checkboxen komplett ausblenden */
+.arbeiten {
+  display: none !important;
+}
 
   label::before {
     content: "– ";
@@ -561,7 +556,10 @@ function addGeraet() {
     const label = document.createElement("label");
     const cb = document.createElement("input");
     cb.type = "checkbox";
-    label.append(cb, document.createTextNode(" " + text));
+    const span = document.createElement("span");
+span.textContent = text;
+
+label.append(cb, span);
     arbeitenDiv.appendChild(label);
   });
 
@@ -923,13 +921,43 @@ function translateArtikel(text) {
   return map[text] || text;
 }
 
+  function renderArbeitenText() {
+
+  document.querySelectorAll("#container .geraet").forEach(g => {
+
+    // alte Liste entfernen (wichtig bei mehrfach drucken)
+    const old = g.querySelector(".arbeiten-print");
+    if (old) old.remove();
+
+    const arbeiten = [];
+
+    g.querySelectorAll(".arbeiten label").forEach(l => {
+      const cb = l.querySelector("input");
+      if (cb && cb.checked) {
+        arbeiten.push(l.innerText.trim());
+      }
+    });
+
+    if (arbeiten.length === 0) return;
+
+    const div = document.createElement("div");
+    div.className = "arbeiten-print";
+
+    div.innerHTML = arbeiten.map(a => "– " + a).join("<br>");
+
+    // unter Notizen einfügen
+    const textarea = g.querySelector("textarea");
+    textarea.after(div);
+  });
+
+}
 
   document.getElementById("sprache").addEventListener("change", updateSprache);
 function drucken() {
 
   updateSumme();
   generatePositionsliste();
-
+renderArbeitenText();
   window.print();
 }
 
