@@ -997,12 +997,34 @@ function translateArtikel(text) {
 
 }
 
+  function applyPrintLabels() {
+
+  const m = document.getElementById("modus").value;
+  const datum = document.getElementById("datum");
+  const rn = document.getElementById("rechnungsnummer");
+
+  // bestehende Prefixe entfernen (wichtig bei mehrfach drucken)
+  let d = datum.value.replace(/^Datum:\s*/, "").replace(/^Date:\s*/, "");
+  let r = rn.value.replace(/^Rechnungsnummer:\s*/, "").replace(/^Invoice number:\s*/, "");
+
+  if (aktuelleSprache === "en" && m === "rechnung") {
+    datum.value = "Date: " + d;
+    rn.value = "Invoice number: " + r;
+  } else {
+    datum.value = "Datum: " + d;
+    rn.value = "Rechnungsnummer: " + r;
+  }
+}
+
   document.getElementById("sprache").addEventListener("change", updateSprache);
 function drucken() {
 
   updateSumme();
   generatePositionsliste();
-renderArbeitenText();
+  renderArbeitenText();
+
+  applyPrintLabels(); // 👈 HIER NEU
+
   window.print();
 }
 
