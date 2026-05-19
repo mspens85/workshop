@@ -1187,7 +1187,7 @@ async function exportPDF() {
 
   const rows = [];
 
-  // Geräte
+ // Geräte
 document.querySelectorAll("#container .geraet").forEach(g => {
 
   const modell =
@@ -1233,13 +1233,12 @@ document.querySelectorAll("#container .geraet").forEach(g => {
 
   rows.push([
     "REPA",
-    finalBeschreibung,
+    beschreibung,
     "1",
     formatEuro(preis),
     formatEuro(preis)
   ]);
 });
-
   // Werkzeuge
   document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
 
