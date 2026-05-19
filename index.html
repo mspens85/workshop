@@ -986,7 +986,13 @@ function translateArtikel(text) {
     g.querySelectorAll(".arbeiten label").forEach(l => {
       const cb = l.querySelector("input");
       if (cb && cb.checked) {
-        arbeiten.push(l.innerText.trim());
+        let text = l.innerText.trim();
+
+if (aktuelleSprache === "en" && document.body.classList.contains("modus-rechnung")) {
+  text = translateArbeiten(text);
+}
+
+arbeiten.push(text);
       }
     });
 
@@ -1109,7 +1115,7 @@ nummer = nummer
   pdf.save(nummer + ".pdf");
 
   // Buttons wieder anzeigen
-  buttons.forEach(b => b.style.display = "");
+buttons.forEach(b => b.style.removeProperty("display"));
 
 }
 </script>
