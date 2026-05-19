@@ -484,6 +484,8 @@ body.modus-rechnung #geraeteTitel {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
@@ -1093,74 +1095,305 @@ async function exportPDF() {
 
   updateSumme();
   generatePositionsliste();
-  renderArbeitenText();
   applyPrintLabels();
-
-  // PDF Ansicht aktivieren
-  document.body.classList.add("pdf-export");
-
-  // PDF Bereich
-  const element = document.getElementById("pdfContent");
-
-  const canvas = await html2canvas(element, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: "#ffffff",
-    width: element.scrollWidth,
-    height: element.scrollHeight,
-    windowWidth: element.scrollWidth,
-    windowHeight: element.scrollHeight
-  });
-
-  const imgData = canvas.toDataURL("image/png");
 
   const { jsPDF } = window.jspdf;
 
-  const pdf = new jsPDF("p", "mm", "a4");
+  const pdf = new jsPDF({
+    orientation: "p",
+    unit: "mm",
+    format: "a4"
+  });
 
   const pageWidth = 210;
-  const pageHeight = 297;
+  const margin = 15;
 
-  const imgWidth = pageWidth;
-  const imgHeight = canvas.height * imgWidth / canvas.width;
+  let y = 20;
 
-  let heightLeft = imgHeight;
-  let position = 0;
+  // ======================
+  // LOGO
+  // ======================
 
-  // Erste Seite
-  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  const logo = document.querySelector(".logo");
 
-  heightLeft -= pageHeight;
+  if (logo) {
 
-  // Weitere Seiten
-  while (heightLeft > 0) {
+    const canvas = document.createElement("canvas");
+    canvas.width = logo.naturalWidth;
+    canvas.height = logo.naturalHeight;
 
-    position = heightLeft - imgHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(logo, 0, 0);
 
-    pdf.addPage();
+    const imgData = canvas.toDataURL("image/png");
 
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-
-    heightLeft -= pageHeight;
+    pdf.addImage(imgData, "PNG", 15, 10, 45, 18);
   }
 
-  // Dateiname
+  // ======================
+  // TITEL
+  // ======================
+
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(18);
+
+  const titel = document.getElementById("title").innerText;
+
+  pdf.text(titel, pageWidth - margin, 20, {
+    align: "right"
+  });
+
+  y = 40;
+
+  // ======================
+  // KUNDENDATEN
+  // ======================
+
+  pdf.setFontSize(10);
+  pdf.setFont("helvetica", "normal");
+
+  const kundeLinks = document.querySelectorAll(".kunde-links input");
+
+  let kundenY = y;
+
+  kundeLinks.forEach(input => {
+
+    if (input.value.trim()) {
+
+      pdf.text(
+        input.value.trim(),
+        margin,
+        kundenY
+      );
+
+      kundenY += 5;
+    }
+  });
+
+  // Rechte Seite
+  const datum =
+    document.getElementById("datum").value;
+
+  const rn =
+    document.getElementById("rechnungsnummer").value;
+
+  pdf.text(datum, 140, y);
+  pdf.text(rn, 140, y + 6);
+
+  y = Math.max(kundenY, y + 20);
+
+  // ======================
+  // TABELLE
+  // ======================
+
+  const rows = [];
+
+  // Geräte
+  document.querySelectorAll("#container .geraet").forEach(g => {
+
+    const modell =
+      g.querySelector("input").value.trim();
+
+    const preis =
+      g.querySelector(".preis").value;
+
+    if (!modell || !preis) return;
+
+    const arbeiten = [];
+
+    g.querySelectorAll("label").forEach(l => {
+
+      const cb = l.querySelector("input");
+
+      if (cb.checked) {
+
+        arbeiten.push(
+          l.innerText.trim()
+        );
+      }
+    });
+
+    const notizen =
+      g.querySelector("textarea").value.trim();
+
+    let beschreibung =
+      modell + " – " + arbeiten.join(", ");
+
+    if (notizen) {
+      beschreibung += "\n" + notizen;
+    }
+
+    rows.push([
+      "REPA",
+      beschreibung,
+      "1",
+      formatEuro(preis),
+      formatEuro(preis)
+    ]);
+  });
+
+  // Werkzeuge
+  document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
+
+    const menge =
+      t.querySelector("input[type=number]").value;
+
+    const artikelNr =
+      t.querySelector("select").value;
+
+    const beschreibung =
+      t.querySelector("input:nth-child(3)").value;
+
+    const preis =
+      t.querySelector(".preis").value;
+
+    if (!beschreibung || !preis) return;
+
+    const total =
+      parseFloat(preis.replace(",", ".")) *
+      parseFloat(menge);
+
+    rows.push([
+      artikelNr || "-",
+      beschreibung,
+      menge,
+      formatEuro(preis),
+      formatEuro(total)
+    ]);
+  });
+
+  // Gesamt
+  let sum = 0;
+
+  document.querySelectorAll(".preis").forEach(el => {
+
+    let v = parseFloat(
+      el.value.replace(",", ".")
+    );
+
+    if (isNaN(v)) return;
+
+    let menge = 1;
+
+    const m =
+      el.parentElement.querySelector(
+        "input[type=number]"
+      );
+
+    if (m) menge = parseFloat(m.value) || 1;
+
+    sum += v * menge;
+  });
+
+  // Tabelle
+  pdf.autoTable({
+
+    startY: y + 10,
+
+    head: [[
+      "Art.-Nr",
+      "Beschreibung",
+      "Menge",
+      "Einzelpreis",
+      "Gesamt"
+    ]],
+
+    body: rows,
+
+    foot: [[
+      "",
+      "",
+      "",
+      "Gesamt:",
+      formatEuro(sum)
+    ]],
+
+    styles: {
+      fontSize: 10,
+      cellPadding: 3,
+      overflow: "linebreak"
+    },
+
+    headStyles: {
+      fillColor: [240, 240, 240],
+      textColor: 20,
+      fontStyle: "bold"
+    },
+
+    footStyles: {
+      fontStyle: "bold"
+    },
+
+    columnStyles: {
+      0: { cellWidth: 25 },
+      1: { cellWidth: 85 },
+      2: { halign: "center", cellWidth: 20 },
+      3: { halign: "right", cellWidth: 30 },
+      4: { halign: "right", cellWidth: 30 }
+    }
+  });
+
+  // ======================
+  // ZAHLUNGSTEXT
+  // ======================
+
+  let finalY = pdf.lastAutoTable.finalY + 15;
+
+  pdf.setFontSize(10);
+
+  const zahlungstext =
+    document.getElementById("zahlungstext")
+      .innerText;
+
+  const split =
+    pdf.splitTextToSize(
+      zahlungstext,
+      180
+    );
+
+  pdf.text(split, margin, finalY);
+
+  // ======================
+  // FOOTER
+  // ======================
+
+  const footerY = 270;
+
+  pdf.setFontSize(9);
+
+  pdf.text(
+    "MS Pens\nMarco Schrage\nGlindweg 13\n22303 Hamburg",
+    15,
+    footerY
+  );
+
+  pdf.text(
+    "www.mspens.de\ncontact@mspens.de",
+    80,
+    footerY
+  );
+
+  pdf.text(
+    "IBAN: DE43 2004 1133 0201 3571 00\nBIC: COBADEHD001",
+    145,
+    footerY
+  );
+
+  // ======================
+  // DATEINAME
+  // ======================
+
   let nummer =
-    document.getElementById("rechnungsnummer").value || "Dokument";
+    document.getElementById(
+      "rechnungsnummer"
+    ).value || "Dokument";
 
   nummer = nummer
     .replace(/^Rechnungsnummer:\s*/, "")
     .replace(/^Invoice number:\s*/, "")
     .trim();
 
-  // PDF speichern
   pdf.save(nummer + ".pdf");
-
-  // PDF Ansicht wieder deaktivieren
-  document.body.classList.remove("pdf-export");
-
-  // Temporäre Print-Listen entfernen
-  document.querySelectorAll(".arbeiten-print").forEach(el => el.remove());
 }
 </script>
 
