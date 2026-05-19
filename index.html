@@ -178,19 +178,18 @@ body.modus-rechnung #footer {
   font-weight: 500;
   color: #0a58ca;
 }
-  .arbeiten label:has(input:checked) {
+  .arbeiten label.checked {
   background: #eaf2ff;
 }
 
 /* ================= PRINT ================= */
 
+  @page {
+  size: A4;
+  margin: 12mm;
+}
 @media print,
 body.pdf-export {
-
-  @page {
-    size: A4;
-    margin: 12mm;
-  }
 
   body {
     font-size: 11px;
@@ -237,13 +236,9 @@ body.pdf-export {
   #printBtn {
     display: none !important;
   }
-
-@media print {
-
-  input, textarea {
-    border: none;
-  }
-
+input,
+textarea {
+  border: none;
 }
   
 body.pdf-export .arbeiten {
@@ -481,7 +476,7 @@ body.modus-rechnung #geraeteTitel {
 
 }
 </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -652,6 +647,8 @@ function addGeraet() {
     cb.type = "checkbox";
     const span = document.createElement("span");
 span.textContent = text;
+    cb.addEventListener("change", () => {
+  label.classList.toggle("checked", cb.checked);
 
 label.append(cb, span);
     arbeitenDiv.appendChild(label);
@@ -790,7 +787,7 @@ g.querySelectorAll("label").forEach(l => {
   const cb = l.querySelector("input");
   if (cb && cb.checked) {
 
-    let text = l.innerText.trim();
+   let text = l.querySelector("span").innerText.trim();
 
     if (aktuelleSprache === "en" && document.body.classList.contains("modus-rechnung")) {
       text = translateArbeiten(text);
@@ -1207,9 +1204,16 @@ async function exportPDF() {
 
       if (cb.checked) {
 
-        arbeiten.push(
-          l.innerText.trim()
-        );
+let text = l.querySelector("span").innerText.trim();
+
+if (
+  aktuelleSprache === "en" &&
+  document.body.classList.contains("modus-rechnung")
+) {
+  text = translateArbeiten(text);
+}
+
+arbeiten.push(text);
       }
     });
 
@@ -1219,13 +1223,15 @@ async function exportPDF() {
     let beschreibung =
       modell + " – " + arbeiten.join(", ");
 
-    if (notizen) {
-      beschreibung += "\n" + notizen;
-    }
+if (notizen.length > 200) {
+  beschreibung += "\n" + notizen.substring(0,200) + "...";
+} else {
+  beschreibung += "\n" + notizen;
+}
 
     rows.push([
       "REPA",
-      beschreibung,
+finalBeschreibung,
       "1",
       formatEuro(preis),
       formatEuro(preis)
@@ -1241,8 +1247,14 @@ async function exportPDF() {
     const artikelNr =
       t.querySelector("select").value;
 
-    const beschreibung =
-      t.querySelector("input:nth-child(3)").value;
+const beschreibung =
+  t.querySelector("input:nth-child(3)").value;
+
+const finalBeschreibung =
+  aktuelleSprache === "en" &&
+  document.body.classList.contains("modus-rechnung")
+    ? translateArtikel(beschreibung)
+    : beschreibung;
 
     const preis =
       t.querySelector(".preis").value;
@@ -1290,13 +1302,13 @@ async function exportPDF() {
 
     startY: y + 10,
 
-    head: [[
-      "Art.-Nr",
-      "Beschreibung",
-      "Menge",
-      "Einzelpreis",
-      "Gesamt"
-    ]],
+head: [[
+  aktuelleSprache === "en" ? "Item no." : "Art.-Nr",
+  aktuelleSprache === "en" ? "Description" : "Beschreibung",
+  aktuelleSprache === "en" ? "Qty" : "Menge",
+  aktuelleSprache === "en" ? "Unit price" : "Einzelpreis",
+  aktuelleSprache === "en" ? "Total" : "Gesamt"
+]],
 
     body: rows,
 
@@ -1357,8 +1369,7 @@ async function exportPDF() {
   // FOOTER
   // ======================
 
-  const footerY = 270;
-
+ const footerY = Math.max(finalY + 30, 250);
   pdf.setFontSize(9);
 
   pdf.text(
