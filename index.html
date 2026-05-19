@@ -46,7 +46,12 @@ button {
   margin-top: 10px;
   width: 50%;
 }
-
+  
+body.pdf-export button,
+body.pdf-export select {
+  display: none !important;
+}
+  
 .position {
   display: flex;
   justify-content: space-between;
@@ -1055,22 +1060,22 @@ async function exportPDF() {
   renderArbeitenText();
   applyPrintLabels();
 
-  // Buttons ausblenden
-  const buttons = document.querySelectorAll("button, select");
-  buttons.forEach(b => b.style.display = "none");
+  // PDF Ansicht aktivieren
+  document.body.classList.add("pdf-export");
+
 
   // PDF Bereich
- const element = document.getElementById("pdfContent");
+  const element = document.getElementById("pdfContent");
 
-// Canvas erzeugen
-const canvas = await html2canvas(element, {
-  scale: 2,
-  useCORS: true,
-  backgroundColor: "#ffffff"
-});
-
-console.log(canvas.width, canvas.height);
-document.body.appendChild(canvas);
+  const canvas = await html2canvas(element, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: "#ffffff",
+    width: element.scrollWidth,
+    height: element.scrollHeight,
+    windowWidth: element.scrollWidth,
+    windowHeight: element.scrollHeight
+  });
 
   const imgData = canvas.toDataURL("image/png");
 
