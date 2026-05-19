@@ -104,6 +104,11 @@ body.modus-rechnung #footer {
   margin-bottom: 35px;
 }
 
+  #pdfContent {
+  width: 794px;
+  margin: 0 auto;
+  background: white;
+}
 .kunde-links {
   flex: 1;
 }
@@ -1063,7 +1068,6 @@ async function exportPDF() {
   // PDF Ansicht aktivieren
   document.body.classList.add("pdf-export");
 
-
   // PDF Bereich
   const element = document.getElementById("pdfContent");
 
@@ -1079,20 +1083,15 @@ async function exportPDF() {
 
   const imgData = canvas.toDataURL("image/png");
 
-  // PDF erzeugen
   const { jsPDF } = window.jspdf;
 
-  const pdf = new jsPDF({
-    orientation: "portrait",
-    unit: "mm",
-    format: "a4"
-  });
+  const pdf = new jsPDF("p", "mm", "a4");
 
-  const pdfWidth = 210;
+  const pageWidth = 210;
   const pageHeight = 297;
 
-  const imgWidth = pdfWidth;
-  const imgHeight = canvas.height * pdfWidth / canvas.width;
+  const imgWidth = pageWidth;
+  const imgHeight = canvas.height * imgWidth / canvas.width;
 
   let heightLeft = imgHeight;
   let position = 0;
@@ -1102,7 +1101,7 @@ async function exportPDF() {
 
   heightLeft -= pageHeight;
 
-  // Mehrere Seiten falls nötig
+  // Weitere Seiten
   while (heightLeft > 0) {
 
     position = heightLeft - imgHeight;
@@ -1115,18 +1114,22 @@ async function exportPDF() {
   }
 
   // Dateiname
-  let nummer = document.getElementById("rechnungsnummer").value || "Dokument";
-  
-nummer = nummer
-  .replace(/^Rechnungsnummer:\s*/, "")
-  .replace(/^Invoice number:\s*/, "")
-  .trim();
+  let nummer =
+    document.getElementById("rechnungsnummer").value || "Dokument";
 
+  nummer = nummer
+    .replace(/^Rechnungsnummer:\s*/, "")
+    .replace(/^Invoice number:\s*/, "")
+    .trim();
+
+  // PDF speichern
   pdf.save(nummer + ".pdf");
 
-  // Buttons wieder anzeigen
-buttons.forEach(b => b.style.removeProperty("display"));
+  // PDF Ansicht wieder deaktivieren
+  document.body.classList.remove("pdf-export");
 
+  // Temporäre Print-Listen entfernen
+  document.querySelectorAll(".arbeiten-print").forEach(el => el.remove());
 }
 </script>
 
