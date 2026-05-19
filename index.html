@@ -1088,6 +1088,8 @@ document.getElementById("modus").addEventListener("change", () => {
 
 document.getElementById("datum").value =
   new Date().toLocaleDateString("de-DE");
+
+  
 async function exportPDF() {
 
   updateSumme();
@@ -1186,57 +1188,57 @@ async function exportPDF() {
   const rows = [];
 
   // Geräte
-  document.querySelectorAll("#container .geraet").forEach(g => {
+document.querySelectorAll("#container .geraet").forEach(g => {
 
-    const modell =
-      g.querySelector("input").value.trim();
+  const modell =
+    g.querySelector("input").value.trim();
 
-    const preis =
-      g.querySelector(".preis").value;
+  const preis =
+    g.querySelector(".preis").value;
 
-    if (!modell || !preis) return;
+  if (!modell || !preis) return;
 
-    const arbeiten = [];
+  const arbeiten = [];
 
-    g.querySelectorAll("label").forEach(l => {
+  g.querySelectorAll("label").forEach(l => {
 
-      const cb = l.querySelector("input");
+    const cb = l.querySelector("input");
 
-      if (cb.checked) {
+    if (cb.checked) {
 
-let text = l.querySelector("span").innerText.trim();
+      let text = l.querySelector("span").innerText.trim();
 
-if (
-  aktuelleSprache === "en" &&
-  document.body.classList.contains("modus-rechnung")
-) {
-  text = translateArbeiten(text);
-}
-
-arbeiten.push(text);
+      if (
+        aktuelleSprache === "en" &&
+        document.body.classList.contains("modus-rechnung")
+      ) {
+        text = translateArbeiten(text);
       }
-    });
 
-    const notizen =
-      g.querySelector("textarea").value.trim();
-
-    let beschreibung =
-      modell + " – " + arbeiten.join(", ");
-
-if (notizen.length > 200) {
-  beschreibung += "\n" + notizen.substring(0,200) + "...";
-} else {
-  beschreibung += "\n" + notizen;
-}
-
-    rows.push([
-      "REPA",
-finalBeschreibung,
-      "1",
-      formatEuro(preis),
-      formatEuro(preis)
-    ]);
+      arbeiten.push(text);
+    }
   });
+
+  const notizen =
+    g.querySelector("textarea").value.trim();
+
+  let beschreibung =
+    modell + " – " + arbeiten.join(", ");
+
+  if (notizen.length > 200) {
+    beschreibung += "\n" + notizen.substring(0, 200) + "...";
+  } else if (notizen) {
+    beschreibung += "\n" + notizen;
+  }
+
+  rows.push([
+    "REPA",
+    finalBeschreibung,
+    "1",
+    formatEuro(preis),
+    formatEuro(preis)
+  ]);
+});
 
   // Werkzeuge
   document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
@@ -1267,7 +1269,7 @@ const finalBeschreibung =
 
     rows.push([
       artikelNr || "-",
-      beschreibung,
+      finalBeschreibung,
       menge,
       formatEuro(preis),
       formatEuro(total)
