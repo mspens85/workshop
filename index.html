@@ -1029,8 +1029,7 @@ function drucken() {
   updateSumme();
   generatePositionsliste();
   renderArbeitenText();
-
-  applyPrintLabels(); // 👈 HIER NEU
+  applyPrintLabels();
 
   window.print();
 }
@@ -1101,11 +1100,11 @@ async function exportPDF() {
 
   // Dateiname
   let nummer = document.getElementById("rechnungsnummer").value || "Dokument";
-
-  nummer = nummer
-    .replace("Rechnungsnummer:", "")
-    .replace("Invoice number:", "")
-    .trim();
+  
+nummer = nummer
+  .replace(/^Rechnungsnummer:\s*/, "")
+  .replace(/^Invoice number:\s*/, "")
+  .trim();
 
   pdf.save(nummer + ".pdf");
 
