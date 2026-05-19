@@ -446,6 +446,7 @@ body.modus-rechnung #geraeteTitel {
 </head>
 
 <body>
+<div id="pdfContent">
 <div class="header">
 
   <div class="logo-block">
@@ -542,7 +543,7 @@ Bankverbindung<br>Institut: Comdirect Bank<br>IBAN: DE43 2004 1133 0201 3571 00<
 <button onclick="drucken()">📄 Drucken</button>
   <button onclick="exportPDF()">📄 PDF Export</button>
 <button onclick="location.reload()">🔄 Reset</button>
-
+</div>
 <script>
 
   let aktuelleSprache = "de";
@@ -1059,13 +1060,17 @@ async function exportPDF() {
   buttons.forEach(b => b.style.display = "none");
 
   // PDF Bereich
-  const element = document.body;
+ const element = document.getElementById("pdfContent");
 
-  // Canvas erzeugen
-  const canvas = await html2canvas(element, {
-    scale: 2,
-    useCORS: true
-  });
+// Canvas erzeugen
+const canvas = await html2canvas(element, {
+  scale: 2,
+  useCORS: true,
+  backgroundColor: "#ffffff"
+});
+
+console.log(canvas.width, canvas.height);
+document.body.appendChild(canvas);
 
   const imgData = canvas.toDataURL("image/png");
 
