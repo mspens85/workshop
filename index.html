@@ -482,7 +482,7 @@ body.modus-eigenbeleg button {
 
   <div class="kunde-links">
 
-    <div class="firma-briefkopf">
+    <div id="firmaBriefkopf" class="firma-briefkopf">
       MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg
     </div>
 
@@ -496,14 +496,12 @@ body.modus-eigenbeleg button {
 
   <div class="kunde-rechts">
     <input id="datum" placeholder="Datum">
-    <input id="rechnungsnummer" placeholder="Rechnungsnummer">
+    <input id="rechnungsnummer" placeholder="Rechnungsnummer" style="display:none;">
   </div>
 
 </div>
   
 <div id="eigenbelegBlock" style="display:none;">
-
-  <h3>Eigenbeleg</h3>
 
   <input id="ebBelegnummer" placeholder="Belegnummer">
 
@@ -526,7 +524,7 @@ body.modus-eigenbeleg button {
 </div>
 <h3 id="geraeteTitel">Geräte</h3>
 <div id="container"></div>
-<button onclick="addGeraet()">+ Gerät</button>
+<button id="addBtn" onclick="addGeraet()">+ Gerät</button>
 
 <h3 id="toolsTitel" style="display:none;">Werkzeuge</h3>
 <div id="toolsContainer"></div>
@@ -726,6 +724,9 @@ function updateModus() {
   document.getElementById("eigenbelegBlock").style.display =
     eigenbeleg ? "block" : "none";
 
+  document.getElementById("rechnungsnummer").style.display =
+  eigenbeleg ? "none" : "";
+
   // Titel Kundendaten / Verkäuferdaten
   document.getElementById("kundentitel").innerText =
     eigenbeleg ? "Verkäuferdaten" : "Kundendaten";
@@ -739,6 +740,12 @@ function updateModus() {
 
   document.body.classList.add("modus-" + m);
 
+  document.getElementById("firmaBriefkopf").style.display =
+  eigenbeleg ? "none" : "";
+
+  document.getElementById("addBtn").style.display =
+  eigenbeleg ? "none" : "";
+
   document.getElementById("title").innerText =
     m === "eigenbeleg"
       ? "Eigenbeleg"
@@ -747,6 +754,9 @@ function updateModus() {
     : m === "angebot"
       ? (aktuelleSprache === "en" ? "Quotation" : "Angebot")
     : (aktuelleSprache === "en" ? "Workshop sheet" : "Werkstattzettel");
+
+  document.getElementById("kundenTitel").innerText =
+  eigenbeleg ? "Verkäuferdaten" : "Kundendaten";
 
   const aktiv = (m === "angebot" || m === "rechnung");
 
