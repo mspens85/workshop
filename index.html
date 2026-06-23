@@ -399,6 +399,26 @@ body.modus-rechnung #footer {
   color: #444;
   margin-bottom: 6px;
 }
+
+  #eigenbelegPrint {
+  display: none;
+}
+
+body.modus-eigenbeleg #eigenbelegPrint {
+  display: block !important;
+}
+
+  body.modus-eigenbeleg #container,
+body.modus-eigenbeleg #geraeteTitel,
+body.modus-eigenbeleg #toolsContainer,
+body.modus-eigenbeleg #toolsTitel,
+body.modus-eigenbeleg #toolsTable,
+body.modus-eigenbeleg #positionsTitel,
+body.modus-eigenbeleg #zahlungstext,
+body.modus-eigenbeleg #footer,
+body.modus-eigenbeleg #eigenbelegBlock {
+  display: none !important;
+}
   
   /* ================= FOOTER ================= */
 #footer {
@@ -446,6 +466,8 @@ body.modus-eigenbeleg #toolsTable,
 body.modus-eigenbeleg button {
   display: none !important;
 }
+
+
   
 }
 </style>
@@ -519,6 +541,7 @@ placeholder="Grund für Eigenbeleg"></textarea>
 
 </div>
 
+<div id="eigenbelegPrint" style="display:none;"></div>
   
 <h3 id="geraeteTitel">Geräte</h3>
 <div id="container"></div>
@@ -1106,20 +1129,73 @@ function translateArtikel(text) {
 }
 
   document.getElementById("sprache").addEventListener("change", updateSprache);
+
+  function generateEigenbeleg() {
+
+  const nummer = document.getElementById("ebNummer").value;
+  const verkaeufer = document.getElementById("ebVerkaeufer").value;
+  const ort = document.getElementById("ebOrt").value;
+  const betrag = document.getElementById("ebBetrag").value;
+  const beschreibung = document.getElementById("ebBeschreibung").value;
+  const grund = document.getElementById("ebGrund").value;
+  const datum = document.getElementById("datum").value;
+
+  document.getElementById("eigenbelegPrint").innerHTML = `
+    <h3>Eigenbeleg</h3>
+
+    <p><strong>Belegnummer:</strong> ${nummer}</p>
+    <p><strong>Datum:</strong> ${datum}</p>
+
+    <p><strong>Verkäufer:</strong><br>
+    ${verkaeufer}</p>
+
+    <p><strong>Ort des Kaufs:</strong><br>
+    ${ort}</p>
+
+    <p><strong>Beschreibung:</strong><br>
+    ${beschreibung}</p>
+
+    <p><strong>Grund für Eigenbeleg:</strong><br>
+    ${grund}</p>
+
+    <p><strong>Betrag:</strong>
+    ${formatEuro(betrag)}</p>
+
+    <br><br><br>
+
+    <p>
+      Ich bestätige die Richtigkeit der oben gemachten Angaben.
+    </p>
+
+    <br><br>
+
+    ___________________________<br>
+    Marco Schrage
+  `;
+}
 function drucken() {
 
-  updateSumme();
-  generatePositionsliste();
-  renderArbeitenText();
+  const modus = document.getElementById("modus").value;
 
-  applyPrintLabels(); // 👈 HIER NEU
+  if (modus === "eigenbeleg") {
+
+    generateEigenbeleg();
+
+  } else {
+
+    updateSumme();
+    generatePositionsliste();
+    renderArbeitenText();
+    applyPrintLabels();
+
+  }
 
   window.print();
 }
 
 document.getElementById("modus").addEventListener("change", () => {
   updateModus();
-  updateSprache(); // 👈 DAS FEHLT
+  updateSprache();
 });
 
 document.getElementById("datum").value =
