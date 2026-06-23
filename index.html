@@ -438,6 +438,15 @@ body.modus-rechnung #geraeteTitel {
   display: none !important;
 }
 
+body.modus-eigenbeleg #container,
+body.modus-eigenbeleg #toolsContainer,
+body.modus-eigenbeleg #toolsTitel,
+body.modus-eigenbeleg #positionsTitel,
+body.modus-eigenbeleg #toolsTable,
+body.modus-eigenbeleg button {
+  display: none !important;
+}
+  
 }
 </style>
 </head>
@@ -459,6 +468,7 @@ body.modus-rechnung #geraeteTitel {
   <option value="werkstatt">Werkstattzettel</option>
   <option value="angebot">Angebot</option>
   <option value="rechnung">Rechnung</option>
+  <option value="eigenbeleg">Eigenbeleg</option>
 </select>
 
   <select id="sprache">
@@ -466,7 +476,7 @@ body.modus-rechnung #geraeteTitel {
   <option value="en">English</option>
 </select>
 
-<h3>Kundendaten</h3>
+<h3 id="kundentitel">Kundendaten</h3>
   
 <div class="kunde-wrapper">
 
@@ -490,7 +500,30 @@ body.modus-rechnung #geraeteTitel {
   </div>
 
 </div>
+  
+<div id="eigenbelegBlock" style="display:none;">
 
+  <h3>Eigenbeleg</h3>
+
+  <input id="ebBelegnummer" placeholder="Belegnummer">
+
+  <input id="ebVerkaeufer" placeholder="Verkäufer">
+
+  <input id="ebOrt" placeholder="Ort des Kaufs">
+
+  <input id="ebBetrag" placeholder="Betrag €">
+
+  <textarea
+    id="ebArtikel"
+    placeholder="Gekaufter Artikel (z.B. Montblanc 146, guter Zustand, Feder M)">
+  </textarea>
+
+  <textarea
+    id="ebGrund"
+    placeholder="Begründung für den Eigenbeleg (z.B. Privatkauf ohne Quittung)">
+  </textarea>
+
+</div>
 <h3 id="geraeteTitel">Geräte</h3>
 <div id="container"></div>
 <button onclick="addGeraet()">+ Gerät</button>
@@ -688,22 +721,34 @@ function updateSumme() {
 function updateModus() {
 
   const m = document.getElementById("modus").value;
+  const eigenbeleg = m === "eigenbeleg";
 
-  document.body.classList.remove("modus-werkstatt","modus-angebot","modus-rechnung");
+  document.getElementById("eigenbelegBlock").style.display =
+    eigenbeleg ? "block" : "none";
+
+  // Titel Kundendaten / Verkäuferdaten
+  document.getElementById("kundentitel").innerText =
+    eigenbeleg ? "Verkäuferdaten" : "Kundendaten";
+
+  document.body.classList.remove(
+    "modus-werkstatt",
+    "modus-angebot",
+    "modus-rechnung",
+    "modus-eigenbeleg"
+  );
+
   document.body.classList.add("modus-" + m);
 
   document.getElementById("title").innerText =
-    m === "rechnung"
+    m === "eigenbeleg"
+      ? "Eigenbeleg"
+    : m === "rechnung"
       ? (aktuelleSprache === "en" ? "Invoice" : "Rechnung")
     : m === "angebot"
       ? (aktuelleSprache === "en" ? "Quotation" : "Angebot")
     : (aktuelleSprache === "en" ? "Workshop sheet" : "Werkstattzettel");
 
-  const aktiv = m !== "werkstatt";
-
-  document.getElementById("positionsTitel").style.display = aktiv ? "block":"none";
-  document.getElementById("toolsTitel").style.display = aktiv ? "block":"none";
-  document.getElementById("addToolBtn").style.display = aktiv ? "block":"none";
+  const aktiv = (m === "angebot" || m === "rechnung");
 
   const datum = document.getElementById("datum");
   const rn = document.getElementById("rechnungsnummer");
@@ -715,6 +760,31 @@ function updateModus() {
   rn.value = rn.value
     .replace(/^Rechnungsnummer:\s*/, "")
     .replace(/^Invoice number:\s*/, "");
+
+  // Gerätebereich
+  document.getElementById("geraeteTitel").style.display =
+    eigenbeleg ? "none" : "";
+
+  document.getElementById("container").style.display =
+    eigenbeleg ? "none" : "";
+
+  // Werkzeugbereich
+  document.getElementById("toolsTitel").style.display =
+    eigenbeleg ? "none" : aktiv ? "block" : "none";
+
+  document.getElementById("toolsContainer").style.display =
+    eigenbeleg ? "none" : "";
+
+  document.getElementById("addToolBtn").style.display =
+    eigenbeleg ? "none" : aktiv ? "block" : "none";
+
+  // Positionsliste
+  document.getElementById("positionsTitel").style.display =
+    eigenbeleg ? "none" : aktiv ? "block" : "none";
+
+  document.getElementById("toolsTable").style.display =
+    eigenbeleg ? "none" : "";
+
 }
 function formatEuro(value) {
   let v = parseFloat(value.toString().replace(",", "."));
