@@ -500,28 +500,26 @@ body.modus-eigenbeleg button {
   </div>
 
 </div>
+
   
 <div id="eigenbelegBlock" style="display:none;">
 
-  <input id="ebBelegnummer" placeholder="Belegnummer">
+<h3>Eigenbeleg</h3>
 
-  <input id="ebVerkaeufer" placeholder="Verkäufer">
+<input id="ebNummer" placeholder="Belegnummer">
+<input id="ebVerkaeufer" placeholder="Verkäufer">
+<input id="ebOrt" placeholder="Ort des Kaufs">
+<input id="ebBetrag" placeholder="Betrag €">
 
-  <input id="ebOrt" placeholder="Ort des Kaufs">
+<textarea id="ebBeschreibung"
+placeholder="Beschreibung der gekauften Artikel"></textarea>
 
-  <input id="ebBetrag" placeholder="Betrag €">
-
-  <textarea
-    id="ebArtikel"
-    placeholder="Gekaufter Artikel (z.B. Montblanc 146, guter Zustand, Feder M)">
-  </textarea>
-
-  <textarea
-    id="ebGrund"
-    placeholder="Begründung für den Eigenbeleg (z.B. Privatkauf ohne Quittung)">
-  </textarea>
+<textarea id="ebGrund"
+placeholder="Grund für Eigenbeleg"></textarea>
 
 </div>
+
+  
 <h3 id="geraeteTitel">Geräte</h3>
 <div id="container"></div>
 <button id="addBtn" onclick="addGeraet()">+ Gerät</button>
@@ -778,6 +776,9 @@ function updateModus() {
   document.getElementById("container").style.display =
     eigenbeleg ? "none" : "";
 
+  document.querySelector('button[onclick="addGeraet()"]').style.display =
+  eigenbeleg ? "none" : "";
+
   // Werkzeugbereich
   document.getElementById("toolsTitel").style.display =
     eigenbeleg ? "none" : aktiv ? "block" : "none";
@@ -792,8 +793,13 @@ function updateModus() {
   document.getElementById("positionsTitel").style.display =
     eigenbeleg ? "none" : aktiv ? "block" : "none";
 
-  document.getElementById("toolsTable").style.display =
-    eigenbeleg ? "none" : "";
+const table = document.getElementById("toolsTable");
+
+if (eigenbeleg) {
+  table.style.display = "none";
+} else {
+  table.style.display = "table";
+}
 
 }
 function formatEuro(value) {
