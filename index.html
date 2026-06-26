@@ -314,6 +314,17 @@ button{
         + Gerät hinzufügen
     </button>
 
+<div style="margin-top:25px;text-align:right;font-size:22px;font-weight:bold;">
+
+Gesamt:
+<span id="werkstattSumme">
+
+0,00 €
+
+</span>
+
+</div>
+
 </div>
 
 <!-- Angebot -->
@@ -423,6 +434,9 @@ placeholder="Notizen"></textarea>
 
 <input
 class="preis"
+type="number"
+step="0.01"
+min="0"
 placeholder="Preis €">
 
 <button
@@ -435,13 +449,40 @@ Gerät löschen
 
 `;
 
-    div.querySelector(".removeBtn").onclick = function(){
+div.querySelector(".removeBtn").onclick = function(){
 
-        div.remove();
+    div.remove();
 
-    };
+    berechneWerkstattSumme();
+
+};
+
+div.querySelector(".preis")
+.addEventListener("input",berechneWerkstattSumme);
 
     container.appendChild(div);
+
+}
+
+
+function berechneWerkstattSumme(){
+
+    let summe = 0;
+
+    document.querySelectorAll(".preis").forEach(preis=>{
+
+        const wert = parseFloat(preis.value);
+
+        if(!isNaN(wert)){
+
+            summe += wert;
+
+        }
+
+    });
+
+    document.getElementById("werkstattSumme").innerText =
+        summe.toFixed(2).replace(".",",") + " €";
 
 }
 
