@@ -70,6 +70,29 @@ h1{
 
 }
 
+    .geraet input,
+.geraet textarea{
+
+    margin-bottom:10px;
+
+}
+
+.removeBtn{
+
+    background:#b40000;
+
+    color:white;
+
+    border:none;
+
+}
+
+.removeBtn:hover{
+
+    background:#900;
+
+}
+
 select,
 button,
 input,
@@ -303,6 +326,41 @@ const app={
 
 };
 
+
+function addGeraet(){
+
+    const container = document.getElementById("geraeteContainer");
+
+    const div = document.createElement("div");
+    div.className = "geraet";
+
+    div.innerHTML = `
+
+        <input class="modell" placeholder="Modell">
+
+        <textarea class="notizen"
+                  placeholder="Notizen"
+                  rows="3"></textarea>
+
+        <input class="preis"
+               placeholder="Preis">
+
+        <button type="button" class="removeBtn">
+            Gerät löschen
+        </button>
+
+    `;
+
+    div.querySelector(".removeBtn").onclick = function(){
+
+        div.remove();
+
+    };
+
+    container.appendChild(div);
+
+}
+
 const titel={
 
     werkstatt:"Werkstattzettel",
@@ -351,6 +409,10 @@ document
 .value = new Date().toLocaleDateString("de-DE");
        
 updateModus();
+
+document
+.getElementById("addGeraetBtn")
+.addEventListener("click",addGeraet);
 
 </script>
 
