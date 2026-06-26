@@ -492,29 +492,17 @@ placeholder="Notizen"></textarea>
 <div class="arbeiten">
 
 <label><input type="checkbox">Demontage</label>
-
 <label><input type="checkbox">Reinigung</label>
-
 <label><input type="checkbox">Wartung Mechanik</label>
-
 <label><input type="checkbox">Korkdichtung erneuern</label>
-
 <label><input type="checkbox">Politur einfach</label>
-
 <label><input type="checkbox">Mehrstufige Handpolitur</label>
-
 <label><input type="checkbox">Gravur entfernen</label>
-
 <label><input type="checkbox">Kappenriss schließen</label>
-
 <label><input type="checkbox">Kappenlippe erneuern</label>
-
 <label><input type="checkbox">Clip/Kappenringe vergolden</label>
-
 <label><input type="checkbox">Kappenstern erneuert</label>
-
 <label><input type="checkbox">Feder umschleifen</label>
-
 <label><input type="checkbox">Schreibprobe</label>
 
 </div>
@@ -536,46 +524,40 @@ Gerät löschen
 
 `;
 
+    div.querySelector(".removeBtn").addEventListener("click",function(){
 
-div.querySelector(".removeBtn").onclick = function(){
+        div.remove();
 
-div.remove();
+        berechneWerkstattSumme();
+        aktualisierePositionen();
 
-berechneWerkstattSumme();
-aktualisierePositionen();
+    });
 
-};
+    div.querySelector(".preis").addEventListener("input",function(){
 
-div.querySelector(".preis")
-.addEventListener("input",function(){
+        berechneWerkstattSumme();
+        aktualisierePositionen();
 
-    berechneWerkstattSumme();
-
-    aktualisierePositionen();
-
-});
+    });
 
     div.querySelector(".modell")
-.addEventListener("input",aktualisierePositionen);
+        .addEventListener("input",aktualisierePositionen);
 
     div.querySelector(".notizen")
-.addEventListener("input",aktualisierePositionen);
+        .addEventListener("input",aktualisierePositionen);
 
-    div
-.querySelectorAll(".arbeiten input")
-.forEach(cb=>{
+    div.querySelectorAll(".arbeiten input")
+        .forEach(cb=>{
 
-    cb.addEventListener(
-        "change",
-        aktualisierePositionen
-    );
+            cb.addEventListener("change",aktualisierePositionen);
 
-});
+        });
 
     container.appendChild(div);
-    aktualisierePositionen();
 
 }
+
+       
 function addArtikel(){
 
     const container = document.getElementById("werkzeugContainer");
