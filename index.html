@@ -701,15 +701,31 @@ function berechneWerkstattSumme(){
 
     let summe = 0;
 
-    document.querySelectorAll(".preis").forEach(preis=>{
+    // Reparaturen
+    document.querySelectorAll("#geraeteContainer .geraet").forEach(geraet=>{
 
-        const wert = parseFloat(preis.value);
+        const preis = parseFloat(
+            geraet.querySelector(".preis").value
+        );
 
-        if(!isNaN(wert)){
-
-            summe += wert;
-
+        if(!isNaN(preis)){
+            summe += preis;
         }
+
+    });
+
+    // Artikel
+    document.querySelectorAll("#werkzeugContainer .geraet").forEach(artikel=>{
+
+        const preis = parseFloat(
+            artikel.querySelector(".preis").value
+        ) || 0;
+
+        const menge = parseFloat(
+            artikel.querySelector(".menge").value
+        ) || 1;
+
+        summe += preis * menge;
 
     });
 
