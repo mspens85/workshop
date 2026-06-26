@@ -114,6 +114,39 @@ button{
     margin-top:40px;
 
 }
+    
+.kundeGrid{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:25px;
+
+}
+
+.kundeGrid input{
+
+    margin-bottom:8px;
+
+}
+
+.briefkopf{
+
+    font-size:10px;
+
+    color:#666;
+
+    margin-bottom:8px;
+
+}
+
+#datum,
+#belegnummer{
+
+    text-align:right;
+
+}
 
 </style>
 
@@ -164,12 +197,51 @@ button{
 </div>
 
 <!-- Werkstatt -->
-
 <div id="werkstatt" class="section active">
 
-<h2>Werkstattzettel</h2>
+    <h2>Kundendaten</h2>
 
-<p>Werkstattbereich folgt…</p>
+    <div class="kundeGrid">
+
+        <div>
+
+            <div class="briefkopf">
+                MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg
+            </div>
+
+            <input id="kundeName" placeholder="Name">
+
+            <input id="kundeStrasse" placeholder="Straße">
+
+            <input id="kundeZusatz" placeholder="Adresszusatz">
+
+            <input id="kundeOrt" placeholder="PLZ / Ort">
+
+            <input id="kundeRegion" placeholder="Bundesland / Region">
+
+            <input id="kundeLand" placeholder="Land">
+
+        </div>
+
+        <div>
+
+            <input id="datum">
+
+            <input id="belegnummer" placeholder="Werkstattnummer">
+
+        </div>
+
+    </div>
+
+    <h2 style="margin-top:35px;">Geräte</h2>
+
+    <div id="geraeteContainer">
+
+    </div>
+
+    <button id="addGeraetBtn">
+        + Gerät hinzufügen
+    </button>
 
 </div>
 
@@ -273,6 +345,11 @@ document
 .getElementById("printBtn")
 .addEventListener("click",()=>window.print());
 
+
+document
+.getElementById("datum")
+.value = new Date().toLocaleDateString("de-DE");
+       
 updateModus();
 
 </script>
