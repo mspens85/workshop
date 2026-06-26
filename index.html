@@ -458,9 +458,117 @@ div.querySelector(".removeBtn").onclick = function(){
 };
 
 div.querySelector(".preis")
-.addEventListener("input",berechneWerkstattSumme);
+.addEventListener("input",function(){
+
+    berechneWerkstattSumme();
+
+    aktualisierePositionen();
+
+});
+
+    div.querySelector(".modell")
+.addEventListener("input",aktualisierePositionen);
+
+    div.querySelector(".notizen")
+.addEventListener("input",aktualisierePositionen);
+
+    div
+.querySelectorAll(".arbeiten input")
+.forEach(cb=>{
+
+    cb.addEventListener(
+        "change",
+        aktualisierePositionen
+    );
+
+});
 
     container.appendChild(div);
+
+}
+
+       function aktualisierePositionen(){
+
+    const tbody = document.querySelector("#positionsTabelle tbody");
+
+    tbody.innerHTML = "";
+
+    let pos = 1;
+
+    document.querySelectorAll("#geraeteContainer .geraet").forEach(geraet=>{
+
+        const modell =
+            geraet.querySelector(".modell").value;
+
+        const notizen =
+            geraet.querySelector(".notizen").value;
+
+        const preis =
+            parseFloat(
+                geraet.querySelector(".preis").value
+            ) || 0;
+
+        let arbeiten = [];
+
+        geraet
+        .querySelectorAll(".arbeiten input:checked")
+        .forEach(cb=>{
+
+            arbeiten.push(
+                cb.parentElement.innerText
+            );
+
+        });
+
+        if(
+            modell==="" &&
+            preis===0
+        ){
+            return;
+        }
+
+        const tr=document.createElement("tr");
+
+        tr.innerHTML=`
+
+<td>${pos}</td>
+
+<td>REPA</td>
+
+<td>
+
+<b>${modell}</b><br>
+
+${arbeiten.join(", ")}
+
+${notizen
+    ? "<br><i>"+notizen+"</i>"
+    : ""
+}
+
+</td>
+
+<td>1</td>
+
+<td style="text-align:right">
+
+${preis.toFixed(2).replace(".",",")} €
+
+</td>
+
+<td style="text-align:right">
+
+${preis.toFixed(2).replace(".",",")} €
+
+</td>
+
+`;
+
+        tbody.appendChild(tr);
+
+        pos++;
+
+    });
 
 }
 
