@@ -439,39 +439,38 @@ const app={
 
 };
 
-const artikelListe = [
+const artikelListe = {
+  "CORK2": { name: "Dichtkorken Größe 2", preis: 20 },
+  "CORK4": { name: "Dichtkorken Größe 4", preis: 20 },
+  "CORK6": { name: "Dichtkorken Größe 6", preis: 20 },
+  "CORK9": { name: "Dichtkorken Größe 9", preis: 20 },
 
-    {
-        nr:"CORK2",
-        text:"Korkdichtung Größe 2",
-        preis:4.50
-    },
+  "PTM": { name: "Werkzeug für die Kolbeneinheit modern", preis: 39 },
+  "PTA": { name: "Werkzeug für die Kolbeneinheit antik", preis: 39 },
 
-    {
-        nr:"CORK3",
-        text:"Korkdichtung Größe 3",
-        preis:4.50
-    },
+  "NTM6": { name: "Federeinheit Werkzeug modern Größe 6", preis: 60 },
+  "NTM9": { name: "Federeinheit Werkzeug modern Größe 9", preis: 60 },
 
-    {
-        nr:"NTM6",
-        text:"Montblanc Spezialfett",
-        preis:6.90
-    },
+  "NTA2": { name: "Federeinheit Werkzeug antik Größe 2", preis: 60 },
+  "NTA4": { name: "Federeinheit Werkzeug antik Größe 4", preis: 60 },
+  "NTA6": { name: "Federeinheit Werkzeug antik Größe 6", preis: 60 },
+  "NTA9": { name: "Federeinheit Werkzeug antik Größe 9", preis: 60 },
 
-    {
-        nr:"POL",
-        text:"Handpolitur",
-        preis:15.00
-    },
+  "CORKTOOL": { name: "Werkzeug Korkmutter", preis: 60 },
+  "CORKPUSH": { name: "Eindrückhilfe Dichtkorken", preis: 60 },
+  "CORKNUT": { name: "Hartgummimutter", preis: 25 },
 
-    {
-        nr:"VERSAND",
-        text:"Versand",
-        preis:6.90
-    }
+  "GREASE": { name: "Schmierfett", preis: 4.5 },
+  "SEALING": { name: "Dichtwachs", preis: 4.5 },
 
-];
+  "KOB": { name: "Knockout-Block", preis: 60 },
+  "SET": { name: "Werkzeug Set komplett", preis: 600 },
+
+  "SHIP1": { name: "Versandkosten", preis: 3.99 },
+  "SHIP2": { name: "Versandkosten", preis: 6.19 },
+  "SHIP3": { name: "Versandkosten", preis: 14.49 },
+  "SHIP4": { name: "Versandkosten", preis: 15.99 }
+};
 
 
 function addGeraet(){
@@ -603,78 +602,106 @@ div.querySelector(".preis")
     aktualisierePositionen();
 
 }
-
 function addArtikel(){
 
-    const container =
-        document.getElementById("werkzeugContainer");
+    const container = document.getElementById("werkzeugContainer");
 
-    const div=document.createElement("div");
+    const div = document.createElement("div");
+    div.className = "geraet";
 
-    div.className="geraet";
+    // Menge
+    const menge = document.createElement("input");
+    menge.type = "number";
+    menge.className = "menge";
+    menge.value = 1;
+    menge.min = 1;
 
-    div.innerHTML=`
-    
-<select class="artikelSelect">
+    // Artikelauswahl
+    const select = document.createElement("select");
+    select.className = "artikelSelect";
 
-<option value="">Artikel auswählen</option>
+    const leer = document.createElement("option");
+    leer.value = "";
+    leer.textContent = "Artikel wählen";
+    select.appendChild(leer);
 
-</select>
+    for(const key in artikelListe){
 
-<select class="artikelSelect">
+        const option = document.createElement("option");
+        option.value = key;
+        option.textContent = key + " – " + artikelListe[key].name;
 
-<option value="">Artikel auswählen</option>
+        select.appendChild(option);
 
-</select>
+    }
 
-<input
-class="beschreibung"
-placeholder="Beschreibung">
+    // Beschreibung
+    const beschreibung = document.createElement("input");
+    beschreibung.className = "beschreibung";
+    beschreibung.placeholder = "Beschreibung";
 
-<input
-class="menge"
-type="number"
-value="1"
-min="1">
+    // Preis
+    const preis = document.createElement("input");
+    preis.className = "preis";
+    preis.type = "number";
+    preis.step = "0.01";
+    preis.placeholder = "Preis €";
 
-<input
-class="preis"
-type="number"
-step="0.01"
-min="0"
-placeholder="Preis">
+    // Löschen
+    const loeschen = document.createElement("button");
+    loeschen.type = "button";
+    loeschen.className = "removeBtn";
+    loeschen.textContent = "Artikel löschen";
 
-<button
-type="button"
-class="removeBtn">
+    // Artikel gewählt
+    select.addEventListener("change", function(){
 
-Artikel löschen
+        const artikel = artikelListe[this.value];
 
-</button>
+        if(!artikel) return;
 
-`;
+        beschreibung.value = artikel.name;
+        preis.value = artikel.preis;
 
-    div.querySelector(".removeBtn").onclick=function(){
+        berechneWerkstattSumme();
+        aktualisierePositionen();
+
+    });
+
+    // Änderungen
+    menge.addEventListener("input", function(){
+
+        berechneWerkstattSumme();
+        aktualisierePositionen();
+
+    });
+
+    preis.addEventListener("input", function(){
+
+        berechneWerkstattSumme();
+        aktualisierePositionen();
+
+    });
+
+    beschreibung.addEventListener("input", aktualisierePositionen);
+
+    // Löschen
+    loeschen.addEventListener("click", function(){
 
         div.remove();
 
         berechneWerkstattSumme();
-
         aktualisierePositionen();
 
-    };
-
-    div.querySelectorAll("input").forEach(input=>{
-
-        input.addEventListener("input",function(){
-
-            berechneWerkstattSumme();
-
-            aktualisierePositionen();
-
-        });
-
     });
+
+    div.append(
+        menge,
+        select,
+        beschreibung,
+        preis,
+        loeschen
+    );
 
     container.appendChild(div);
 
