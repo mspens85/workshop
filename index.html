@@ -539,36 +539,30 @@ Gerät löschen
 
 const select = div.querySelector(".artikelSelect");
 
-artikelListe.forEach(a=>{
+artikelListe.forEach(a => {
 
-    const option=document.createElement("option");
+    const option = document.createElement("option");
 
-    option.value=a.nr;
-
-    option.textContent=a.nr+" - "+a.text;
+    option.value = a.nr;
+    option.textContent = a.nr + " - " + a.text;
 
     select.appendChild(option);
 
 });
 
-select.addEventListener("change",function(){
+select.addEventListener("change", function(){
 
-    const artikel =
-        artikelListe.find(a=>a.nr===this.value);
+    const artikel = artikelListe.find(a => a.nr === this.value);
 
     if(!artikel) return;
 
-    div.querySelector(".beschreibung").value =
-        artikel.text;
-
-    div.querySelector(".preis").value =
-        artikel.preis;
+    div.querySelector(".beschreibung").value = artikel.text;
+    div.querySelector(".preis").value = artikel.preis;
 
     berechneWerkstattSumme();
-
     aktualisierePositionen();
 
-});
+});    
 
 div.querySelector(".removeBtn").onclick = function(){
 
