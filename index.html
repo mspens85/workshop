@@ -665,47 +665,35 @@ function addArtikel(){
 
 function aktualisierePositionen(){
 
-    const tbody = document.querySelector("#positionsTabelle tbody");
+    const tabellen = [
+        document.querySelector("#positionsTabelle tbody"),
+        document.querySelector("#positionsTabelleRechnung tbody")
+    ];
 
-    tbody.innerHTML = "";
+    tabellen.forEach(tbody=>tbody.innerHTML="");
 
     let pos = 1;
 
+    // ---------------- Reparaturen ----------------
+
     document.querySelectorAll("#geraeteContainer .geraet").forEach(geraet=>{
 
-        const modell =
-            geraet.querySelector(".modell").value;
+        const modell = geraet.querySelector(".modell").value;
+        const notizen = geraet.querySelector(".notizen").value;
+        const preis = parseFloat(
+            geraet.querySelector(".preis").value
+        ) || 0;
 
-        const notizen =
-            geraet.querySelector(".notizen").value;
+        let arbeiten=[];
 
-        const preis =
-            parseFloat(
-                geraet.querySelector(".preis").value
-            ) || 0;
+        geraet.querySelectorAll(".arbeiten input:checked")
+        .forEach(cb=>arbeiten.push(cb.parentElement.innerText));
 
-        let arbeiten = [];
+        if(modell==="" && preis===0) return;
 
-        geraet
-        .querySelectorAll(".arbeiten input:checked")
-        .forEach(cb=>{
+        const html = `
 
-            arbeiten.push(
-                cb.parentElement.innerText
-            );
-
-        });
-
-        if(
-            modell==="" &&
-            preis===0
-        ){
-            return;
-        }
-
-        const tr=document.createElement("tr");
-
-        tr.innerHTML=`
+<tr>
 
 <td>${pos}</td>
 
@@ -717,10 +705,7 @@ function aktualisierePositionen(){
 
 ${arbeiten.join(", ")}
 
-${notizen
-    ? "<br><i>"+notizen+"</i>"
-    : ""
-}
+${notizen ? "<br><i>"+notizen+"</i>" : ""}
 
 </td>
 
@@ -738,47 +723,42 @@ ${preis.toFixed(2).replace(".",",")} €
 
 </td>
 
+</tr>
+
 `;
 
-        tbody.appendChild(tr);
+        tabellen.forEach(tbody=>tbody.insertAdjacentHTML("beforeend",html));
 
         pos++;
 
     });
 
-// ===== Artikel =====
+    // ---------------- Artikel ----------------
 
-document.querySelectorAll("#werkzeugContainer .geraet").forEach(artikel=>{
+    document.querySelectorAll("#werkzeugContainer .geraet").forEach(artikel=>{
 
-    const artikelNr =
-        artikel.querySelector(".artikelSelect").value;
+        const nr = artikel.querySelector(".artikelSelect").value;
+        const beschreibung = artikel.querySelector(".beschreibung").value;
 
-    const beschreibung =
-        artikel.querySelector(".beschreibung").value;
-
-    const menge =
-        parseFloat(
+        const menge = parseFloat(
             artikel.querySelector(".menge").value
         ) || 1;
 
-    const preis =
-        parseFloat(
+        const preis = parseFloat(
             artikel.querySelector(".preis").value
         ) || 0;
 
-    if(beschreibung==="" && preis===0){
-        return;
-    }
+        if(beschreibung==="" && preis===0) return;
 
-    const gesamt = preis * menge;
+        const gesamt = menge * preis;
 
-    const tr = document.createElement("tr");
+        const html = `
 
-    tr.innerHTML = `
+<tr>
 
 <td>${pos}</td>
 
-<td>${artikelNr}</td>
+<td>${nr}</td>
 
 <td>${beschreibung}</td>
 
@@ -796,13 +776,15 @@ ${gesamt.toFixed(2).replace(".",",")} €
 
 </td>
 
+</tr>
+
 `;
 
-    tbody.appendChild(tr);
+        tabellen.forEach(tbody=>tbody.insertAdjacentHTML("beforeend",html));
 
-    pos++;
+        pos++;
 
-});    
+    });
 
 }
 
