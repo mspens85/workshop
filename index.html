@@ -1,1207 +1,893 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MS Pens</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>MS Pens Office</title>
 
 <style>
 
-  img {
-  width: auto !important;
-  height: auto !important;
-}
-body { font-family: Arial; padding: 15px; }
+/* =======================================================
+   ALLGEMEIN
+======================================================= */
 
-input, textarea, select {
-  width: 100%;
-  padding: 6px;
-  margin: 4px 0;
-  border-radius: 6px;
-  border: 1px solid #bbb;
+*{
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
-textarea { resize: none; }
-
-.geraet {
-  border: 1px solid #aaa;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 8px;
+body{
+    margin:0;
+    padding:20px;
+    background:#f4f4f4;
 }
 
-.kunde {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+.wrapper{
+    max-width:1100px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 5px 20px rgba(0,0,0,.12);
 }
 
-.arbeiten {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+/* =======================================================
+   HEADER
+======================================================= */
+
+.header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+
+    margin-bottom:30px;
+
 }
 
-button {
-  padding: 10px;
-  margin-top: 10px;
-  width: 50%;
+.logo{
+
+    height:90px;
+    width:auto;
+
 }
 
-.position {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #ccc;
+h1{
+
+    margin:0;
+
 }
 
-/* Standard: alles aus */
-#zahlungstext,
-#footer {
-  display: none !important;
+.modebar{
+
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
 }
 
-/* Nur im Rechnungsmodus anzeigen */
-body.modus-rechnung #zahlungstext,
-body.modus-rechnung #footer {
-  display: block !important;
+select,button,input,textarea{
+
+    width:100%;
+    padding:8px;
+    border-radius:8px;
+    border:1px solid #bbb;
+    font-size:14px;
+
 }
 
-.footer-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
+button{
+
+    cursor:pointer;
+
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start; /* 👈 wichtig */
+.section{
 
-  margin-bottom: 50px;
-}
-  .header > div:first-child {
-  display: flex;
-  flex-direction: column;
+    margin-top:20px;
 }
 
-.logo {
-  height: 95px !important;
-  width: auto !important;
-  max-width: none;
-  object-fit: contain;
-  flex-shrink: 0;
-  display: block;
-  margin-bottom:50px;
+.section h2{
+
+    border-bottom:1px solid #ddd;
+    padding-bottom:6px;
+
 }
 
-  .kunde-wrapper {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 35px;
+.hidden{
+
+    display:none;
+
 }
 
-.kunde-links {
-  flex: 1;
+.kunde-grid{
+
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:25px;
+
 }
 
-.kunde-rechts {
-  width: 220px;
-  text-align: right;
+.kunde-links input{
+
+    margin-bottom:6px;
+
 }
 
-  .firma {
-  font-size: 10px;
-  margin-bottom: 4px;
-  line-height: 1.3;
-  color: #444;
+.kunde-rechts input{
+
+    margin-bottom:6px;
+    text-align:right;
+
 }
 
-  .logo-block {
-  display: flex;
-  flex-direction: column;
-    gap: 50px;
+.geraet{
+
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:12px;
+    margin-bottom:15px;
+
 }
 
-  .firma-briefkopf {
-  font-size: 10px;
-  color: #444;
-  margin-bottom: 6px;
-  margin-left: 2px; /* leicht eingerückt wie bei Fensterbrief */
+.buttons{
+
+    display:flex;
+    gap:10px;
+    margin-top:30px;
+
 }
 
-.arbeiten {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px 16px;
-  margin-top: 6px;
+#fotoVorschau{
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:10px;
+
 }
 
-.arbeiten label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+#fotoVorschau img{
 
-  padding: 6px 8px;
-  border-radius: 8px;
+    width:140px;
+    height:140px;
 
-  cursor: pointer;
-  transition: background 0.15s ease, box-shadow 0.15s ease;
+    object-fit:cover;
+
+    border-radius:8px;
+    border:1px solid #bbb;
+
 }
 
-.arbeiten label:hover {
-  background: #f5f5f5;
+body.modus-eigenbeleg #arbeitsbereich{
+    display:none !important;
 }
 
-.arbeiten input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  flex-shrink: 0;
-  cursor: pointer;
+body.modus-eigenbeleg #kundeBereich{
+    display:none !important;
 }
 
-.arbeiten span {
-  line-height: 1.3;
+body.modus-eigenbeleg #eigenbelegBlock{
+
+    display:block !important;
+
 }
 
-/* 👉 Optional: aktiv hervorgehoben */
-.arbeiten input[type="checkbox"]:checked + span {
-  font-weight: 500;
-  color: #0a58ca;
-}
-  .arbeiten label:has(input:checked) {
-  background: #eaf2ff;
+body.modus-eigenbeleg .modebar,
+body.modus-eigenbeleg .buttons{
+
+    display:none !important;
+
 }
 
-/* ================= PRINT ================= */
+body.modus-eigenbeleg #fotoVorschau{
 
-@media print {
+    display:block;
 
-  @page {
-    size: A4;
-    margin: 12mm;
-  }
-
-  body {
-    font-size: 11px;
-    line-height: 1.3;
-    padding: 0;
-
-    /* 👉 Platz für echten Footer */
-    padding-bottom: 0px;
-  }
-
-  h2 {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-
-  h3 {
-    font-size: 13px;
-    margin: 6px 0 3px 0;
-    border-bottom: 1px solid #000;
-  }
-
-  .geraet {
-    border: 1px solid #000;
-    padding: 6px;
-    margin-top: 8px;
-    page-break-inside: avoid;
-  }
-
-/* Checkboxen komplett ausblenden */
-.arbeiten {
-  display: none !important;
 }
 
-  label::before {
-    content: "– ";
-  }
+body.modus-eigenbeleg #fotoVorschau img{
 
-  /* UI ausblenden */
-  .toggle,
-  button,
-  select,
-  #addBtn,
-  #addToolBtn,
-  #printBtn {
-    display: none !important;
-  }
+    width:220px;
 
-  /* Inputs wie Text */
-  input, textarea {
-    border: none;
-    padding: 1px;
-    margin: 1px 0;
-    font-size: 11px;
-  }
+    height:auto;
 
-  textarea {
-    height: auto !important;
-    overflow: visible;
-    font-style: italic;
-  }
+    margin-bottom:12px;
 
-  /* Kundendaten */
-  .kunde {
-    display: block !important;
-  }
+    border:1px solid #444;
 
-  .kunde input {
-    display: block;
-    width: 100%;
-    border: none;
-    padding: 0;
-    margin: 0;
-    line-height: 1.2;
-  }
-
-  /* Preise rechts */
-  .position {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .position div:last-child {
-    text-align: right;
-    white-space: nowrap;
-  }
-
-  /* Tools Tabelle */
-  #toolsTable {
-    display: table !important;
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-
-  #toolsTable th,
-  #toolsTable td {
-    border-bottom: 1px solid #000;
-    padding: 3px;
-    font-size: 11px;
-  }
-
-  #toolsTable td:last-child,
-  #toolsTable th:last-child {
-    text-align: right;
-    white-space: nowrap;
-  }
-
-
-  /* Gesamt */
-  #gesamtBlock {
-    display: block !important;
-    margin-top: 10px;
-  }
-
-  #gesamtpreis {
-    border: none;
-    font-weight: bold;
-  }
-  #zahlungstext {
-    display: block !important;
-    margin-top: 15px;
-    font-size: 11px;
-    line-height: 1.3;
-
-    page-break-inside: avoid;
-    break-inside: avoid;
-
-    /* ❗ KEIN page-break-after mehr */
-    margin-bottom: 40px;
-  }
-
-  #positionsliste {
-  display: none !important;
-}
-
-  h3:first-of-type {
-  display: none !important;
-}
-
-  #toolsTable {
-  margin-top: 0;
 }
 
 
-  .kunde-wrapper {
-  display: flex;
-  justify-content: space-between;
+@media print{
+
+#fotoVorschau button{
+
+display:none !important;
+
 }
 
-.kunde-links {
-  width: 60%;
+body{
+
+    background:white;
+    padding:0;
+
 }
 
-.kunde-rechts {
-  width: 35%;
-  text-align: right;
+.wrapper{
+
+    box-shadow:none;
+    border:none;
+    padding:0;
+
 }
 
-.kunde-rechts input {
-  text-align: right;
-}
+.modebar,
+.buttons{
 
-  .kunde-links input {
-  display: block;
-}
+    display:none;
 
-.kunde-links input:placeholder-shown:not(:focus) {
-  display: none;
-}
-
-  #toolsTable th {
-  text-align: left;
-  font-weight: bold;
-}
-
-#toolsTable th:nth-child(1),
-#toolsTable td:nth-child(1) {
-  text-align: center; /* Pos */
-  width: 40px;
-}
-
-#toolsTable th:nth-child(2),
-#toolsTable td:nth-child(2) {
-  text-align: center; /* Item no. */
-  width: 80px;
-}
-
-#toolsTable th:nth-child(3),
-#toolsTable td:nth-child(3) {
-  text-align: left; /* Beschreibung */
-}
-
-#toolsTable th:nth-child(4),
-#toolsTable td:nth-child(4) {
-  text-align: center; /* Qty */
-  width: 60px;
-}
-
-#toolsTable th:nth-child(5),
-#toolsTable td:nth-child(5),
-#toolsTable th:nth-child(6),
-#toolsTable td:nth-child(6) {
-  text-align: right; /* Preise */
-  width: 90px;
-}
-#toolsTable {
-  table-layout: fixed;
-}
-
-  #toolsTable td:nth-child(3) {
-  word-wrap: break-word;
-}
-
-  .firma-briefkopf {
-  display: block !important;
-  font-size: 9px;
-  color: #444;
-  margin-bottom: 6px;
-}
-
-  #eigenbelegPrint {
-  display: none;
-}
-
-body.modus-eigenbeleg #eigenbelegPrint {
-  display: block !important;
-}
-
-  body.modus-eigenbeleg #container,
-body.modus-eigenbeleg #geraeteTitel,
-body.modus-eigenbeleg #toolsContainer,
-body.modus-eigenbeleg #toolsTitel,
-body.modus-eigenbeleg #toolsTable,
-body.modus-eigenbeleg #positionsTitel,
-body.modus-eigenbeleg #zahlungstext,
-body.modus-eigenbeleg #footer,
-body.modus-eigenbeleg #eigenbelegBlock {
-  display: none !important;
-}
-  
-  /* ================= FOOTER ================= */
-#footer {
-  display: block !important;
-  margin-top: 40px;
-
-  /* verhindert Seitenumbruch mitten im Footer */
-  page-break-inside: avoid;
-  break-inside: avoid;
-
-  font-size: 10px;
-}
-
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-  }
-
-    /* Angebot + Rechnung → nur Positionsliste */
-
-body.modus-angebot #container,
-body.modus-rechnung #container,
-body.modus-angebot #toolsContainer,
-body.modus-rechnung #toolsContainer,
-body.modus-angebot #toolsTitel,
-body.modus-rechnung #toolsTitel,
-body.modus-angebot #addToolBtn,
-body.modus-rechnung #addToolBtn,
-body.modus-angebot button[onclick="addGeraet()"],
-body.modus-rechnung button[onclick="addGeraet()"] {
-  display: none !important;
-}
-
-  body.modus-angebot #geraeteTitel,
-body.modus-rechnung #geraeteTitel {
-  display: none !important;
-}
-
-body.modus-eigenbeleg #container,
-body.modus-eigenbeleg #toolsContainer,
-body.modus-eigenbeleg #toolsTitel,
-body.modus-eigenbeleg #positionsTitel,
-body.modus-eigenbeleg #toolsTable,
-body.modus-eigenbeleg button {
-  display: none !important;
 }
 
 
-  
 }
+
 </style>
+
 </head>
 
+
+
+
+
+
+
+
 <body>
+
+<div class="wrapper">
+
 <div class="header">
 
-  <div class="logo-block">
-    <img src="logo.png" class="logo">
-  </div>
+<div>
 
-  <div>
-    <h2 id="title">Werkstattzettel</h2>
-  </div>
+<img src="logo.png" class="logo">
 
 </div>
+
+<div>
+
+<h1 id="title">Werkstattzettel</h1>
+
+</div>
+
+</div>
+
+<div class="modebar">
 
 <select id="modus">
-  <option value="werkstatt">Werkstattzettel</option>
-  <option value="angebot">Angebot</option>
-  <option value="rechnung">Rechnung</option>
-  <option value="eigenbeleg">Eigenbeleg</option>
+
+<option value="werkstatt">Werkstattzettel</option>
+
+<option value="angebot">Angebot</option>
+
+<option value="rechnung">Rechnung</option>
+
+<option value="eigenbeleg">Eigenbeleg</option>
+
 </select>
 
-  <select id="sprache">
-  <option value="de">Deutsch</option>
-  <option value="en">English</option>
+<select id="sprache">
+
+<option value="de">Deutsch</option>
+
+<option value="en">English</option>
+
 </select>
 
-<h3 id="kundentitel">Kundendaten</h3>
-  
-<div class="kunde-wrapper">
+</div>
 
-  <div class="kunde-links">
+<div id="kundeBereich" class="section">
 
-    <div id="firmaBriefkopf" class="firma-briefkopf">
-      MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg
+<h2 id="kundeTitel">Kundendaten</h2>
+
+<div class="kunde-grid">
+
+<div class="kunde-links">
+
+<div style="font-size:10px;margin-bottom:6px;color:#666;">
+
+MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg
+
+</div>
+
+<input placeholder="Name">
+
+<input placeholder="Straße">
+
+<input placeholder="Adresszusatz">
+
+<input placeholder="PLZ / Ort">
+
+<input placeholder="Bundesland">
+
+<input placeholder="Land">
+
+</div>
+
+<div class="kunde-rechts">
+
+<input id="datum">
+
+<input id="belegnummer" placeholder="Nummer">
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ======================================================
+     GEMEINSAMER ARBEITSBEREICH
+====================================================== -->
+
+<div id="arbeitsbereich">
+
+    <div class="section">
+
+        <h2 id="geraeteTitel">Geräte</h2>
+
+        <div id="geraeteContainer">
+
+        </div>
+
+        <button id="addGeraetBtn">
+            + Gerät hinzufügen
+        </button>
+
     </div>
 
-    <input placeholder="Name">
-    <input placeholder="Straße">
-    <input placeholder="Adresszusatz (z. B. Apartment, Suite)">
-    <input placeholder="PLZ / Ort">
-    <input placeholder="Bundesland / Region">
-    <input placeholder="Land">
-  </div>
 
-  <div class="kunde-rechts">
-    <input id="datum" placeholder="Datum">
-    <input id="rechnungsnummer" placeholder="Rechnungsnummer" style="display:none;">
-  </div>
+    <div class="section" id="werkzeugBereich">
+
+        <h2>Werkzeuge / Artikel</h2>
+
+        <div id="werkzeugContainer">
+
+        </div>
+
+        <button id="addArtikelBtn">
+            + Artikel hinzufügen
+        </button>
+
+    </div>
+
+
+    <div class="section hidden" id="positionsBereich">
+
+        <h2>Positionen</h2>
+
+        <table id="positionsTabelle" style="width:100%;border-collapse:collapse">
+
+            <thead>
+
+                <tr>
+
+                    <th style="width:60px">Pos</th>
+
+                    <th style="width:90px">Art.-Nr.</th>
+
+                    <th>Beschreibung</th>
+
+                    <th style="width:70px">Menge</th>
+
+                    <th style="width:120px">Einzelpreis</th>
+
+                    <th style="width:120px">Gesamt</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
-  
-<div id="eigenbelegBlock" style="display:none;">
+<!-- ======================================================
+     EIGENBELEG
+====================================================== -->
 
-<h3>Eigenbeleg</h3>
+<div id="eigenbelegBlock" class="hidden">
 
-<input id="ebNummer" placeholder="Belegnummer">
+<h2>Eigenbeleg</h2>
+
+<input id="ebNummer" placeholder="Eigenbeleg-Nr.">
+
 <input id="ebVerkaeufer" placeholder="Verkäufer">
+
+<input id="ebDatum" placeholder="Kaufdatum">
+
 <input id="ebOrt" placeholder="Ort des Kaufs">
-<input id="ebBetrag" placeholder="Betrag €">
+
+<input id="ebArtikel" placeholder="Gekaufter Artikel">
 
 <textarea id="ebBeschreibung"
-placeholder="Beschreibung der gekauften Artikel"></textarea>
+placeholder="Beschreibung"></textarea>
 
-<textarea id="ebGrund"
-placeholder="Grund für Eigenbeleg"></textarea>
+<input id="ebPreis"
+placeholder="Kaufpreis">
+
+<h3>Fotos</h3>
+
+<input
+    type="file"
+    id="ebFotos"
+    accept="image/*"
+    capture="environment"
+    multiple>
+
+<div id="fotoVorschau"></div>
+
+<textarea id="ebBegruendung"
+placeholder="Warum liegt kein Beleg vor?"></textarea>
+
+<br><br>
+
+<hr>
+
+<div style="margin-top:40px">
+
+Eigenbeleg erstellt von Marco Schrage
 
 </div>
 
-<div id="eigenbelegPrint" style="display:none;"></div>
-  
-<h3 id="geraeteTitel">Geräte</h3>
-<div id="container"></div>
-<button id="addBtn" onclick="addGeraet()">+ Gerät</button>
+<div style="margin-top:20px;font-size:13px">
 
-<h3 id="toolsTitel" style="display:none;">Werkzeuge</h3>
-<div id="toolsContainer"></div>
-<button id="addToolBtn" style="display:none;">+ Werkzeug</button>
+Ich bestätige hiermit, dass der oben genannte Kauf durchgeführt wurde und kein Originalbeleg verfügbar war.
 
-<h3 id="positionsTitel" style="display:none;">Positionen</h3>
-<div id="positionsliste"></div>
-
-<table id="toolsTable" style="width:100%; font-size:12px;">
-<thead>
-<tr>
-<th id="th_pos">Pos</th>
-<th id="th_art">Art.-Nr</th>
-<th id="th_desc">Beschreibung</th>
-<th id="th_qty">Menge</th>
-<th id="th_price">Einzelpreis</th>
-<th id="th_total">Gesamt</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-
-<div id="zahlungstext">
-Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer an das unten angegebene Konto oder per PayPal an @penmarco.<br><br>
-Der Versand erfolgt nach Zahlungseingang.<br><br>
-Gemäß § 19 Abs. 1 UstG wird keine Umsatzsteuer ausgewiesen.
 </div>
 
-<div id="footer">
-<div class="footer-grid">
-<div>
-MS Pens<br>Marco Schrage<br>Glindweg 13<br>22303 Hamburg
-</div>
-<div>
-Tel: 0151/40520912<br>www.mspens.de<br>contact@mspens.de<br>Steuernummer: 43/219/03105
-</div>
-<div>
-Bankverbindung<br>Institut: Comdirect Bank<br>IBAN: DE43 2004 1133 0201 3571 00<br>BIC: COBADEHD001
-</div>
-</div>
 </div>
 
-<button onclick="drucken()">📄 Drucken</button>
-<button onclick="location.reload()">🔄 Reset</button>
+
+
+
+
+<div class="buttons">
+
+<button id="printBtn">
+
+📄 Drucken
+
+</button>
+
+<button onclick="location.reload()">
+
+🔄 Reset
+
+</button>
+
+</div>
+
+</div>
 
 <script>
 
-  let aktuelleSprache = "de";
-  
-const artikelListe = {
-  "CORK2": { name: "Dichtkorken Größe 2", preis: 20 },
-  "CORK4": { name: "Dichtkorken Größe 4", preis: 20 },
-  "CORK6": { name: "Dichtkorken Größe 6", preis: 20 },
-  "CORK9": { name: "Dichtkorken Größe 9", preis: 20 },
+// ======================================================
+// Grundeinstellungen
+// ======================================================
 
-  "PTM": { name: "Werkzeug für die Kolbeneinheit modern", preis: 39 },
-  "PTA": { name: "Werkzeug für die Kolbeneinheit antik", preis: 39 },
+const app = {
 
-  "NTM6": { name: "Federeinheit Werkzeug modern Größe 6", preis: 60 },
-  "NTM9": { name: "Federeinheit Werkzeug modern Größe 9", preis: 60 },
+    sprache: "de",
 
-  "NTA2": { name: "Federeinheit Werkzeug antik Größe 2", preis: 60 },
-  "NTA4": { name: "Federeinheit Werkzeug antik Größe 4", preis: 60 },
-  "NTA6": { name: "Federeinheit Werkzeug antik Größe 6", preis: 60 },
-  "NTA9": { name: "Federeinheit Werkzeug antik Größe 9", preis: 60 },
+    modus: "werkstatt",
 
-  "CORKTOOL": { name: "Werkzeug Korkmutter", preis: 60 },
-  "CORKPUSH": { name: "Eindrückhilfe Dichtkorken", preis: 60 },
-  "CORKNUT": { name: "Hartgummimutter", preis: 25 },
+    positionen: []
 
-  "GREASE": { name: "Schmierfett", preis: 4.5 },
-  "SEALING": { name: "Dichtwachs", preis: 4.5 },
-
-  "KOB": { name: "Knockout-Block", preis: 60 },
-  "SET": { name: "Werkzeug Set komplett", preis: 600 },
-
-  "SHIP1": { name: "Versandkosten", preis: 3.99 },
-  "SHIP2": { name: "Versandkosten", preis: 6.19 },
-  "SHIP3": { name: "Versandkosten", preis: 14.49 },
-  "SHIP4": { name: "Versandkosten", preis: 15.99 }
 };
 
-function addGeraet() {
 
-  const div = document.createElement("div");
-  div.className = "geraet";
 
-  const modell = document.createElement("input");
-  modell.placeholder = "Modell";
 
-  const notizen = document.createElement("textarea");
-  notizen.placeholder = "Notizen";
-
-  const arbeitenDiv = document.createElement("div");
-  arbeitenDiv.className = "arbeiten";
-
-  const arbeiten = [
-    "Demontage","Reinigung","Wartung Mechanik","Korkdichtung erneuern",
-    "Politur einfach","Mehrstufige Handpolitur","Gravur entfernen",
-    "Kappenriss schließen","Kappenlippe erneuern",
-    "Clip/Kappenringe vergolden","Kappenstern erneuert",
-    "Feder umschleifen","Schreibprobe"
-  ];
-
-  arbeiten.forEach(text => {
-    const label = document.createElement("label");
-    const cb = document.createElement("input");
-    cb.type = "checkbox";
-    const span = document.createElement("span");
-span.textContent = text;
-
-label.append(cb, span);
-    arbeitenDiv.appendChild(label);
-  });
-
-  const preis = document.createElement("input");
-  preis.className = "preis";
-  preis.placeholder = "Preis €";
-  preis.addEventListener("input", updateSumme);
-
-  div.append(modell, notizen, arbeitenDiv, preis);
-  document.getElementById("container").appendChild(div);
-}
-
-function addTool() {
-
-  const div = document.createElement("div");
-  div.className = "geraet";
-
-  const menge = document.createElement("input");
-  menge.type = "number";
-  menge.value = 1;
-
-  const select = document.createElement("select");
-
-  const empty = document.createElement("option");
-  empty.textContent = "Artikel wählen";
-  empty.value = "";
-  select.appendChild(empty);
-
-  for (let key in artikelListe) {
-    const opt = document.createElement("option");
-    opt.value = key;
-    opt.textContent = key + " – " + artikelListe[key].name;
-    select.appendChild(opt);
-  }
-
-  const beschreibung = document.createElement("input");
-  beschreibung.placeholder = "Beschreibung";
-
-  const preis = document.createElement("input");
-  preis.className = "preis";
-  preis.placeholder = "Preis €";
-
-  select.addEventListener("change", () => {
-    const data = artikelListe[select.value];
-    if (data) {
-      beschreibung.value = data.name;
-      preis.value = data.preis;
-      updateSumme();
-    }
-  });
-
-  preis.addEventListener("input", updateSumme);
-  menge.addEventListener("input", updateSumme);
-
-  div.append(menge, select, beschreibung, preis);
-  document.getElementById("toolsContainer").appendChild(div);
-}
-
-document.getElementById("addToolBtn").onclick = addTool;
-
-function updateSumme() {
-
-  let sum = 0;
-
-  document.querySelectorAll(".preis").forEach(el => {
-
-    let v = parseFloat(el.value.replace(",", "."));
-    if (isNaN(v)) return;
-
-    let menge = 1;
-    const m = el.parentElement.querySelector("input[type=number]");
-    if (m) menge = parseFloat(m.value) || 1;
-
-    sum += v * menge;
-  });
-
-}
-  
 
 function updateModus() {
 
-  const m = document.getElementById("modus").value;
-  const eigenbeleg = m === "eigenbeleg";
+    const m = document.getElementById("modus").value;
 
-  document.getElementById("eigenbelegBlock").style.display =
-    eigenbeleg ? "block" : "none";
+    const eigenbeleg = (m === "eigenbeleg");
+    const positionen = (m === "angebot" || m === "rechnung");
 
-  document.getElementById("rechnungsnummer").style.display =
-  eigenbeleg ? "none" : "";
+    // Titel
+    switch(m){
 
-  // Titel Kundendaten / Verkäuferdaten
-  document.getElementById("kundentitel").innerText =
-    eigenbeleg ? "Verkäuferdaten" : "Kundendaten";
+        case "werkstatt":
+            document.getElementById("title").innerText = "Werkstattzettel";
+            break;
 
-  document.body.classList.remove(
-    "modus-werkstatt",
-    "modus-angebot",
-    "modus-rechnung",
-    "modus-eigenbeleg"
-  );
+        case "angebot":
+            document.getElementById("title").innerText = "Angebot";
+            break;
 
-  document.body.classList.add("modus-" + m);
+        case "rechnung":
+            document.getElementById("title").innerText = "Rechnung";
+            break;
 
-  document.getElementById("firmaBriefkopf").style.display =
-  eigenbeleg ? "none" : "";
-
-  document.getElementById("addBtn").style.display =
-  eigenbeleg ? "none" : "";
-
-  document.getElementById("title").innerText =
-    m === "eigenbeleg"
-      ? "Eigenbeleg"
-    : m === "rechnung"
-      ? (aktuelleSprache === "en" ? "Invoice" : "Rechnung")
-    : m === "angebot"
-      ? (aktuelleSprache === "en" ? "Quotation" : "Angebot")
-    : (aktuelleSprache === "en" ? "Workshop sheet" : "Werkstattzettel");
-
-  document.getElementById("kundenTitel").innerText =
-  eigenbeleg ? "Verkäuferdaten" : "Kundendaten";
-
-  const aktiv = (m === "angebot" || m === "rechnung");
-
-  const datum = document.getElementById("datum");
-  const rn = document.getElementById("rechnungsnummer");
-
-  datum.value = datum.value
-    .replace(/^Datum:\s*/, "")
-    .replace(/^Date:\s*/, "");
-
-  rn.value = rn.value
-    .replace(/^Rechnungsnummer:\s*/, "")
-    .replace(/^Invoice number:\s*/, "");
-
-  // Gerätebereich
-  document.getElementById("geraeteTitel").style.display =
-    eigenbeleg ? "none" : "";
-
-  document.getElementById("container").style.display =
-    eigenbeleg ? "none" : "";
-
-  document.querySelector('button[onclick="addGeraet()"]').style.display =
-  eigenbeleg ? "none" : "";
-
-  // Werkzeugbereich
-  document.getElementById("toolsTitel").style.display =
-    eigenbeleg ? "none" : aktiv ? "block" : "none";
-
-  document.getElementById("toolsContainer").style.display =
-    eigenbeleg ? "none" : "";
-
-  document.getElementById("addToolBtn").style.display =
-    eigenbeleg ? "none" : aktiv ? "block" : "none";
-
-  // Positionsliste
-  document.getElementById("positionsTitel").style.display =
-    eigenbeleg ? "none" : aktiv ? "block" : "none";
-
-const table = document.getElementById("toolsTable");
-
-if (eigenbeleg) {
-  table.style.display = "none";
-} else {
-  table.style.display = "table";
-}
-
-}
-function formatEuro(value) {
-  let v = parseFloat(value.toString().replace(",", "."));
-  if (isNaN(v)) return "";
-  return v.toFixed(2).replace(".", ",") + " €";
-}
-function generatePositionsliste() {
-
-  let pos = 1;
-
-  const tbody = document.querySelector("#toolsTable tbody");
-  tbody.innerHTML = "";
-
-  // ===== GERÄTE =====
-  document.querySelectorAll("#container .geraet").forEach(g => {
-
-    const modell = g.querySelector("input").value.trim();
-    const preis = g.querySelector(".preis").value;
-    const notizen = g.querySelector("textarea").value.trim();
-
-    if (!modell || !preis) return;
-
-const arbeiten = [];
-g.querySelectorAll("label").forEach(l => {
-  const cb = l.querySelector("input");
-  if (cb && cb.checked) {
-
-    let text = l.innerText.trim();
-
-    if (aktuelleSprache === "en" && document.body.classList.contains("modus-rechnung")) {
-      text = translateArbeiten(text);
+        case "eigenbeleg":
+            document.getElementById("title").innerText = "Eigenbeleg";
+            break;
     }
 
-    arbeiten.push(text);
-  }
-});
+    // Kundendaten
+    document.getElementById("kundeTitel").innerText =
+        eigenbeleg ? "Verkäufer" : "Kundendaten";
 
-    const tr = document.createElement("tr");
+    // Bereiche ein-/ausblenden
+    document.getElementById("kundeBereich").style.display =
+        eigenbeleg ? "none" : "block";
 
-    tr.innerHTML = `
-      <td>${pos}</td>
-      <td>REPA</td>
-      <td>
-  ${modell} – ${arbeiten.join(", ")}
-  ${notizen ? "<br><i>" + notizen + "</i>" : ""}
-</td>
-      <td>1</td>
-<td>${formatEuro(preis)}</td>
-<td>${formatEuro(preis)}</td>
-    `;
+    document.getElementById("arbeitsbereich").style.display =
+        eigenbeleg ? "none" : "block";
 
-    tbody.appendChild(tr);
-    pos++;
+    document.getElementById("eigenbelegBlock").style.display =
+        eigenbeleg ? "block" : "none";
 
-  });
+    document.getElementById("werkzeugBereich").style.display =
+        positionen ? "block" : "none";
 
-
-
-  // ===== WERKZEUGE =====
-  document.querySelectorAll("#toolsContainer .geraet").forEach(t => {
-
-    const menge = t.querySelector("input[type=number]").value;
-    const select = t.querySelector("select");
-    const artikelNr = select.value;
-    const beschreibung = t.querySelector("input:nth-child(3)").value;
-    const preis = t.querySelector(".preis").value;
-
-    if (!beschreibung || !preis) return;
-
-    let p = parseFloat(preis.replace(",", "."));
-    let m = parseFloat(menge);
-
-    if (isNaN(p) || isNaN(m)) return;
-
-    const total = (p * m).toFixed(2).replace(".", ",");
-
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${pos}</td>
-      <td>${artikelNr || "-"}</td>
-      <td>${aktuelleSprache === "en" && document.body.classList.contains("modus-rechnung")
-  ? translateArtikel(beschreibung)
-  : beschreibung}</td>
-      <td>${menge}</td>
-      <td>${formatEuro(preis)}</td>
-      <td>${formatEuro(total)}</td>
-    `;
-
-    tbody.appendChild(tr);
-    pos++;
-  });
-
-  
-let sum = 0;
-
-document.querySelectorAll(".preis").forEach(el => {
-  let v = parseFloat(el.value.replace(",", "."));
-  if (isNaN(v)) return;
-
-  let menge = 1;
-  const m = el.parentElement.querySelector("input[type=number]");
-  if (m) menge = parseFloat(m.value) || 1;
-
-  sum += v * menge;
-});
-
-const trSum = document.createElement("tr");
-
-trSum.innerHTML = `
-  <td colspan="5" style="text-align:right; font-weight:bold; border-top:2px solid #000;">
-    ${aktuelleSprache === "en" && document.body.classList.contains("modus-rechnung") ? "Total:" : "Gesamt:"}
-  </td>
-  <td style="font-weight:bold; border-top:2px solid #000;">
-    ${formatEuro(sum)}
-  </td>
-`;
-
-tbody.appendChild(trSum);
-}
-
-
-  function updateSprache() {
-
-  aktuelleSprache = document.getElementById("sprache").value;
-
-  const m = document.getElementById("modus").value;
-  const datum = document.getElementById("datum");
-  const rn = document.getElementById("rechnungsnummer");
-
-  // 👉 NUR im Rechnungsmodus Englisch aktivieren
-  if (m === "rechnung" && aktuelleSprache === "en") {
-
-    // Datum / Rechnungsnummer
-    datum.value = datum.value.replace(/^Datum:\s*/, "").replace(/^Date:\s*/, "");
-    rn.value = rn.value.replace(/^Rechnungsnummer:\s*/, "").replace(/^Invoice number:\s*/, "");
-
-    datum.value = "Date: " + datum.value;
-    rn.value = "Invoice number: " + rn.value;
-
-    // Zahlungstext
-    document.getElementById("zahlungstext").innerHTML = `
-Please transfer the total amount stating the invoice number to the bank account below or via PayPal to @penmarco.<br><br>
-Shipping will take place after receipt of payment.<br><br>
-According to § 19 (1) UStG no VAT is charged.
-    `;
-
-  } else {
-
-    // Deutsch zurücksetzen
-    datum.value = datum.value.replace(/^Date:\s*/, "").replace(/^Datum:\s*/, "");
-    rn.value = rn.value.replace(/^Invoice number:\s*/, "").replace(/^Rechnungsnummer:\s*/, "");
-
-if (m === "rechnung" || m === "angebot") {
-
-  if (aktuelleSprache === "en") {
-    datum.value = "Date: " + datum.value;
-    rn.value = "Invoice number: " + rn.value;
-  } else {
-    datum.value = "Datum: " + datum.value;
-    rn.value = "Rechnungsnummer: " + rn.value;
-  }
+    document.getElementById("positionsBereich").style.display =
+        positionen ? "block" : "none";
 
 }
 
-    document.getElementById("zahlungstext").innerHTML = `
-Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer an das unten angegebene Konto oder per PayPal an @penmarco.<br><br>
-Der Versand erfolgt nach Zahlungseingang.<br><br>
-Gemäß § 19 Abs. 1 UstG wird keine Umsatzsteuer ausgewiesen.
-    `;
-  }
-    // Tabellenüberschriften übersetzen
-if (m === "rechnung" && aktuelleSprache === "en") {
 
-  document.getElementById("th_pos").innerText = "Pos";
-  document.getElementById("th_art").innerText = "Item no.";
-  document.getElementById("th_desc").innerText = "Description";
-  document.getElementById("th_qty").innerText = "Qty";
-  document.getElementById("th_price").innerText = "Unit price";
-  document.getElementById("th_total").innerText = "Total";
 
-} else {
+document
+.getElementById("modus")
+.addEventListener("change",updateModus);
 
-  document.getElementById("th_pos").innerText = "Pos";
-  document.getElementById("th_art").innerText = "Art.-Nr";
-  document.getElementById("th_desc").innerText = "Beschreibung";
-  document.getElementById("th_qty").innerText = "Menge";
-  document.getElementById("th_price").innerText = "Einzelpreis";
-  document.getElementById("th_total").innerText = "Gesamt";
-}
-    updateModus();
-}
+updateModus();
 
-function translateArtikel(text) {
+// ======================================================
+// Fotos Eigenbeleg
+// ======================================================
 
-  const map = {
-    "Dichtkorken Größe 2": "Sealing cork size 2",
-    "Dichtkorken Größe 4": "Sealing cork size 4",
-    "Dichtkorken Größe 6": "Sealing cork size 6",
-    "Dichtkorken Größe 9": "Sealing cork size 9",
+let fotos = [];
 
-    "Werkzeug für die Kolbeneinheit modern": "Piston tool modern",
-    "Werkzeug für die Kolbeneinheit antik": "Piston tool vintage",
+document
+.getElementById("ebFotos")
+.addEventListener("change", function(e){
 
-    "Federeinheit Werkzeug modern Größe 6": "Nib unit tool modern size 6",
-    "Federeinheit Werkzeug modern Größe 9": "Nib unit tool modern size 9",
+    fotos = [];
 
-    "Federeinheit Werkzeug antik Größe 2": "Nib unit tool vintage size 2",
-    "Federeinheit Werkzeug antik Größe 4": "Nib unit tool vintage size 4",
-    "Federeinheit Werkzeug antik Größe 6": "Nib unit tool vintage size 6",
-    "Federeinheit Werkzeug antik Größe 9": "Nib unit tool vintage size 9",
+    [...e.target.files].forEach(file=>{
 
-    "Werkzeug Korkmutter": "Cork nut tool",
-    "Eindrückhilfe Dichtkorken": "Cork insertion tool",
-    "Hartgummimutter": "Hard rubber nut",
+        const reader = new FileReader();
 
-    "Schmierfett": "Grease",
-    "Dichtwachs": "Sealing wax",
+        reader.onload = function(event){
 
-    "Knockout-Block": "Knockout block",
+            fotos.push(event.target.result);
 
-    "Werkzeug Set komplett": "Complete tool set",
+            aktualisiereFotos();
 
-    "Versandkosten": "Shipping"
-  };
+        };
 
-  return map[text] || text; // fallback
-}
+        reader.readAsDataURL(file);
 
-  function translateArbeiten(text) {
-
-  const map = {
-    "Demontage": "Disassembly",
-    "Reinigung": "Cleaning",
-    "Wartung Mechanik": "Mechanical service",
-    "Korkdichtung erneuern": "Replace cork seal",
-
-    "Politur einfach": "Basic polishing",
-    "Mehrstufige Handpolitur": "Multi-stage hand polishing",
-    "Gravur entfernen": "Remove engraving",
-
-    "Kappenriss schließen": "Repair cap crack",
-    "Kappenlippe erneuern": "Restore cap lip",
-
-    "Clip/Kappenringe vergolden": "Gold plating clip/cap rings",
-    "Kappenstern erneuert": "Cap star replaced",
-
-    "Feder umschleifen": "Nib regrind",
-    "Schreibprobe": "Writing test"
-  };
-
-  return map[text] || text;
-}
-
-  function renderArbeitenText() {
-
-  document.querySelectorAll("#container .geraet").forEach(g => {
-
-    // alte Liste entfernen (wichtig bei mehrfach drucken)
-    const old = g.querySelector(".arbeiten-print");
-    if (old) old.remove();
-
-    const arbeiten = [];
-
-    g.querySelectorAll(".arbeiten label").forEach(l => {
-      const cb = l.querySelector("input");
-      if (cb && cb.checked) {
-        arbeiten.push(l.innerText.trim());
-      }
     });
 
-    if (arbeiten.length === 0) return;
-
-    const div = document.createElement("div");
-    div.className = "arbeiten-print";
-
-    div.innerHTML = arbeiten.map(a => "– " + a).join("<br>");
-
-    // unter Notizen einfügen
-    const textarea = g.querySelector("textarea");
-    textarea.after(div);
-  });
-
-}
-
-  function applyPrintLabels() {
-
-  const m = document.getElementById("modus").value;
-  const datum = document.getElementById("datum");
-  const rn = document.getElementById("rechnungsnummer");
-
-  // bestehende Prefixe entfernen (wichtig bei mehrfach drucken)
-  let d = datum.value.replace(/^Datum:\s*/, "").replace(/^Date:\s*/, "");
-  let r = rn.value.replace(/^Rechnungsnummer:\s*/, "").replace(/^Invoice number:\s*/, "");
-
-  if (aktuelleSprache === "en" && m === "rechnung") {
-    datum.value = "Date: " + d;
-    rn.value = "Invoice number: " + r;
-  } else {
-    datum.value = "Datum: " + d;
-    rn.value = "Rechnungsnummer: " + r;
-  }
-}
-
-  document.getElementById("sprache").addEventListener("change", updateSprache);
-
-  function generateEigenbeleg() {
-
-  const nummer = document.getElementById("ebNummer").value;
-  const verkaeufer = document.getElementById("ebVerkaeufer").value;
-  const ort = document.getElementById("ebOrt").value;
-  const betrag = document.getElementById("ebBetrag").value;
-  const beschreibung = document.getElementById("ebBeschreibung").value;
-  const grund = document.getElementById("ebGrund").value;
-  const datum = document.getElementById("datum").value;
-
-  document.getElementById("eigenbelegPrint").innerHTML = `
-    <h3>Eigenbeleg</h3>
-
-    <p><strong>Belegnummer:</strong> ${nummer}</p>
-    <p><strong>Datum:</strong> ${datum}</p>
-
-    <p><strong>Verkäufer:</strong><br>
-    ${verkaeufer}</p>
-
-    <p><strong>Ort des Kaufs:</strong><br>
-    ${ort}</p>
-
-    <p><strong>Beschreibung:</strong><br>
-    ${beschreibung}</p>
-
-    <p><strong>Grund für Eigenbeleg:</strong><br>
-    ${grund}</p>
-
-    <p><strong>Betrag:</strong>
-    ${formatEuro(betrag)}</p>
-
-    <br><br><br>
-
-    <p>
-      Ich bestätige die Richtigkeit der oben gemachten Angaben.
-    </p>
-
-    <br><br>
-
-    ___________________________<br>
-    Marco Schrage
-  `;
-}
-function drucken() {
-
-  const modus = document.getElementById("modus").value;
-
-  if (modus === "eigenbeleg") {
-
-    generateEigenbeleg();
-
-  } else {
-
-    updateSumme();
-    generatePositionsliste();
-    renderArbeitenText();
-    applyPrintLabels();
-
-  }
-
-  window.print();
-}
-
-document.getElementById("modus").addEventListener("change", () => {
-  updateModus();
-  updateSprache();
 });
 
-document.getElementById("datum").value =
-  new Date().toLocaleDateString("de-DE");
+document
+.getElementById("ebFotos")
+.addEventListener("change",zeigeFotos);
+
+
+
+function aktualisiereFotos(){
+
+    const vorschau = document.getElementById("fotoVorschau");
+
+    vorschau.innerHTML = "";
+
+    fotos.forEach((bild,index)=>{
+
+        const box = document.createElement("div");
+
+        box.style.display = "inline-block";
+        box.style.position = "relative";
+        box.style.margin = "8px";
+
+        const img = document.createElement("img");
+
+        img.src = bild;
+
+        img.style.width = "180px";
+        img.style.height = "180px";
+        img.style.objectFit = "cover";
+        img.style.border = "1px solid #999";
+        img.style.borderRadius = "8px";
+
+        const btn = document.createElement("button");
+
+        btn.type = "button";
+        btn.innerHTML = "✖";
+
+        btn.style.position = "absolute";
+        btn.style.top = "5px";
+        btn.style.right = "5px";
+
+        btn.style.width = "28px";
+        btn.style.height = "28px";
+
+        btn.style.border = "none";
+        btn.style.borderRadius = "50%";
+
+        btn.style.background = "#c00";
+        btn.style.color = "white";
+
+        btn.style.cursor = "pointer";
+
+        btn.onclick = function(){
+
+            fotos.splice(index,1);
+
+            aktualisiereFotos();
+
+        };
+
+        box.appendChild(img);
+        box.appendChild(btn);
+
+        vorschau.appendChild(box);
+
+    });
+
+}
+
+
+document.getElementById("ebDatum").value =
+    new Date().toLocaleDateString("de-DE");
+
+
+
+function druckeEigenbeleg(){
+
+    // kommt gleich Inhalt hinein
+
+}
+
+document
+.getElementById("printBtn")
+.addEventListener("click",drucken);
+
+function drucken(){
+
+    if(document.getElementById("modus").value==="eigenbeleg"){
+
+        druckeEigenbeleg();
+        return;
+
+    }
+
+
+    window.print();
+
+}
+
+function druckeEigenbeleg(){
+
+    const html = `
+<!DOCTYPE html>
+<html lang="de">
+<head>
+
+<meta charset="UTF-8">
+
+<title>Eigenbeleg</title>
+
+<style>
+
+body{
+
+    font-family:Arial,Helvetica,sans-serif;
+    padding:35px;
+    line-height:1.4;
+
+}
+
+h1{
+
+    text-align:center;
+    margin-bottom:35px;
+
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+
+}
+
+td{
+
+    padding:8px;
+    vertical-align:top;
+
+}
+
+.label{
+
+    width:180px;
+    font-weight:bold;
+
+}
+
+#bilder{
+
+    margin-top:30px;
+
+}
+
+#bilder img{
+
+    width:220px;
+    margin:10px;
+    border:1px solid #999;
+
+}
+
+.unterschrift{
+
+    margin-top:70px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Eigenbeleg</h1>
+
+<table>
+
+<tr>
+<td class="label">Eigenbeleg-Nr.</td>
+<td>${document.getElementById("ebNummer").value}</td>
+</tr>
+
+<tr>
+<td class="label">Datum</td>
+<td>${document.getElementById("ebDatum").value}</td>
+</tr>
+
+<tr>
+<td class="label">Verkäufer</td>
+<td>${document.getElementById("ebVerkaeufer").value}</td>
+</tr>
+
+<tr>
+<td class="label">Ort</td>
+<td>${document.getElementById("ebOrt").value}</td>
+</tr>
+
+<tr>
+<td class="label">Artikel</td>
+<td>${document.getElementById("ebArtikel").value}</td>
+</tr>
+
+<tr>
+<td class="label">Beschreibung</td>
+<td>${document.getElementById("ebBeschreibung").value}</td>
+</tr>
+
+<tr>
+<td class="label">Kaufpreis</td>
+<td>${document.getElementById("ebPreis").value} €</td>
+</tr>
+
+<tr>
+<td class="label">Begründung</td>
+<td>${document.getElementById("ebBegruendung").value}</td>
+</tr>
+
+</table>
+
+<div id="bilder"></div>
+
+<div class="unterschrift">
+
+_______________________________<br>
+
+Marco Schrage
+
+</div>
+
+</body>
+
+</html>
+`;
+
+    const fenster = window.open("","_blank");
+
+// Fotos in HTML umwandeln
+let bilderHTML = "";
+
+fotos.forEach(foto => {
+
+    bilderHTML += `
+        <img src="${foto}">
+    `;
+
+});
+
+// Fotos in den Ausdruck einsetzen
+const htmlMitBildern = html.replace(
+    '<div id="bilder"></div>',
+    `<div id="bilder">${bilderHTML}</div>`
+);
+
+    fenster.document.write(htmlMitBildern);
+
+    fenster.document.close();
+
+fenster.onload = function(){
+
+    fenster.focus();
+
+    fenster.print();
+
+    // optional automatisch schließen
+    // fenster.close();
+
+};
+
+}
+
+document
+.getElementById("printBtn")
+.addEventListener("click", drucken);
+
+let fotos = [];
+
+function zeigeFotos(event){
+
+    const dateien = event.target.files;
+
+    for(const datei of dateien){
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            fotos.push(e.target.result);
+
+            aktualisiereFotos();
+
+        };
+
+        reader.readAsDataURL(datei);
+
+    }
+
+}
 
 </script>
 
 </body>
+
 </html>
