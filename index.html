@@ -790,6 +790,64 @@ ${preis.toFixed(2).replace(".",",")} €
 
     });
 
+// ===== Artikel =====
+
+document.querySelectorAll("#werkzeugContainer .geraet").forEach(artikel=>{
+
+    const artikelNr =
+        artikel.querySelector(".artikelSelect").value;
+
+    const beschreibung =
+        artikel.querySelector(".beschreibung").value;
+
+    const menge =
+        parseFloat(
+            artikel.querySelector(".menge").value
+        ) || 1;
+
+    const preis =
+        parseFloat(
+            artikel.querySelector(".preis").value
+        ) || 0;
+
+    if(beschreibung==="" && preis===0){
+        return;
+    }
+
+    const gesamt = preis * menge;
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+
+<td>${pos}</td>
+
+<td>${artikelNr}</td>
+
+<td>${beschreibung}</td>
+
+<td>${menge}</td>
+
+<td style="text-align:right">
+
+${preis.toFixed(2).replace(".",",")} €
+
+</td>
+
+<td style="text-align:right">
+
+${gesamt.toFixed(2).replace(".",",")} €
+
+</td>
+
+`;
+
+    tbody.appendChild(tr);
+
+    pos++;
+
+});    
+
 }
 
 
