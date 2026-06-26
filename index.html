@@ -654,19 +654,58 @@ const titel={
 
 function updateModus(){
 
-    app.modus=document.getElementById("modus").value;
+    app.modus = document.getElementById("modus").value;
 
     document
     .querySelectorAll(".section")
     .forEach(sec=>sec.classList.remove("active"));
 
-    document
-    .getElementById(app.modus)
-    .classList.add("active");
+    // Eigenbeleg
+    if(app.modus==="eigenbeleg"){
 
-    document
-    .getElementById("title")
-    .innerText=titel[app.modus];
+        document
+        .getElementById("eigenbeleg")
+        .classList.add("active");
+
+    }
+
+    // Werkstatt
+    if(app.modus==="werkstatt"){
+
+        document
+        .getElementById("werkstatt")
+        .classList.add("active");
+
+    }
+
+    // Angebot
+    if(app.modus==="angebot"){
+
+        document
+        .getElementById("werkstatt")
+        .classList.add("active");
+
+        document
+        .getElementById("angebot")
+        .classList.add("active");
+
+    }
+
+    // Rechnung
+    if(app.modus==="rechnung"){
+
+        document
+        .getElementById("werkstatt")
+        .classList.add("active");
+
+        document
+        .getElementById("rechnung")
+        .classList.add("active");
+
+    }
+
+    document.getElementById("title").innerText =
+        titel[app.modus];
 
 }
 
