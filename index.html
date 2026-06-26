@@ -906,7 +906,7 @@ document
 
 document
 .getElementById("printBtn")
-.addEventListener("click",()=>window.print());
+.addEventListener("click",drucken);
 
 
 document
@@ -914,7 +914,19 @@ document
 .value = new Date().toLocaleDateString("de-DE");
        
 updateModus();
+       
+function drucken(){
 
+    if(app.modus==="eigenbeleg"){
+
+        druckeEigenbeleg();
+        return;
+
+    }
+
+    druckeDokument();
+
+}
 document
 .getElementById("addGeraetBtn")
 .addEventListener("click",addGeraet);
