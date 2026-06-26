@@ -4,15 +4,11 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>MS Pens Office</title>
 
 <style>
-
-/* =======================================================
-   ALLGEMEIN
-======================================================= */
 
 *{
     box-sizing:border-box;
@@ -21,28 +17,32 @@
 
 body{
     margin:0;
+    background:#f3f3f3;
     padding:20px;
-    background:#f4f4f4;
 }
 
 .wrapper{
+
     max-width:1100px;
     margin:auto;
-    background:white;
-    padding:25px;
-    border-radius:12px;
-    box-shadow:0 5px 20px rgba(0,0,0,.12);
-}
 
-/* =======================================================
-   HEADER
-======================================================= */
+    background:white;
+
+    border-radius:12px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+    padding:30px;
+
+}
 
 .header{
 
     display:flex;
+
     justify-content:space-between;
-    align-items:flex-start;
+
+    align-items:center;
 
     margin-bottom:30px;
 
@@ -51,7 +51,6 @@ body{
 .logo{
 
     height:90px;
-    width:auto;
 
 }
 
@@ -61,19 +60,29 @@ h1{
 
 }
 
-.modebar{
+.toolbar{
 
     display:flex;
+
     gap:10px;
-    margin-bottom:25px;
+
+    margin-bottom:30px;
+
 }
 
-select,button,input,textarea{
+select,
+button,
+input,
+textarea{
 
     width:100%;
+
     padding:8px;
+
     border-radius:8px;
+
     border:1px solid #bbb;
+
     font-size:14px;
 
 }
@@ -86,164 +95,29 @@ button{
 
 .section{
 
-    margin-top:20px;
-}
-
-.section h2{
-
-    border-bottom:1px solid #ddd;
-    padding-bottom:6px;
-
-}
-
-.hidden{
-
     display:none;
 
 }
 
-.kunde-grid{
-
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:25px;
-
-}
-
-.kunde-links input{
-
-    margin-bottom:6px;
-
-}
-
-.kunde-rechts input{
-
-    margin-bottom:6px;
-    text-align:right;
-
-}
-
-.geraet{
-
-    border:1px solid #ccc;
-    border-radius:8px;
-    padding:12px;
-    margin-bottom:15px;
-
-}
-
-.buttons{
-
-    display:flex;
-    gap:10px;
-    margin-top:30px;
-
-}
-
-#fotoVorschau{
-
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:10px;
-
-}
-
-#fotoVorschau img{
-
-    width:140px;
-    height:140px;
-
-    object-fit:cover;
-
-    border-radius:8px;
-    border:1px solid #bbb;
-
-}
-
-body.modus-eigenbeleg #arbeitsbereich{
-    display:none !important;
-}
-
-body.modus-eigenbeleg #kundeBereich{
-    display:none !important;
-}
-
-body.modus-eigenbeleg #eigenbelegBlock{
-
-    display:block !important;
-
-}
-
-body.modus-eigenbeleg .modebar,
-body.modus-eigenbeleg .buttons{
-
-    display:none !important;
-
-}
-
-body.modus-eigenbeleg #fotoVorschau{
+.section.active{
 
     display:block;
 
 }
 
-body.modus-eigenbeleg #fotoVorschau img{
-
-    width:220px;
-
-    height:auto;
-
-    margin-bottom:12px;
-
-    border:1px solid #444;
-
-}
-
-
-@media print{
-
-#fotoVorschau button{
-
-display:none !important;
-
-}
-
-body{
-
-    background:white;
-    padding:0;
-
-}
-
-.wrapper{
-
-    box-shadow:none;
-    border:none;
-    padding:0;
-
-}
-
-.modebar,
 .buttons{
 
-    display:none;
+    display:flex;
 
-}
+    gap:10px;
 
+    margin-top:40px;
 
 }
 
 </style>
 
 </head>
-
-
-
-
-
-
-
 
 <body>
 
@@ -265,7 +139,7 @@ body{
 
 </div>
 
-<div class="modebar">
+<div class="toolbar">
 
 <select id="modus">
 
@@ -289,179 +163,45 @@ body{
 
 </div>
 
-<div id="kundeBereich" class="section">
+<!-- Werkstatt -->
 
-<h2 id="kundeTitel">Kundendaten</h2>
+<div id="werkstatt" class="section active">
 
-<div class="kunde-grid">
+<h2>Werkstattzettel</h2>
 
-<div class="kunde-links">
-
-<div style="font-size:10px;margin-bottom:6px;color:#666;">
-
-MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg
+<p>Werkstattbereich folgt…</p>
 
 </div>
 
-<input placeholder="Name">
+<!-- Angebot -->
 
-<input placeholder="Straße">
+<div id="angebot" class="section">
 
-<input placeholder="Adresszusatz">
+<h2>Angebot</h2>
 
-<input placeholder="PLZ / Ort">
-
-<input placeholder="Bundesland">
-
-<input placeholder="Land">
+<p>Angebotsbereich folgt…</p>
 
 </div>
 
-<div class="kunde-rechts">
+<!-- Rechnung -->
 
-<input id="datum">
+<div id="rechnung" class="section">
 
-<input id="belegnummer" placeholder="Nummer">
+<h2>Rechnung</h2>
 
-</div>
-
-</div>
+<p>Rechnungsbereich folgt…</p>
 
 </div>
 
+<!-- Eigenbeleg -->
 
-
-<!-- ======================================================
-     GEMEINSAMER ARBEITSBEREICH
-====================================================== -->
-
-<div id="arbeitsbereich">
-
-    <div class="section">
-
-        <h2 id="geraeteTitel">Geräte</h2>
-
-        <div id="geraeteContainer">
-
-        </div>
-
-        <button id="addGeraetBtn">
-            + Gerät hinzufügen
-        </button>
-
-    </div>
-
-
-    <div class="section" id="werkzeugBereich">
-
-        <h2>Werkzeuge / Artikel</h2>
-
-        <div id="werkzeugContainer">
-
-        </div>
-
-        <button id="addArtikelBtn">
-            + Artikel hinzufügen
-        </button>
-
-    </div>
-
-
-    <div class="section hidden" id="positionsBereich">
-
-        <h2>Positionen</h2>
-
-        <table id="positionsTabelle" style="width:100%;border-collapse:collapse">
-
-            <thead>
-
-                <tr>
-
-                    <th style="width:60px">Pos</th>
-
-                    <th style="width:90px">Art.-Nr.</th>
-
-                    <th>Beschreibung</th>
-
-                    <th style="width:70px">Menge</th>
-
-                    <th style="width:120px">Einzelpreis</th>
-
-                    <th style="width:120px">Gesamt</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-<!-- ======================================================
-     EIGENBELEG
-====================================================== -->
-
-<div id="eigenbelegBlock" class="hidden">
+<div id="eigenbeleg" class="section">
 
 <h2>Eigenbeleg</h2>
 
-<input id="ebNummer" placeholder="Eigenbeleg-Nr.">
-
-<input id="ebVerkaeufer" placeholder="Verkäufer">
-
-<input id="ebDatum" placeholder="Kaufdatum">
-
-<input id="ebOrt" placeholder="Ort des Kaufs">
-
-<input id="ebArtikel" placeholder="Gekaufter Artikel">
-
-<textarea id="ebBeschreibung"
-placeholder="Beschreibung"></textarea>
-
-<input id="ebPreis"
-placeholder="Kaufpreis">
-
-<h3>Fotos</h3>
-
-<input
-    type="file"
-    id="ebFotos"
-    accept="image/*"
-    capture="environment"
-    multiple>
-
-<div id="fotoVorschau"></div>
-
-<textarea id="ebBegruendung"
-placeholder="Warum liegt kein Beleg vor?"></textarea>
-
-<br><br>
-
-<hr>
-
-<div style="margin-top:40px">
-
-Eigenbeleg erstellt von Marco Schrage
+<p>Eigenbelegbereich folgt…</p>
 
 </div>
-
-<div style="margin-top:20px;font-size:13px">
-
-Ich bestätige hiermit, dass der oben genannte Kauf durchgeführt wurde und kein Originalbeleg verfügbar war.
-
-</div>
-
-</div>
-
-
-
-
 
 <div class="buttons">
 
@@ -471,7 +211,7 @@ Ich bestätige hiermit, dass der oben genannte Kauf durchgeführt wurde und kein
 
 </button>
 
-<button onclick="location.reload()">
+<button id="resetBtn">
 
 🔄 Reset
 
@@ -481,413 +221,61 @@ Ich bestätige hiermit, dass der oben genannte Kauf durchgeführt wurde und kein
 
 </div>
 
-<script>
+   <script>
 
-// ======================================================
-// Grundeinstellungen
-// ======================================================
+const app={
 
-const app = {
+    modus:"werkstatt",
 
-    sprache: "de",
-
-    modus: "werkstatt",
-
-    positionen: []
+    sprache:"de"
 
 };
 
+const titel={
 
+    werkstatt:"Werkstattzettel",
 
+    angebot:"Angebot",
 
+    rechnung:"Rechnung",
 
-function updateModus() {
+    eigenbeleg:"Eigenbeleg"
 
-    const m = document.getElementById("modus").value;
+};
 
-    const eigenbeleg = (m === "eigenbeleg");
-    const positionen = (m === "angebot" || m === "rechnung");
+function updateModus(){
 
-    // Titel
-    switch(m){
+    app.modus=document.getElementById("modus").value;
 
-        case "werkstatt":
-            document.getElementById("title").innerText = "Werkstattzettel";
-            break;
+    document
+    .querySelectorAll(".section")
+    .forEach(sec=>sec.classList.remove("active"));
 
-        case "angebot":
-            document.getElementById("title").innerText = "Angebot";
-            break;
+    document
+    .getElementById(app.modus)
+    .classList.add("active");
 
-        case "rechnung":
-            document.getElementById("title").innerText = "Rechnung";
-            break;
-
-        case "eigenbeleg":
-            document.getElementById("title").innerText = "Eigenbeleg";
-            break;
-    }
-
-    // Kundendaten
-    document.getElementById("kundeTitel").innerText =
-        eigenbeleg ? "Verkäufer" : "Kundendaten";
-
-    // Bereiche ein-/ausblenden
-    document.getElementById("kundeBereich").style.display =
-        eigenbeleg ? "none" : "block";
-
-    document.getElementById("arbeitsbereich").style.display =
-        eigenbeleg ? "none" : "block";
-
-    document.getElementById("eigenbelegBlock").style.display =
-        eigenbeleg ? "block" : "none";
-
-    document.getElementById("werkzeugBereich").style.display =
-        positionen ? "block" : "none";
-
-    document.getElementById("positionsBereich").style.display =
-        positionen ? "block" : "none";
+    document
+    .getElementById("title")
+    .innerText=titel[app.modus];
 
 }
-
-
 
 document
 .getElementById("modus")
 .addEventListener("change",updateModus);
 
+document
+.getElementById("resetBtn")
+.addEventListener("click",()=>location.reload());
+
+document
+.getElementById("printBtn")
+.addEventListener("click",()=>window.print());
+
 updateModus();
-
-// ======================================================
-// Fotos Eigenbeleg
-// ======================================================
-
-let fotos = [];
-
-document
-.getElementById("ebFotos")
-.addEventListener("change", function(e){
-
-    fotos = [];
-
-    [...e.target.files].forEach(file=>{
-
-        const reader = new FileReader();
-
-        reader.onload = function(event){
-
-            fotos.push(event.target.result);
-
-            aktualisiereFotos();
-
-        };
-
-        reader.readAsDataURL(file);
-
-    });
-
-});
-
-document
-.getElementById("ebFotos")
-.addEventListener("change",zeigeFotos);
-
-
-
-function aktualisiereFotos(){
-
-    const vorschau = document.getElementById("fotoVorschau");
-
-    vorschau.innerHTML = "";
-
-    fotos.forEach((bild,index)=>{
-
-        const box = document.createElement("div");
-
-        box.style.display = "inline-block";
-        box.style.position = "relative";
-        box.style.margin = "8px";
-
-        const img = document.createElement("img");
-
-        img.src = bild;
-
-        img.style.width = "180px";
-        img.style.height = "180px";
-        img.style.objectFit = "cover";
-        img.style.border = "1px solid #999";
-        img.style.borderRadius = "8px";
-
-        const btn = document.createElement("button");
-
-        btn.type = "button";
-        btn.innerHTML = "✖";
-
-        btn.style.position = "absolute";
-        btn.style.top = "5px";
-        btn.style.right = "5px";
-
-        btn.style.width = "28px";
-        btn.style.height = "28px";
-
-        btn.style.border = "none";
-        btn.style.borderRadius = "50%";
-
-        btn.style.background = "#c00";
-        btn.style.color = "white";
-
-        btn.style.cursor = "pointer";
-
-        btn.onclick = function(){
-
-            fotos.splice(index,1);
-
-            aktualisiereFotos();
-
-        };
-
-        box.appendChild(img);
-        box.appendChild(btn);
-
-        vorschau.appendChild(box);
-
-    });
-
-}
-
-
-document.getElementById("ebDatum").value =
-    new Date().toLocaleDateString("de-DE");
-
-
-
-function druckeEigenbeleg(){
-
-    // kommt gleich Inhalt hinein
-
-}
-
-document
-.getElementById("printBtn")
-.addEventListener("click",drucken);
-
-function drucken(){
-
-    if(document.getElementById("modus").value==="eigenbeleg"){
-
-        druckeEigenbeleg();
-        return;
-
-    }
-
-
-    window.print();
-
-}
-
-function druckeEigenbeleg(){
-
-    const html = `
-<!DOCTYPE html>
-<html lang="de">
-<head>
-
-<meta charset="UTF-8">
-
-<title>Eigenbeleg</title>
-
-<style>
-
-body{
-
-    font-family:Arial,Helvetica,sans-serif;
-    padding:35px;
-    line-height:1.4;
-
-}
-
-h1{
-
-    text-align:center;
-    margin-bottom:35px;
-
-}
-
-table{
-
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
-
-}
-
-td{
-
-    padding:8px;
-    vertical-align:top;
-
-}
-
-.label{
-
-    width:180px;
-    font-weight:bold;
-
-}
-
-#bilder{
-
-    margin-top:30px;
-
-}
-
-#bilder img{
-
-    width:220px;
-    margin:10px;
-    border:1px solid #999;
-
-}
-
-.unterschrift{
-
-    margin-top:70px;
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<h1>Eigenbeleg</h1>
-
-<table>
-
-<tr>
-<td class="label">Eigenbeleg-Nr.</td>
-<td>${document.getElementById("ebNummer").value}</td>
-</tr>
-
-<tr>
-<td class="label">Datum</td>
-<td>${document.getElementById("ebDatum").value}</td>
-</tr>
-
-<tr>
-<td class="label">Verkäufer</td>
-<td>${document.getElementById("ebVerkaeufer").value}</td>
-</tr>
-
-<tr>
-<td class="label">Ort</td>
-<td>${document.getElementById("ebOrt").value}</td>
-</tr>
-
-<tr>
-<td class="label">Artikel</td>
-<td>${document.getElementById("ebArtikel").value}</td>
-</tr>
-
-<tr>
-<td class="label">Beschreibung</td>
-<td>${document.getElementById("ebBeschreibung").value}</td>
-</tr>
-
-<tr>
-<td class="label">Kaufpreis</td>
-<td>${document.getElementById("ebPreis").value} €</td>
-</tr>
-
-<tr>
-<td class="label">Begründung</td>
-<td>${document.getElementById("ebBegruendung").value}</td>
-</tr>
-
-</table>
-
-<div id="bilder"></div>
-
-<div class="unterschrift">
-
-_______________________________<br>
-
-Marco Schrage
-
-</div>
-
-</body>
-
-</html>
-`;
-
-    const fenster = window.open("","_blank");
-
-// Fotos in HTML umwandeln
-let bilderHTML = "";
-
-fotos.forEach(foto => {
-
-    bilderHTML += `
-        <img src="${foto}">
-    `;
-
-});
-
-// Fotos in den Ausdruck einsetzen
-const htmlMitBildern = html.replace(
-    '<div id="bilder"></div>',
-    `<div id="bilder">${bilderHTML}</div>`
-);
-
-    fenster.document.write(htmlMitBildern);
-
-    fenster.document.close();
-
-fenster.onload = function(){
-
-    fenster.focus();
-
-    fenster.print();
-
-    // optional automatisch schließen
-    // fenster.close();
-
-};
-
-}
-
-document
-.getElementById("printBtn")
-.addEventListener("click", drucken);
-
-let fotos = [];
-
-function zeigeFotos(event){
-
-    const dateien = event.target.files;
-
-    for(const datei of dateien){
-
-        const reader = new FileReader();
-
-        reader.onload = function(e){
-
-            fotos.push(e.target.result);
-
-            aktualisiereFotos();
-
-        };
-
-        reader.readAsDataURL(datei);
-
-    }
-
-}
 
 </script>
 
 </body>
-
 </html>
