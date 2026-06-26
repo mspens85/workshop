@@ -93,6 +93,54 @@ h1{
 
 }
 
+ .arbeiten{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+    margin:15px 0;
+
+}
+
+.arbeiten label{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:6px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+.arbeiten label:hover{
+
+    background:#f3f3f3;
+
+}
+
+.arbeiten input{
+
+    width:auto;
+
+    margin:0;
+
+}
+
+.arbeiten label:has(input:checked){
+
+    background:#e8f2ff;
+
+}   
+
 select,
 button,
 input,
@@ -336,20 +384,56 @@ function addGeraet(){
 
     div.innerHTML = `
 
-        <input class="modell" placeholder="Modell">
+<input class="modell" placeholder="Modell">
 
-        <textarea class="notizen"
-                  placeholder="Notizen"
-                  rows="3"></textarea>
+<textarea
+class="notizen"
+rows="3"
+placeholder="Notizen"></textarea>
 
-        <input class="preis"
-               placeholder="Preis">
+<div class="arbeiten">
 
-        <button type="button" class="removeBtn">
-            Gerät löschen
-        </button>
+<label><input type="checkbox">Demontage</label>
 
-    `;
+<label><input type="checkbox">Reinigung</label>
+
+<label><input type="checkbox">Wartung Mechanik</label>
+
+<label><input type="checkbox">Korkdichtung erneuern</label>
+
+<label><input type="checkbox">Politur einfach</label>
+
+<label><input type="checkbox">Mehrstufige Handpolitur</label>
+
+<label><input type="checkbox">Gravur entfernen</label>
+
+<label><input type="checkbox">Kappenriss schließen</label>
+
+<label><input type="checkbox">Kappenlippe erneuern</label>
+
+<label><input type="checkbox">Clip/Kappenringe vergolden</label>
+
+<label><input type="checkbox">Kappenstern erneuert</label>
+
+<label><input type="checkbox">Feder umschleifen</label>
+
+<label><input type="checkbox">Schreibprobe</label>
+
+</div>
+
+<input
+class="preis"
+placeholder="Preis €">
+
+<button
+type="button"
+class="removeBtn">
+
+Gerät löschen
+
+</button>
+
+`;
 
     div.querySelector(".removeBtn").onclick = function(){
 
