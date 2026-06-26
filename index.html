@@ -439,6 +439,40 @@ const app={
 
 };
 
+const artikelListe = [
+
+{
+    nr:"CORK2",
+    text:"Korkdichtung Größe 2",
+    preis:4.50
+},
+
+{
+    nr:"CORK3",
+    text:"Korkdichtung Größe 3",
+    preis:4.50
+},
+
+{
+    nr:"NTM6",
+    text:"Montblanc Spezialfett",
+    preis:6.90
+},
+
+{
+    nr:"POL",
+    text:"Handpolitur",
+    preis:15.00
+},
+
+{
+    nr:"VERSAND",
+    text:"Versand",
+    preis:6.90
+}
+
+];
+
 
 function addGeraet(){
 
@@ -503,6 +537,41 @@ Gerät löschen
 
 `;
 
+    const select =
+div.querySelector(".artikelSelect");
+
+artikelListe.forEach(a=>{
+
+    const option=document.createElement("option");
+
+    option.value=a.nr;
+
+    option.textContent=
+        a.nr+" - "+a.text;
+
+    select.appendChild(option);
+
+});
+
+select.addEventListener("change",function(){
+
+    const artikel =
+        artikelListe.find(a=>a.nr===this.value);
+
+    if(!artikel) return;
+
+    div.querySelector(".beschreibung").value =
+        artikel.text;
+
+    div.querySelector(".preis").value =
+        artikel.preis.toFixed(2);
+
+    berechneWerkstattSumme();
+
+    aktualisierePositionen();
+
+});    
+
 div.querySelector(".removeBtn").onclick = function(){
 
 div.remove();
@@ -553,10 +622,12 @@ function addArtikel(){
     div.className="geraet";
 
     div.innerHTML=`
+    
+<select class="artikelSelect">
 
-<input
-class="artikelNr"
-placeholder="Artikelnummer">
+<option value="">Artikel auswählen</option>
+
+</select>
 
 <input
 class="beschreibung"
