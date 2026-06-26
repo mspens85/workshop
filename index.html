@@ -441,35 +441,35 @@ const app={
 
 const artikelListe = [
 
-{
-    nr:"CORK2",
-    text:"Korkdichtung Größe 2",
-    preis:4.50
-},
+    {
+        nr:"CORK2",
+        text:"Korkdichtung Größe 2",
+        preis:4.50
+    },
 
-{
-    nr:"CORK3",
-    text:"Korkdichtung Größe 3",
-    preis:4.50
-},
+    {
+        nr:"CORK3",
+        text:"Korkdichtung Größe 3",
+        preis:4.50
+    },
 
-{
-    nr:"NTM6",
-    text:"Montblanc Spezialfett",
-    preis:6.90
-},
+    {
+        nr:"NTM6",
+        text:"Montblanc Spezialfett",
+        preis:6.90
+    },
 
-{
-    nr:"POL",
-    text:"Handpolitur",
-    preis:15.00
-},
+    {
+        nr:"POL",
+        text:"Handpolitur",
+        preis:15.00
+    },
 
-{
-    nr:"VERSAND",
-    text:"Versand",
-    preis:6.90
-}
+    {
+        nr:"VERSAND",
+        text:"Versand",
+        preis:6.90
+    }
 
 ];
 
@@ -537,8 +537,7 @@ Gerät löschen
 
 `;
 
-    const select =
-div.querySelector(".artikelSelect");
+const select = div.querySelector(".artikelSelect");
 
 artikelListe.forEach(a=>{
 
@@ -546,8 +545,7 @@ artikelListe.forEach(a=>{
 
     option.value=a.nr;
 
-    option.textContent=
-        a.nr+" - "+a.text;
+    option.textContent=a.nr+" - "+a.text;
 
     select.appendChild(option);
 
@@ -564,13 +562,13 @@ select.addEventListener("change",function(){
         artikel.text;
 
     div.querySelector(".preis").value =
-        artikel.preis.toFixed(2);
+        artikel.preis;
 
     berechneWerkstattSumme();
 
     aktualisierePositionen();
 
-});    
+});
 
 div.querySelector(".removeBtn").onclick = function(){
 
@@ -623,6 +621,12 @@ function addArtikel(){
 
     div.innerHTML=`
     
+<select class="artikelSelect">
+
+<option value="">Artikel auswählen</option>
+
+</select>
+
 <select class="artikelSelect">
 
 <option value="">Artikel auswählen</option>
