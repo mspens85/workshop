@@ -581,11 +581,12 @@ function addArtikel(){
     leer.textContent = "Artikel wählen";
     select.appendChild(leer);
 
-    for(const key in artikelListe){
+    // Artikelliste füllen
+    for(const nr in artikelListe){
 
         const option = document.createElement("option");
-        option.value = key;
-        option.textContent = key + " – " + artikelListe[key].name;
+        option.value = nr;
+        option.textContent = nr + " – " + artikelListe[nr].name;
 
         select.appendChild(option);
 
@@ -598,26 +599,30 @@ function addArtikel(){
 
     // Preis
     const preis = document.createElement("input");
-    preis.className = "preis";
     preis.type = "number";
     preis.step = "0.01";
+    preis.min = "0";
+    preis.className = "preis";
     preis.placeholder = "Preis €";
 
     // Löschen
-    const loeschen = document.createElement("button");
-    loeschen.type = "button";
-    loeschen.className = "removeBtn";
-    loeschen.textContent = "Artikel löschen";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "removeBtn";
+    btn.textContent = "Artikel löschen";
 
-    // Artikel gewählt
-    select.addEventListener("change", function(){
+    // Auswahl geändert
+    select.addEventListener("change",function(){
 
         const artikel = artikelListe[this.value];
 
-        if(!artikel) return;
-
-        beschreibung.value = artikel.name;
-        preis.value = artikel.preis;
+        if(!artikel){
+            beschreibung.value = "";
+            preis.value = "";
+        }else{
+            beschreibung.value = artikel.name;
+            preis.value = artikel.preis;
+        }
 
         berechneWerkstattSumme();
         aktualisierePositionen();
@@ -625,24 +630,19 @@ function addArtikel(){
     });
 
     // Änderungen
-    menge.addEventListener("input", function(){
+    [menge,beschreibung,preis].forEach(el=>{
 
-        berechneWerkstattSumme();
-        aktualisierePositionen();
+        el.addEventListener("input",function(){
 
-    });
+            berechneWerkstattSumme();
+            aktualisierePositionen();
 
-    preis.addEventListener("input", function(){
-
-        berechneWerkstattSumme();
-        aktualisierePositionen();
+        });
 
     });
-
-    beschreibung.addEventListener("input", aktualisierePositionen);
 
     // Löschen
-    loeschen.addEventListener("click", function(){
+    btn.addEventListener("click",function(){
 
         div.remove();
 
@@ -656,7 +656,7 @@ function addArtikel(){
         select,
         beschreibung,
         preis,
-        loeschen
+        btn
     );
 
     container.appendChild(div);
