@@ -930,15 +930,24 @@ function drucken(){
 
 function druckeDokument(){
 
-    const titel =
-        app.modus==="angebot"
+    aktualisierePositionen();
+
+    const istAngebot = app.modus === "angebot";
+
+    const titel = istAngebot
         ? "Angebot"
         : "Rechnung";
 
+    const quellTabelle = istAngebot
+        ? document.querySelector("#positionsTabelle tbody")
+        : document.querySelector("#positionsTabelleRechnung tbody");
+
     const fenster = window.open("", "_blank");
 
-    const html = `
+    fenster.document.write(`
+
 <!DOCTYPE html>
+
 <html lang="de">
 
 <head>
@@ -952,8 +961,8 @@ function druckeDokument(){
 body{
 
     font-family:Arial,Helvetica,sans-serif;
-    padding:35px;
-    font-size:14px;
+    margin:40px;
+    font-size:13px;
     line-height:1.4;
 
 }
@@ -963,19 +972,18 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:flex-start;
-    margin-bottom:35px;
+    margin-bottom:40px;
 
 }
 
 .logo{
 
-    height:80px;
+    height:90px;
 
 }
 
 .kunde{
 
-    margin-top:30px;
     margin-bottom:35px;
 
 }
@@ -990,14 +998,14 @@ table{
 
     width:100%;
     border-collapse:collapse;
-    margin-top:20px;
+    margin-top:25px;
 
 }
 
 th{
 
-    text-align:left;
     border-bottom:2px solid black;
+    text-align:left;
     padding:6px;
 
 }
@@ -1012,6 +1020,15 @@ td{
 .rechts{
 
     text-align:right;
+
+}
+
+.summe{
+
+    margin-top:20px;
+    text-align:right;
+    font-size:18px;
+    font-weight:bold;
 
 }
 
@@ -1052,18 +1069,18 @@ td{
 
 </div>
 
-<table id="druckTabelle">
+<table>
 
 <thead>
 
 <tr>
 
-<th>Pos.</th>
-<th>Art.-Nr.</th>
+<th style="width:50px;">Pos.</th>
+<th style="width:90px;">Art.-Nr.</th>
 <th>Beschreibung</th>
-<th>Menge</th>
-<th class="rechts">Preis</th>
-<th class="rechts">Gesamt</th>
+<th style="width:70px;">Menge</th>
+<th style="width:120px;" class="rechts">Einzelpreis</th>
+<th style="width:120px;" class="rechts">Gesamt</th>
 
 </tr>
 
@@ -1071,19 +1088,36 @@ td{
 
 <tbody>
 
+${quellTabelle.innerHTML}
+
 </tbody>
 
 </table>
 
+<div class="summe">
+
+Gesamt:
+${document.getElementById("werkstattSumme").innerText}
+
+</div>
+
 </body>
 
 </html>
-`;
 
-    fenster.document.write(html);
+`);
+
     fenster.document.close();
 
-}       
+    fenster.onload = function(){
+
+        fenster.focus();
+        fenster.print();
+        fenster.close();
+
+    };
+
+}
 document
 .getElementById("addGeraetBtn")
 .addEventListener("click",addGeraet);
