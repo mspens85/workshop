@@ -141,6 +141,37 @@ h1{
 
 }   
 
+    .modell{
+
+    font-weight:bold;
+    font-size:14px;
+
+    margin-bottom:8px;
+
+}
+
+.arbeitenPrint{
+
+    line-height:1.6;
+
+}
+
+.notizTitel{
+
+    margin-top:10px;
+
+    font-weight:bold;
+
+}
+
+.notiz{
+
+    font-style:italic;
+
+    color:#555;
+
+}
+
 select,
 button,
 input,
@@ -717,9 +748,37 @@ ${preis.toFixed(2).replace(".",",")} €
 
 </td>
 
-<td style="text-align:right">
+<td>
 
-${preis.toFixed(2).replace(".",",")} €
+<div class="modell">
+
+${modell}
+
+</div>
+
+<div class="arbeitenPrint">
+
+${arbeiten.map(a=>"• "+a).join("<br>")}
+
+</div>
+
+${notizen
+?`
+
+<div class="notizTitel">
+
+Notiz:
+
+</div>
+
+<div class="notiz">
+
+${notizen}
+
+</div>
+
+`
+:""}
 
 </td>
 
