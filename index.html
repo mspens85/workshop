@@ -470,6 +470,81 @@ const app={
 
 };
 
+
+const text = {
+
+de:{
+
+    werkstatt:"Werkstattzettel",
+    angebot:"Angebot",
+    rechnung:"Rechnung",
+    eigenbeleg:"Eigenbeleg",
+
+    kunde:"Kundendaten",
+    geraete:"Geräte",
+    artikel:"Werkzeuge / Artikel",
+
+    modell:"Modell",
+    notizen:"Notizen",
+    preis:"Preis €",
+
+    addGeraet:"+ Gerät hinzufügen",
+    addArtikel:"+ Artikel hinzufügen",
+
+    pos:"Pos.",
+    artikelNr:"Art.-Nr.",
+    beschreibung:"Beschreibung",
+    menge:"Menge",
+    einzelpreis:"Einzelpreis",
+    gesamt:"Gesamt"
+
+},
+
+en:{
+
+    werkstatt:"Workshop Sheet",
+    angebot:"Quotation",
+    rechnung:"Invoice",
+    eigenbeleg:"Internal Receipt",
+
+    kunde:"Customer",
+    geraete:"Pens",
+    artikel:"Tools / Items",
+
+    modell:"Model",
+    notizen:"Notes",
+    preis:"Price €",
+
+    addGeraet:"+ Add Pen",
+    addArtikel:"+ Add Item",
+
+    pos:"Pos.",
+    artikelNr:"Item No.",
+    beschreibung:"Description",
+    menge:"Qty",
+    einzelpreis:"Unit Price",
+    gesamt:"Total"
+
+}
+
+};
+
+function updateSprache(){
+
+    app.sprache =
+        document.getElementById("sprache").value;
+
+    const t = text[app.sprache];
+
+    titel.werkstatt = t.werkstatt;
+    titel.angebot = t.angebot;
+    titel.rechnung = t.rechnung;
+    titel.eigenbeleg = t.eigenbeleg;
+
+    updateModus();
+
+}       
+
 const artikelListe = {
   "CORK2": { name: "Dichtkorken Größe 2", preis: 20 },
   "CORK4": { name: "Dichtkorken Größe 4", preis: 20 },
@@ -951,6 +1026,10 @@ function updateModus(){
 document
 .getElementById("modus")
 .addEventListener("change",updateModus);
+
+document
+.getElementById("sprache")
+.addEventListener("change",updateSprache);       
 
 document
 .getElementById("resetBtn")
