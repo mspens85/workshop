@@ -504,6 +504,10 @@ de:{
     zahlungTitel:"Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer an folgendes Konto:",
     angebotHinweis:"Dieses Angebot ist unverbindlich und 14 Tage gültig."
 
+    datum:"Datum",
+    angebotNr:"Angebots-Nr.",
+    rechnungNr:"Rechnungs-Nr.",
+
 },
 
 en:{
@@ -536,6 +540,10 @@ en:{
     gesamtbetrag:"Total",
     zahlungTitel:"Please transfer the total amount quoting the invoice number to the following bank account:",
     angebotHinweis:"This quotation is valid for 14 days and is non-binding."
+
+    datum:"Date",
+    angebotNr:"Quotation No.",
+    rechnungNr:"Invoice No.",
 
 
 }
@@ -1113,6 +1121,10 @@ function druckeDokument(){
 
     const t = text[app.sprache];
 
+    const nummerLabel = istAngebot
+    ? t.angebotNr
+    : t.rechnungNr;
+
     const istAngebot = app.modus === "angebot";
 
 const titel = istAngebot
@@ -1455,13 +1467,15 @@ td:nth-child(6){
 <table>
 
 <tr>
-<td><b>Datum:</b></td>
+<td class="kopfLabel">
+<b>${t.datum}:</b>
+</td>
 <td>${document.getElementById("datum").value}</td>
 </tr>
 
 <tr>
 <td class="kopfLabel">
-<b>${titel} Nr.:</b>
+<b>${nummerLabel}</b>
 </td>
 <td>${document.getElementById("belegnummer").value}</td>
 </tr>
