@@ -498,6 +498,12 @@ de:{
     einzelpreis:"Einzelpreis",
     gesamt:"Gesamt"
 
+    zwischenSumme:"Zwischensumme",
+    umsatzsteuer:"Umsatzsteuer",
+    gesamtbetrag:"Gesamtbetrag",
+    zahlungTitel:"Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer an folgendes Konto:",
+    angebotHinweis:"Dieses Angebot ist unverbindlich und 14 Tage gültig."
+
 },
 
 en:{
@@ -524,6 +530,13 @@ en:{
     menge:"Qty",
     einzelpreis:"Unit Price",
     gesamt:"Total"
+
+     zwischenSumme:"Subtotal",
+    umsatzsteuer:"VAT",
+    gesamtbetrag:"Total",
+    zahlungTitel:"Please transfer the total amount quoting the invoice number to the following bank account:",
+    angebotHinweis:"This quotation is valid for 14 days and is non-binding."
+
 
 }
 
@@ -556,6 +569,22 @@ function updateSprache(){
     document.getElementById("addArtikelBtn").innerText =
         t.addArtikel;
 
+const th = document.querySelectorAll("#positionsTabelle th");
+const thR = document.querySelectorAll("#positionsTabelleRechnung th");
+
+const tabellen = [th, thR];
+
+tabellen.forEach(headers => {
+
+    headers[0].innerText = t.pos;
+    headers[1].innerText = t.artikelNr;
+    headers[2].innerText = t.beschreibung;
+    headers[3].innerText = t.menge;
+    headers[4].innerText = t.einzelpreis;
+    headers[5].innerText = t.gesamt;
+
+});
+    
     updateModus();
 
 }
@@ -1078,6 +1107,8 @@ function druckeDokument(){
 
     aktualisierePositionen();
 
+    const t = text[app.sprache];
+
     const istAngebot = app.modus === "angebot";
 
     const titel = istAngebot
@@ -1460,12 +1491,12 @@ MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg | Deutschland
 
 <tr>
 
-<th>Pos.</th>
-<th>Art.-Nr.</th>
-<th>Beschreibung</th>
-<th>Menge</th>
-<th class="rechts">Einzelpreis</th>
-<th class="rechts">Gesamt</th>
+<th>${t.pos}</th>
+<th>${t.artikelNr}</th>
+<th>${t.beschreibung}</th>
+<th>${t.menge}</th>
+<th class="rechts">${t.einzelpreis}</th>
+<th class="rechts">${t.gesamt}</th>
 
 </tr>
 
