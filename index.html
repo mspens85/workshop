@@ -1033,42 +1033,62 @@ table{
 
 }
 
+/* Pos */
+
 th:nth-child(1),
 td:nth-child(1){
 
-    width:45px;
+    width:5%;
     text-align:center;
 
 }
+
+/* Artikelnummer */
 
 th:nth-child(2),
 td:nth-child(2){
 
-    width:90px;
+    width:12%;
     text-align:center;
 
 }
+
+/* Beschreibung */
+
+th:nth-child(3),
+td:nth-child(3){
+
+    width:52%;
+    text-align:left;
+
+}
+
+/* Menge */
 
 th:nth-child(4),
 td:nth-child(4){
 
-    width:60px;
+    width:8%;
     text-align:center;
 
 }
 
+/* Einzelpreis */
+
 th:nth-child(5),
 td:nth-child(5){
 
-    width:110px;
+    width:11.5%;
     text-align:right;
 
 }
 
+/* Gesamt */
+
 th:nth-child(6),
 td:nth-child(6){
 
-    width:110px;
+    width:11.5%;
     text-align:right;
 
 }
@@ -1086,11 +1106,11 @@ th{
 
 }
 
-td{
+td:nth-child(3){
 
-    padding:7px 6px;
-    border-bottom:1px solid #ddd;
-    vertical-align:top;
+    white-space:normal;
+    word-break:break-word;
+    line-height:1.45;
 
 }
 .rechts{
