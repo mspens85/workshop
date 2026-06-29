@@ -1187,13 +1187,57 @@ td:nth-child(3){
 
 }
 
+.summenTabelle{
+
+    width:320px;
+
+    margin-left:auto;
+
+    border-collapse:collapse;
+
+}
+
+.summenTabelle td{
+
+    border:none;
+
+    padding:6px 0;
+
+}
+
+.summenTabelle td:last-child{
+
+    text-align:right;
+
+    width:120px;
+
+}
+
+.gesamtZeile td{
+
+    border-top:2px solid black;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    padding-top:10px;
+
+}
+
 .zahlung{
 
     margin-top:30px;
-    margin-bottom:35px;
+
+    padding:12px 15px;
+
+    border:1px solid #bbb;
+
+    background:#fafafa;
+
+    line-height:1.5;
 
     font-size:12px;
-    line-height:1.5;
 
 }
 
@@ -1300,8 +1344,39 @@ ${quellTabelle.innerHTML}
 
 <div class="summe">
 
-Gesamt:
+<table class="summenTabelle">
+
+<tr>
+
+<td>Zwischensumme</td>
+
+<td class="rechts">
 ${document.getElementById("werkstattSumme").innerText}
+</td>
+
+</tr>
+
+<tr>
+
+<td>Umsatzsteuer</td>
+
+<td class="rechts">
+entfällt (§ 19 UStG)
+</td>
+
+</tr>
+
+<tr class="gesamtZeile">
+
+<td>Gesamtbetrag</td>
+
+<td class="rechts">
+${document.getElementById("werkstattSumme").innerText}
+</td>
+
+</tr>
+
+</table>
 
 </div>
 
@@ -1318,7 +1393,7 @@ Der Versand erfolgt nach Zahlungseingang.
 
 <br><br>
 
-Gemäß § 19 Abs. 1 UStG wird keine Umsatzsteuer ausgewiesen.
+Umsatzsteuer wird gemäß § 19 Abs. 1 UStG nicht ausgewiesen.
 
 </div>
 
