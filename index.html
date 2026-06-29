@@ -301,7 +301,7 @@ button{
 <!-- Werkstatt -->
 <div id="werkstatt" class="section active">
 
-    <h2>Kundendaten</h2>
+    <h2 id="kundeTitel">Kundendaten</h2>
 
     <div class="kundeGrid">
 
@@ -335,7 +335,7 @@ button{
 
     </div>
 
-    <h2 style="margin-top:35px;">Geräte</h2>
+    <h2 id="geraeteTitel" style="margin-top:35px;">Geräte</h2>
 
     <div id="geraeteContainer">
 
@@ -345,7 +345,7 @@ button{
         + Gerät hinzufügen
     </button>
 
-<h2 style="margin-top:35px;">Werkzeuge / Artikel</h2>
+<h2 id="artikelTitel" style="margin-top:35px;">Werkzeuge / Artikel</h2>
 
 <div id="werkzeugContainer">
 
@@ -541,9 +541,24 @@ function updateSprache(){
     titel.rechnung = t.rechnung;
     titel.eigenbeleg = t.eigenbeleg;
 
-    updateModus();
+    document.getElementById("kundeTitel").innerText =
+        t.kunde;
 
-}       
+    document.getElementById("geraeteTitel").innerText =
+        t.geraete;
+
+    document.getElementById("artikelTitel").innerText =
+        t.artikel;
+
+    document.getElementById("addGeraetBtn").innerText =
+        t.addGeraet;
+
+    document.getElementById("addArtikelBtn").innerText =
+        t.addArtikel;
+
+    updateModus();
+    updateSprache();
+}     
 
 const artikelListe = {
   "CORK2": { name: "Dichtkorken Größe 2", preis: 20 },
