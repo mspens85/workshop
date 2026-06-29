@@ -729,25 +729,6 @@ function aktualisierePositionen(){
 <td>${pos}</td>
 
 <td>REPA</td>
-
-<td>
-
-<b>${modell}</b><br>
-
-${arbeiten.join(", ")}
-
-${notizen ? "<br><i>"+notizen+"</i>" : ""}
-
-</td>
-
-<td>1</td>
-
-<td style="text-align:right">
-
-${preis.toFixed(2).replace(".",",")} €
-
-</td>
-
 <td>
 
 <div class="modell">
@@ -762,8 +743,7 @@ ${arbeiten.map(a=>"• "+a).join("<br>")}
 
 </div>
 
-${notizen
-?`
+${notizen ? `
 
 <div class="notizTitel">
 
@@ -777,8 +757,21 @@ ${notizen}
 
 </div>
 
-`
-:""}
+` : ""}
+
+</td>
+
+<td>1</td>
+
+<td style="text-align:right">
+
+${preis.toFixed(2).replace(".",",")} €
+
+</td>
+
+<td style="text-align:right">
+
+${preis.toFixed(2).replace(".",",")} €
 
 </td>
 
