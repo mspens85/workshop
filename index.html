@@ -1515,21 +1515,21 @@ ${quellTabelle.innerHTML}
 <table class="summenTabelle">
 
 <tr>
-<td>Zwischensumme</td>
+<td>${t.zwischenSumme}</td>
 <td class="rechts">
 ${document.getElementById("werkstattSumme").innerText}
 </td>
 </tr>
 
 <tr>
-<td>Umsatzsteuer</td>
+<td>${t.umsatzsteuer}</td>
 <td class="rechts">
 0,00 €
 </td>
 </tr>
 
 <tr class="gesamtZeile">
-<td>Gesamtbetrag</td>
+<td>${t.gesamtbetrag}</td>
 <td class="rechts">
 ${document.getElementById("werkstattSumme").innerText}
 </td>
@@ -1543,7 +1543,7 @@ ${!istAngebot ? `
 
 <div class="zahlung">
 
-<b>Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer an folgendes Konto:</b>
+<b>${t.zahlungTitel}</b>
 
 <br><br>
 
@@ -1567,7 +1567,7 @@ Gemäß § 19 Abs. 1 UStG wird keine Umsatzsteuer ausgewiesen.
 ` : `
 <div class="zahlung">
 
-Dieses Angebot ist unverbindlich und 14 Tage gültig.
+${t.angebotHinweis}
 
 </div>
 `}
