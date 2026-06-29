@@ -1115,9 +1115,9 @@ function druckeDokument(){
 
     const istAngebot = app.modus === "angebot";
 
-    const titel = istAngebot
-        ? "Angebot"
-        : "Rechnung";
+const titel = istAngebot
+    ? t.angebot
+    : t.rechnung;
 
     const quellTabelle = istAngebot
         ? document.querySelector("#positionsTabelle tbody")
