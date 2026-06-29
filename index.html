@@ -1033,6 +1033,16 @@ td{
 
 }
 
+.zahlung{
+
+    margin-top:30px;
+    margin-bottom:35px;
+
+    font-size:12px;
+    line-height:1.5;
+
+}
+
 .footer{
 
     margin-top:50px;
@@ -1130,6 +1140,25 @@ Gesamt:
 ${document.getElementById("werkstattSumme").innerText}
 
 </div>
+
+${!istAngebot ? `
+
+<div class="zahlung">
+
+Bitte überweisen Sie den Gesamtbetrag unter Angabe der Rechnungsnummer
+an das unten angegebene Konto oder per PayPal an <b>@penmarco</b>.
+
+<br><br>
+
+Der Versand erfolgt nach Zahlungseingang.
+
+<br><br>
+
+Gemäß § 19 Abs. 1 UStG wird keine Umsatzsteuer ausgewiesen.
+
+</div>
+
+` : ""}
 
 <div class="footer">
 
