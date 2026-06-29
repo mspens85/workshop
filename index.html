@@ -976,6 +976,34 @@ body{
 
 }
 
+.kopfRechts{
+
+    text-align:right;
+
+}
+
+.kopfRechts h1{
+
+    margin:0 0 18px 0;
+    font-size:28px;
+
+}
+
+.kopfRechts table{
+
+    width:auto;
+    margin-left:auto;
+    border-collapse:collapse;
+
+}
+
+.kopfRechts td{
+
+    border:none;
+    padding:2px 0 2px 12px;
+
+}
+
 .logo{
 
     height:90px;
@@ -984,8 +1012,10 @@ body{
 
 .kunde{
 
-    margin-bottom:35px;
-    line-height:1.35;
+    margin-top:40px;
+    margin-bottom:40px;
+
+    line-height:1.5;
 
 }
 
@@ -1080,14 +1110,24 @@ td{
 
 </div>
 
-<div style="text-align:right;">
+<div class="kopfRechts">
 
-<h2 style="margin:0 0 15px 0;">${titel}</h2>
+<h1>${titel}</h1>
 
-<div><b>${document.getElementById("datum").value}</b></div>
+<table>
 
-<div style="margin-top:6px;">
-${document.getElementById("belegnummer").value}
+<tr>
+<td><b>Datum:</b></td>
+<td>${document.getElementById("datum").value}</td>
+</tr>
+
+<tr>
+<td><b>${titel} Nr.:</b></td>
+<td>${document.getElementById("belegnummer").value}</td>
+</tr>
+
+</table>
+
 </div>
 
 </div>
