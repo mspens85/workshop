@@ -985,6 +985,7 @@ body{
 .kunde{
 
     margin-bottom:35px;
+    line-height:1.35;
 
 }
 
@@ -1048,13 +1049,19 @@ td{
 
 <div style="text-align:right;">
 
-<h2>${titel}</h2>
+<h2 style="margin:0 0 15px 0;">${titel}</h2>
 
-<div>${document.getElementById("datum").value}</div>
+<div><b>${document.getElementById("datum").value}</b></div>
 
-<div>${document.getElementById("belegnummer").value}</div>
+<div style="margin-top:6px;">
+${document.getElementById("belegnummer").value}
+</div>
 
 </div>
+
+<div style="font-size:10px;color:#666;margin-bottom:8px;">
+
+MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg | Deutschland
 
 </div>
 
