@@ -782,6 +782,85 @@ const artikelListe = {
 };
 
 
+const arbeitenText = {
+
+    "Reinigung": {
+        de: "Reinigung",
+        en: "Cleaning"
+    },
+
+    "Polieren": {
+        de: "Polieren",
+        en: "Polishing"
+    },
+
+    "Kolben gangbar machen": {
+        de: "Kolben gangbar machen",
+        en: "Free piston mechanism"
+    },
+
+    "Korkdichtung erneuern": {
+        de: "Korkdichtung erneuern",
+        en: "Replace cork seal"
+    },
+
+    "Kolbendichtung erneuern": {
+        de: "Kolbendichtung erneuern",
+        en: "Replace piston seal"
+    },
+
+    "Feder richten": {
+        de: "Feder richten",
+        en: "Nib alignment"
+    },
+
+    "Feder schleifen": {
+        de: "Feder schleifen",
+        en: "Nib grinding"
+    },
+
+    "Feder ersetzen": {
+        de: "Feder ersetzen",
+        en: "Replace nib"
+    },
+
+    "Tintenleiter reinigen": {
+        de: "Tintenleiter reinigen",
+        en: "Clean feed"
+    },
+
+    "Tintenleiter ersetzen": {
+        de: "Tintenleiter ersetzen",
+        en: "Replace feed"
+    },
+
+    "Kappe reparieren": {
+        de: "Kappe reparieren",
+        en: "Repair cap"
+    },
+
+    "Schaft reparieren": {
+        de: "Schaft reparieren",
+        en: "Repair barrel"
+    },
+
+    "Clip reparieren": {
+        de: "Clip reparieren",
+        en: "Repair clip"
+    },
+
+    "Mechanik reparieren": {
+        de: "Mechanik reparieren",
+        en: "Repair mechanism"
+    },
+
+    "Sonstige Arbeiten": {
+        de: "Sonstige Arbeiten",
+        en: "Other work"
+    }
+
+};       
+
 function addGeraet(){
 
     const container = document.getElementById("geraeteContainer");
@@ -998,8 +1077,16 @@ function aktualisierePositionen(){
 
         let arbeiten=[];
 
-        geraet.querySelectorAll(".arbeiten input:checked")
-        .forEach(cb=>arbeiten.push(cb.parentElement.innerText));
+geraet.querySelectorAll(".arbeiten input:checked")
+.forEach(cb => {
+
+    const arbeit = cb.parentElement.innerText.trim();
+
+    arbeiten.push(
+        arbeitenText[arbeit]?.[app.sprache] || arbeit
+    );
+
+});
 
         if(modell==="" && preis===0) return;
 
