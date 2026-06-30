@@ -176,7 +176,7 @@ h1{
 
     display:grid;
 
-    grid-template-columns:4fr 120px 140px;
+    grid-template-columns:1fr 120px 140px;
 
     gap:10px;
 
@@ -495,7 +495,7 @@ placeholder="Grund des Eigenbelegs">
 
 <div class="eigenbelegPos" style="font-weight:bold;">
 
-<div>Modell</div>
+<div>Beschreibung des Ankaufs</div>
 <div>Preis</div>
 <div></div>
 
@@ -1981,16 +1981,17 @@ PayPal:<br>
     const div = document.createElement("div");
     div.className = "eigenbelegPos";
 
-    div.innerHTML = `
+   div.innerHTML = `
 
 <input
-class="ebModell"
-placeholder="Modell / Beschreibung">
+class="ebBeschreibung"
+placeholder="Beschreibung des Ankaufs">
 
 <input
 class="ebPreis"
 type="number"
 step="0.01"
+min="0"
 placeholder="Preis">
 
 <button
