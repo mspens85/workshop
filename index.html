@@ -1437,18 +1437,62 @@ function druckeDokument(){
     aktualisierePositionen();
 
     const istAngebot = app.modus === "angebot";
+    const istEigenbeleg = app.modus === "eigenbeleg";
     
     const t = text[app.sprache];
 
     const nummerLabel = istAngebot
     ? t.angebotNr
     : t.rechnungNr;
+    
+const titel =
+    istEigenbeleg
+        ? "Eigenbeleg"
+        : istAngebot
+            ? t.angebot
+            : t.rechnung;
 
-const titel = istAngebot
-    ? t.angebot
-    : t.rechnung;
+let eigenbelegHTML = "";
 
-    const quellTabelle = istAngebot
+if(istEigenbeleg){
+
+    document
+        .querySelectorAll("#eigenbelegPositionen .eigenbelegPos")
+        .forEach((pos,index)=>{
+
+            const beschreibung =
+                pos.querySelector(".ebBeschreibung").value;
+
+            const preis =
+                parseFloat(
+                    pos.querySelector(".ebPreis").value
+                ) || 0;
+
+            eigenbelegHTML += `
+
+<tr>
+
+<td>${index+1}</td>
+
+<td>${beschreibung}</td>
+
+<td style="text-align:right">
+
+${preis.toFixed(2).replace(".",",")} €
+
+</td>
+
+</tr>
+
+`;
+
+        });
+
+}
+    
+const quellTabelle = istEigenbeleg
+    ? { innerHTML: eigenbelegHTML }
+    : istAngebot
         ? document.querySelector("#positionsTabelle tbody")
         : document.querySelector("#positionsTabelleRechnung tbody");
 
