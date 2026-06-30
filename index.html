@@ -508,12 +508,19 @@ de:{
     angebotNr:"Angebots-Nr.",
     rechnungNr:"Rechnungs-Nr.",
 
+    paypalText:"oder per PayPal an",
+    versandText:"Der Versand erfolgt nach Zahlungseingang.",
+    ustHinweis:"Gemäß § 19 Abs. 1 UStG wird keine Umsatzsteuer ausgewiesen.",
+    kontakt:"Kontakt",
+    bank:"Bankverbindung",
+    land:"Deutschland",
+
 },
 
 en:{
 
     werkstatt:"Workshop Sheet",
-    angebot:"Quotation",
+    angebot:"Quote",
     rechnung:"Invoice",
     eigenbeleg:"Internal Receipt",
 
@@ -545,7 +552,13 @@ en:{
     angebotNr:"Quotation No.",
     rechnungNr:"Invoice No.",
 
-
+    paypalText:"or via PayPal to",
+    versandText:"Shipping will take place after receipt of payment.",
+    ustHinweis:"No VAT is charged in accordance with § 19 para. 1 German VAT Act (UStG).",
+    kontakt:"Contact",
+    bank:"Bank Details",
+    land:"Germany",
+        
 }
 
 };
@@ -1488,7 +1501,7 @@ td:nth-child(6){
 
 <div style="font-size:10px;color:#666;margin-bottom:8px;">
 
-MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg | Deutschland
+MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg | ${t.land}
 
 </div>
 
@@ -1570,15 +1583,15 @@ BIC: XXXXXXXX
 
 <br><br>
 
-oder per PayPal an <b>@penmarco</b>
+${t.paypalText} <b>@penmarco</b>
 
 <br><br>
 
-Der Versand erfolgt nach Zahlungseingang.
+${t.versandText}
 
 <br><br>
 
-Gemäß § 19 Abs. 1 UStG wird keine Umsatzsteuer ausgewiesen.
+${t.ustHinweis}
 
 </div>
 
@@ -1599,13 +1612,13 @@ ${t.angebotHinweis}
 Marco Schrage<br>
 Glindweg 13<br>
 22303 Hamburg<br>
-Deutschland
+${t.land}
 
 </div>
 
 <div>
 
-<h4>Kontakt</h4>
+<h4>${t.kontakt}</h4>
 
 E-Mail:<br>
 info@mspens.de
@@ -1619,7 +1632,7 @@ www.mspens.de
 
 <div>
 
-<h4>Bankverbindung</h4>
+<h4>${t.bank}</h4>
 
 IBAN:<br>
 DE•• •••• •••• •••• •••• ••
