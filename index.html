@@ -2135,9 +2135,81 @@ h1{
 
 <body>
 
-<h1>Eigenbeleg</h1>
+<div class="header">
 
-<div class="info">
+    <div>
+
+        <img src="logo.png" class="logo">
+
+    </div>
+
+    <div class="kopfRechts">
+
+        <h1>Eigenbeleg</h1>
+
+        <table>
+
+            <tr>
+
+                <td><b>Datum:</b></td>
+
+                <td>${document.getElementById("ebDatum").value}</td>
+
+            </tr>
+
+            <tr>
+
+                <td><b>Eigenbeleg Nr.:</b></td>
+
+                <td>${document.getElementById("ebNummer").value}</td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+<div style="font-size:10px;color:#666;margin-bottom:20px;">
+
+MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg | Deutschland
+
+</div>
+
+<div class="kunde">
+
+<h3>Verkäufer</h3>
+
+<div>
+
+${document.getElementById("ebEmpfaenger").value}
+
+</div>
+
+<div>
+
+${document.getElementById("ebStrasse").value}
+
+</div>
+
+<div>
+
+${document.getElementById("ebOrt").value}
+
+</div>
+
+</div>
+
+<div style="margin-top:25px;">
+
+<b>Grund des Ankaufs</b>
+
+<br><br>
+
+${document.getElementById("ebGrund").value}
+
+</div>
 
 <b>Datum:</b>
 ${document.getElementById("ebDatum").value}
@@ -2177,10 +2249,23 @@ ${positionen}
 
 </table>
 
-<div class="summe">
+<div style="display:flex;justify-content:flex-end;margin-top:30px;">
 
-Gesamt:
+<table class="summenTabelle">
+
+<tr class="gesamtZeile">
+
+<td>Gesamtbetrag</td>
+
+<td>
+
 ${document.getElementById("eigenbelegSumme").innerText}
+
+</td>
+
+</tr>
+
+</table>
 
 </div>
 
