@@ -176,7 +176,7 @@ h1{
 
     display:grid;
 
-    grid-template-columns:3fr 2fr 70px 100px 130px;
+    grid-template-columns:4fr 120px 140px;
 
     gap:10px;
 
@@ -1987,17 +1987,7 @@ PayPal:<br>
 
 <input
 class="ebModell"
-placeholder="Modell">
-
-<input
-class="ebSeriennummer"
-placeholder="Seriennummer">
-
-<input
-class="ebMenge"
-type="number"
-value="1"
-min="1">
+placeholder="Modell / Beschreibung">
 
 <input
 class="ebPreis"
@@ -2043,18 +2033,13 @@ function berechneEigenbeleg(){
     document
         .querySelectorAll("#eigenbelegPositionen .geraet")
         .forEach(pos=>{
+            
+const preis =
+    parseFloat(
+        pos.querySelector(".ebPreis").value
+    ) || 0;
 
-            const menge =
-                parseFloat(
-                    pos.querySelector(".ebMenge").value
-                ) || 0;
-
-            const preis =
-                parseFloat(
-                    pos.querySelector(".ebPreis").value
-                ) || 0;
-
-            summe += menge * preis;
+summe += preis;
 
         });
 
