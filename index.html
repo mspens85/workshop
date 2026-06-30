@@ -1421,7 +1421,15 @@ updateModus();
        
 function drucken(){
 
-    druckeDokument();
+    if(app.modus==="eigenbeleg"){
+
+        druckeEigenbeleg();
+
+    }else{
+
+        druckeDokument();
+
+    }
 
 }
 
@@ -2009,6 +2017,200 @@ PayPal:<br>
     };
 
 }
+
+function druckeEigenbeleg(){
+
+    let positionen = "";
+
+    document
+        .querySelectorAll("#eigenbelegPositionen .eigenbelegPos")
+        .forEach((pos,index)=>{
+
+            const beschreibung =
+                pos.querySelector(".ebBeschreibung").value;
+
+            const preis =
+                parseFloat(
+                    pos.querySelector(".ebPreis").value
+                ) || 0;
+
+            positionen += `
+<tr>
+<td>${index+1}</td>
+<td>${beschreibung}</td>
+<td style="text-align:right">
+${preis.toFixed(2).replace(".",",")} €
+</td>
+</tr>
+`;
+
+        });
+
+    const fenster = window.open("", "_blank");
+
+    fenster.document.write(`
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Eigenbeleg</title>
+
+<style>
+
+body{
+
+    font-family:Arial,Helvetica,sans-serif;
+    margin:35px;
+    color:#222;
+
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+th,td{
+
+    border:1px solid #bbb;
+    padding:8px;
+
+}
+
+h1{
+
+    margin-bottom:25px;
+
+}
+
+.info{
+
+    margin-bottom:25px;
+    line-height:1.6;
+
+}
+
+.summe{
+
+    margin-top:25px;
+
+    text-align:right;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+.unterschriften{
+
+    margin-top:70px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+}
+
+.linie{
+
+    width:260px;
+
+    border-top:1px solid black;
+
+    padding-top:6px;
+
+    text-align:center;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Eigenbeleg</h1>
+
+<div class="info">
+
+<b>Datum:</b>
+${document.getElementById("ebDatum").value}
+
+<br>
+
+<b>Eigenbeleg-Nr.:</b>
+${document.getElementById("ebNummer").value}
+
+<br><br>
+
+<b>Verkäufer:</b><br>
+
+${document.getElementById("ebEmpfaenger").value}<br>
+${document.getElementById("ebStrasse").value}<br>
+${document.getElementById("ebOrt").value}
+
+<br><br>
+
+<b>Grund des Ankaufs:</b><br>
+
+${document.getElementById("ebGrund").value}
+
+</div>
+
+<table>
+
+<tr>
+
+<th>Pos.</th>
+<th>Beschreibung</th>
+<th>Preis</th>
+
+</tr>
+
+${positionen}
+
+</table>
+
+<div class="summe">
+
+Gesamt:
+${document.getElementById("eigenbelegSumme").innerText}
+
+</div>
+
+<div class="unterschriften">
+
+<div class="linie">
+Verkäufer
+</div>
+
+<div class="linie">
+MS Pens
+</div>
+
+</div>
+
+</body>
+
+</html>
+`);
+
+    fenster.document.close();
+
+    fenster.onload = function(){
+
+        fenster.print();
+        fenster.close();
+
+    };
+
+}       
 
        function addEigenbelegPosition(){
 
