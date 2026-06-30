@@ -2048,7 +2048,8 @@ ${preis.toFixed(2).replace(".",",")} €
 
     const fenster = window.open("", "_blank");
 
-    fenster.document.write(`
+fenster.document.write(`
+
 <!DOCTYPE html>
 <html lang="de">
 
@@ -2065,6 +2066,74 @@ body{
     font-family:Arial,Helvetica,sans-serif;
     margin:35px;
     color:#222;
+    font-size:12px;
+    line-height:1.5;
+
+}
+
+.header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:30px;
+
+}
+
+.logo{
+
+    height:85px;
+
+}
+
+.kopfRechts{
+
+    text-align:right;
+
+}
+
+.kopfRechts h1{
+
+    margin:0;
+    font-size:30px;
+
+}
+
+.kopfRechts table{
+
+    border-collapse:collapse;
+    width:auto;
+    margin-left:auto;
+
+}
+
+.kopfRechts td{
+
+    border:none;
+    padding:2px 0 2px 12px;
+
+}
+
+.absender{
+
+    font-size:10px;
+    color:#666;
+    margin-bottom:20px;
+
+}
+
+.block{
+
+    margin-bottom:25px;
+
+}
+
+.block h3{
+
+    margin:0 0 8px 0;
+
+    border-bottom:1px solid #999;
+    padding-bottom:4px;
 
 }
 
@@ -2072,60 +2141,91 @@ table{
 
     width:100%;
     border-collapse:collapse;
+    margin-top:20px;
 
 }
 
-th,td{
+th{
 
-    border:1px solid #bbb;
+    background:#f5f5f5;
+    border-top:2px solid #222;
+    border-bottom:2px solid #222;
     padding:8px;
 
 }
 
-h1{
+td{
 
-    margin-bottom:25px;
-
-}
-
-.info{
-
-    margin-bottom:25px;
-    line-height:1.6;
+    padding:8px;
+    border-bottom:1px solid #ddd;
 
 }
 
-.summe{
+th:nth-child(1),
+td:nth-child(1){
 
-    margin-top:25px;
+    width:45px;
+    text-align:center;
 
+}
+
+th:nth-child(3),
+td:nth-child(3){
+
+    width:120px;
     text-align:right;
 
-    font-size:20px;
+}
+
+.summen{
+
+    display:flex;
+    justify-content:flex-end;
+    margin-top:25px;
+
+}
+
+.summen table{
+
+    width:300px;
+
+}
+
+.summen td{
+
+    border:none;
+
+}
+
+.gesamt{
+
+    border-top:2px solid black;
 
     font-weight:bold;
+    font-size:16px;
 
 }
 
 .unterschriften{
 
-    margin-top:70px;
-
     display:flex;
-
     justify-content:space-between;
+    margin-top:80px;
 
 }
 
-.linie{
+.signatur{
 
     width:260px;
-
-    border-top:1px solid black;
-
-    padding-top:6px;
-
     text-align:center;
+
+}
+
+.signatur hr{
+
+    border:none;
+    border-top:1px solid black;
+    margin-bottom:8px;
 
 }
 
@@ -2137,99 +2237,61 @@ h1{
 
 <div class="header">
 
-    <div>
+<div>
 
-        <img src="logo.png" class="logo">
-
-    </div>
-
-    <div class="kopfRechts">
-
-        <h1>Eigenbeleg</h1>
-
-        <table>
-
-            <tr>
-
-                <td><b>Datum:</b></td>
-
-                <td>${document.getElementById("ebDatum").value}</td>
-
-            </tr>
-
-            <tr>
-
-                <td><b>Eigenbeleg Nr.:</b></td>
-
-                <td>${document.getElementById("ebNummer").value}</td>
-
-            </tr>
-
-        </table>
-
-    </div>
+<img src="logo.png" class="logo">
 
 </div>
 
-<div style="font-size:10px;color:#666;margin-bottom:20px;">
+<div class="kopfRechts">
+
+<h1>Eigenbeleg</h1>
+
+<table>
+
+<tr>
+
+<td><b>Datum</b></td>
+
+<td>${document.getElementById("ebDatum").value}</td>
+
+</tr>
+
+<tr>
+
+<td><b>Nr.</b></td>
+
+<td>${document.getElementById("ebNummer").value}</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="absender">
 
 MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg | Deutschland
 
 </div>
 
-<div class="kunde">
+<div class="block">
 
 <h3>Verkäufer</h3>
 
-<div>
-
-${document.getElementById("ebEmpfaenger").value}
-
-</div>
-
-<div>
-
-${document.getElementById("ebStrasse").value}
-
-</div>
-
-<div>
-
-${document.getElementById("ebOrt").value}
-
-</div>
-
-</div>
-
-<div style="margin-top:25px;">
-
-<b>Grund des Ankaufs</b>
-
-<br><br>
-
-${document.getElementById("ebGrund").value}
-
-</div>
-
-<b>Datum:</b>
-${document.getElementById("ebDatum").value}
-
-<br>
-
-<b>Eigenbeleg-Nr.:</b>
-${document.getElementById("ebNummer").value}
-
-<br><br>
-
-<b>Verkäufer:</b><br>
-
 ${document.getElementById("ebEmpfaenger").value}<br>
+
 ${document.getElementById("ebStrasse").value}<br>
+
 ${document.getElementById("ebOrt").value}
 
-<br><br>
+</div>
 
-<b>Grund des Ankaufs:</b><br>
+<div class="block">
+
+<h3>Grund des Ankaufs</h3>
 
 ${document.getElementById("ebGrund").value}
 
@@ -2237,27 +2299,37 @@ ${document.getElementById("ebGrund").value}
 
 <table>
 
+<thead>
+
 <tr>
 
 <th>Pos.</th>
+
 <th>Beschreibung</th>
+
 <th>Preis</th>
 
 </tr>
 
+</thead>
+
+<tbody>
+
 ${positionen}
+
+</tbody>
 
 </table>
 
-<div style="display:flex;justify-content:flex-end;margin-top:30px;">
+<div class="summen">
 
-<table class="summenTabelle">
+<table>
 
-<tr class="gesamtZeile">
+<tr class="gesamt">
 
 <td>Gesamtbetrag</td>
 
-<td>
+<td style="text-align:right;">
 
 ${document.getElementById("eigenbelegSumme").innerText}
 
@@ -2271,12 +2343,20 @@ ${document.getElementById("eigenbelegSumme").innerText}
 
 <div class="unterschriften">
 
-<div class="linie">
+<div class="signatur">
+
+<hr>
+
 Verkäufer
+
 </div>
 
-<div class="linie">
+<div class="signatur">
+
+<hr>
+
 MS Pens
+
 </div>
 
 </div>
@@ -2284,6 +2364,7 @@ MS Pens
 </body>
 
 </html>
+
 `);
 
     fenster.document.close();
