@@ -2548,6 +2548,12 @@ function berechneEigenbeleg(){
         summe.toFixed(2).replace(".", ",") + " €";
 
 }
+
+function ladeEigenbelegFotos(event){
+
+    console.log(event.target.files);
+
+}       
        
 document
 .getElementById("addGeraetBtn")
@@ -2561,6 +2567,10 @@ document
 document
     .getElementById("addEigenbelegPosBtn")
     .addEventListener("click", addEigenbelegPosition);
+
+document
+    .getElementById("ebFotos")
+    .addEventListener("change", ladeEigenbelegFotos);       
 
        
 </script>
