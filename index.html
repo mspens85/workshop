@@ -465,29 +465,24 @@ id="ebGrund"
 rows="4"
 placeholder="Grund des Eigenbelegs">
 </textarea>
+<h3>Angekaufte Schreibgeräte</h3>
 
-<h3 style="margin-top:30px;">Angekaufte Artikel</h3>
+<div id="eigenbelegPositionen"></div>
 
-<div id="eigenbelegPositionen">
-
-</div>
-
-<button id="addEigenbelegPosition">
-
-+ Position hinzufügen
-
+<button
+    id="addEigenbelegPosBtn"
+    type="button">
+    + Schreibgerät hinzufügen
 </button>
 
 <div style="margin-top:25px;text-align:right;font-size:22px;font-weight:bold;">
 
 Gesamt:
-<span id="ebSumme">
+<span id="eigenbelegSumme">
 
 0,00 €
 
 </span>
-
-</div>
 
 </div>
 
@@ -1943,6 +1938,96 @@ PayPal:<br>
     };
 
 }
+
+       function addEigenbelegPosition(){
+
+    const container =
+        document.getElementById("eigenbelegPositionen");
+
+    const div = document.createElement("div");
+    div.className = "geraet";
+
+    div.innerHTML = `
+
+<input
+class="ebModell"
+placeholder="Modell">
+
+<input
+class="ebSeriennummer"
+placeholder="Seriennummer">
+
+<input
+class="ebMenge"
+type="number"
+value="1"
+min="1">
+
+<input
+class="ebPreis"
+type="number"
+step="0.01"
+placeholder="Preis">
+
+<button
+type="button"
+class="removeBtn">
+
+Position löschen
+
+</button>
+
+`;
+
+    div.querySelector(".removeBtn")
+        .addEventListener("click", function(){
+
+            div.remove();
+
+            berechneEigenbeleg();
+
+        });
+
+    div.querySelectorAll("input")
+        .forEach(el=>{
+
+            el.addEventListener("input",
+                berechneEigenbeleg);
+
+        });
+
+    container.appendChild(div);
+
+}
+
+function berechneEigenbeleg(){
+
+    let summe = 0;
+
+    document
+        .querySelectorAll("#eigenbelegPositionen .geraet")
+        .forEach(pos=>{
+
+            const menge =
+                parseFloat(
+                    pos.querySelector(".ebMenge").value
+                ) || 0;
+
+            const preis =
+                parseFloat(
+                    pos.querySelector(".ebPreis").value
+                ) || 0;
+
+            summe += menge * preis;
+
+        });
+
+    document.getElementById("eigenbelegSumme").innerText =
+        summe.toFixed(2).replace(".",",") + " €";
+
+}       
+
+       
 document
 .getElementById("addGeraetBtn")
 .addEventListener("click",addGeraet);
@@ -1951,6 +2036,12 @@ document
 .getElementById("addArtikelBtn")
 .addEventListener("click",addArtikel);
 
+       
+document
+    .getElementById("addEigenbelegPosBtn")
+    .addEventListener("click", addEigenbelegPosition);
+
+       
 </script>
 
 </body>
