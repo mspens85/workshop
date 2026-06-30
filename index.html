@@ -2030,23 +2030,22 @@ function berechneEigenbeleg(){
     let summe = 0;
 
     document
-        .querySelectorAll("#eigenbelegPositionen .geraet")
+        .querySelectorAll("#eigenbelegPositionen .eigenbelegPos")
         .forEach(pos=>{
-            
-const preis =
-    parseFloat(
-        pos.querySelector(".ebPreis").value
-    ) || 0;
 
-summe += preis;
+            const preis =
+                parseFloat(
+                    pos.querySelector(".ebPreis").value
+                ) || 0;
+
+            summe += preis;
 
         });
 
     document.getElementById("eigenbelegSumme").innerText =
-        summe.toFixed(2).replace(".",",") + " €";
+        summe.toFixed(2).replace(".", ",") + " €";
 
-}       
-
+}
        
 document
 .getElementById("addGeraetBtn")
