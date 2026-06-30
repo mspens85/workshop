@@ -172,6 +172,32 @@ h1{
 
 }
 
+.eigenbelegPos{
+
+    display:grid;
+
+    grid-template-columns:3fr 2fr 70px 100px 130px;
+
+    gap:10px;
+
+    margin-bottom:10px;
+
+    align-items:center;
+
+}
+
+.eigenbelegPos input{
+
+    margin:0;
+
+}
+
+.eigenbelegPos button{
+
+    margin:0;
+
+}    
+
 select,
 button,
 input,
@@ -467,6 +493,16 @@ placeholder="Grund des Eigenbelegs">
 </textarea>
 <h3>Angekaufte Schreibgeräte</h3>
 
+<div class="eigenbelegPos" style="font-weight:bold;">
+
+<div>Modell</div>
+<div>Seriennummer</div>
+<div>Menge</div>
+<div>Preis</div>
+<div></div>
+
+</div>
+    
 <div id="eigenbelegPositionen"></div>
 
 <button
@@ -1945,7 +1981,7 @@ PayPal:<br>
         document.getElementById("eigenbelegPositionen");
 
     const div = document.createElement("div");
-    div.className = "geraet";
+    div.className = "eigenbelegPos";
 
     div.innerHTML = `
 
