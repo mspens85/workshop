@@ -784,82 +784,72 @@ const artikelListe = {
 
 const arbeitenText = {
 
+    "Demontage": {
+        de: "Demontage",
+        en: "Disassembly"
+    },
+
     "Reinigung": {
         de: "Reinigung",
         en: "Cleaning"
     },
 
-    "Polieren": {
-        de: "Polieren",
-        en: "Polishing"
-    },
-
-    "Kolben gangbar machen": {
-        de: "Kolben gangbar machen",
-        en: "Free piston mechanism"
+    "Wartung Mechanik": {
+        de: "Wartung Mechanik",
+        en: "Mechanism Service"
     },
 
     "Korkdichtung erneuern": {
         de: "Korkdichtung erneuern",
-        en: "Replace cork seal"
+        en: "Replace Cork Seal"
     },
 
-    "Kolbendichtung erneuern": {
-        de: "Kolbendichtung erneuern",
-        en: "Replace piston seal"
+    "Politur einfach": {
+        de: "Politur einfach",
+        en: "Basic Polishing"
     },
 
-    "Feder richten": {
-        de: "Feder richten",
-        en: "Nib alignment"
+    "Mehrstufige Handpolitur": {
+        de: "Mehrstufige Handpolitur",
+        en: "Multi-stage Hand Polishing"
     },
 
-    "Feder schleifen": {
-        de: "Feder schleifen",
-        en: "Nib grinding"
+    "Gravur entfernen": {
+        de: "Gravur entfernen",
+        en: "Remove Engraving"
     },
 
-    "Feder ersetzen": {
-        de: "Feder ersetzen",
-        en: "Replace nib"
+    "Kappenriss schließen": {
+        de: "Kappenriss schließen",
+        en: "Repair Cap Crack"
     },
 
-    "Tintenleiter reinigen": {
-        de: "Tintenleiter reinigen",
-        en: "Clean feed"
+    "Kappenlippe erneuern": {
+        de: "Kappenlippe erneuern",
+        en: "Replace Cap Lip"
     },
 
-    "Tintenleiter ersetzen": {
-        de: "Tintenleiter ersetzen",
-        en: "Replace feed"
+    "Clip/Kappenringe vergolden": {
+        de: "Clip/Kappenringe vergolden",
+        en: "Replate Clip and Cap Rings"
     },
 
-    "Kappe reparieren": {
-        de: "Kappe reparieren",
-        en: "Repair cap"
+    "Kappenstern erneuert": {
+        de: "Kappenstern erneuert",
+        en: "Replace Cap Emblem"
     },
 
-    "Schaft reparieren": {
-        de: "Schaft reparieren",
-        en: "Repair barrel"
+    "Feder umschleifen": {
+        de: "Feder umschleifen",
+        en: "Nib Regrinding"
     },
 
-    "Clip reparieren": {
-        de: "Clip reparieren",
-        en: "Repair clip"
-    },
-
-    "Mechanik reparieren": {
-        de: "Mechanik reparieren",
-        en: "Repair mechanism"
-    },
-
-    "Sonstige Arbeiten": {
-        de: "Sonstige Arbeiten",
-        en: "Other work"
+    "Schreibprobe": {
+        de: "Schreibprobe",
+        en: "Writing Test"
     }
 
-};       
+};
 
 function addGeraet(){
 
@@ -879,19 +869,19 @@ placeholder="Notizen"></textarea>
 
 <div class="arbeiten">
 
-<label><input type="checkbox">Demontage</label>
-<label><input type="checkbox">Reinigung</label>
-<label><input type="checkbox">Wartung Mechanik</label>
-<label><input type="checkbox">Korkdichtung erneuern</label>
-<label><input type="checkbox">Politur einfach</label>
-<label><input type="checkbox">Mehrstufige Handpolitur</label>
-<label><input type="checkbox">Gravur entfernen</label>
-<label><input type="checkbox">Kappenriss schließen</label>
-<label><input type="checkbox">Kappenlippe erneuern</label>
-<label><input type="checkbox">Clip/Kappenringe vergolden</label>
-<label><input type="checkbox">Kappenstern erneuert</label>
-<label><input type="checkbox">Feder umschleifen</label>
-<label><input type="checkbox">Schreibprobe</label>
+<label><input type="checkbox" value="Demontage">Demontage</label>
+<label><input type="checkbox" value="Reinigung">Reinigung</label>
+<label><input type="checkbox" value="Wartung Mechanik">Wartung Mechanik</label>
+<label><input type="checkbox" value="Korkdichtung erneuern">Korkdichtung erneuern</label>
+<label><input type="checkbox" value="Politur einfach">Politur einfach</label>
+<label><input type="checkbox" value="Mehrstufige Handpolitur">Mehrstufige Handpolitur</label>
+<label><input type="checkbox" value="Gravur entfernen">Gravur entfernen</label>
+<label><input type="checkbox" value="Kappenriss schließen">Kappenriss schließen</label>
+<label><input type="checkbox" value="Kappenlippe erneuern">Kappenlippe erneuern</label>
+<label><input type="checkbox" value="Clip/Kappenringe vergolden">Clip/Kappenringe vergolden</label>
+<label><input type="checkbox" value="Kappenstern erneuert">Kappenstern erneuert</label>
+<label><input type="checkbox" value="Feder umschleifen">Feder umschleifen</label>
+<label><input type="checkbox" value="Schreibprobe">Schreibprobe</label>
 
 </div>
 
@@ -1080,11 +1070,11 @@ function aktualisierePositionen(){
 geraet.querySelectorAll(".arbeiten input:checked")
 .forEach(cb => {
 
-    const arbeit = cb.parentElement.innerText.trim();
+    const arbeit = cb.value;
 
-    arbeiten.push(
-        arbeitenText[arbeit]?.[app.sprache] || arbeit
-    );
+arbeiten.push(
+    arbeitenText[arbeit]?.[app.sprache] || arbeit
+);
 
 });
 
