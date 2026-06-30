@@ -434,29 +434,64 @@ style="width:100%;border-collapse:collapse;">
 
 <!-- Eigenbeleg -->
 
-<div id="eigenbelegBereich" style="display:none;">
+<div id="eigenbeleg" class="section">
 
 <h2>Eigenbeleg</h2>
 
-<input
-id="ebEmpfaenger"
-placeholder="Empfänger / Verkäufer">
+<div class="kundeGrid">
 
-<input
-id="ebStrasse"
-placeholder="Straße">
+    <div>
 
-<input
-id="ebOrt"
-placeholder="PLZ Ort">
+        <input id="ebEmpfaenger" placeholder="Empfänger / Verkäufer">
+
+        <input id="ebStrasse" placeholder="Straße">
+
+        <input id="ebOrt" placeholder="PLZ / Ort">
+
+    </div>
+
+    <div>
+
+        <input id="ebDatum" placeholder="Datum">
+
+        <input id="ebNummer" placeholder="Eigenbelegnummer">
+
+    </div>
+
+</div>
 
 <textarea
 id="ebGrund"
-rows="3"
-placeholder="Grund des Eigenbelegs (z.B. Ankauf Montblanc 146)">
+rows="4"
+placeholder="Grund des Eigenbelegs">
 </textarea>
 
+<h3 style="margin-top:30px;">Angekaufte Artikel</h3>
+
+<div id="eigenbelegPositionen">
+
 </div>
+
+<button id="addEigenbelegPosition">
+
++ Position hinzufügen
+
+</button>
+
+<div style="margin-top:25px;text-align:right;font-size:22px;font-weight:bold;">
+
+Gesamt:
+<span id="ebSumme">
+
+0,00 €
+
+</span>
+
+</div>
+
+</div>
+
+
 
 
     
@@ -1311,11 +1346,13 @@ function updateModus(){
     }
 
     // Eigenbeleg
-    if(app.modus==="eigenbeleg"){
+if(app.modus==="eigenbeleg"){
 
-        document
-            .getElementById("eigenbeleg")
-            .classList.add("active");
+    document
+        .getElementById("eigenbeleg")
+        .classList.add("active");
+
+}
 
     }
 
