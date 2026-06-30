@@ -611,10 +611,34 @@ tabellen.forEach(headers => {
 }
 
 const artikelListe = {
-  "CORK2": { name: "Dichtkorken Größe 2", preis: 20 },
-  "CORK4": { name: "Dichtkorken Größe 4", preis: 20 },
-  "CORK6": { name: "Dichtkorken Größe 6", preis: 20 },
-  "CORK9": { name: "Dichtkorken Größe 9", preis: 20 },
+"CORK2": {
+    name: {
+        de: "Dichtkorken Größe 2",
+        en: "Cork Seal Size 2"
+    },
+    preis: 20
+},
+"CORK4": {
+    name: {
+        de: "Dichtkorken Größe 4",
+        en: "Cork Seal Size 4"
+    },
+    preis: 20
+},
+"CORK6": {
+    name: {
+        de: "Dichtkorken Größe 6",
+        en: "Cork Seal Size 6"
+    },
+    preis: 20
+},
+"CORK9": {
+    name: {
+        de: "Dichtkorken Größe 9",
+        en: "Cork Seal Size 9"
+    },
+    preis: 20
+},
 
   "PTM": { name: "Werkzeug für die Kolbeneinheit modern", preis: 39 },
   "PTA": { name: "Werkzeug für die Kolbeneinheit antik", preis: 39 },
@@ -757,7 +781,9 @@ function addArtikel(){
 
         const option = document.createElement("option");
         option.value = nr;
-        option.textContent = nr + " – " + artikelListe[nr].name;
+option.textContent =
+    nr + " – " +
+    (artikelListe[nr].name[app.sprache] || artikelListe[nr].name.de);
 
         select.appendChild(option);
 
@@ -791,7 +817,8 @@ function addArtikel(){
             beschreibung.value = "";
             preis.value = "";
         }else{
-            beschreibung.value = artikel.name;
+            beschreibung.value =
+    artikel.name[app.sprache] || artikel.name.de;
             preis.value = artikel.preis;
         }
 
