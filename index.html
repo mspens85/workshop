@@ -434,13 +434,32 @@ style="width:100%;border-collapse:collapse;">
 
 <!-- Eigenbeleg -->
 
-<div id="eigenbeleg" class="section">
+<div id="eigenbelegBereich" style="display:none;">
 
 <h2>Eigenbeleg</h2>
 
-<p>Eigenbelegbereich folgt…</p>
+<input
+id="ebEmpfaenger"
+placeholder="Empfänger / Verkäufer">
+
+<input
+id="ebStrasse"
+placeholder="Straße">
+
+<input
+id="ebOrt"
+placeholder="PLZ Ort">
+
+<textarea
+id="ebGrund"
+rows="3"
+placeholder="Grund des Eigenbelegs (z.B. Ankauf Montblanc 146)">
+</textarea>
 
 </div>
+
+
+    
 
 <div class="buttons">
 
@@ -834,8 +853,8 @@ const arbeitenText = {
         en: "Replate Clip and Cap Rings"
     },
 
-    "Kappenstern erneuert": {
-        de: "Kappenstern erneuert",
+    "Kappenstern ersetzen": {
+        de: "Kappenstern ersetzen",
         en: "Replace Cap Emblem"
     },
 
@@ -879,7 +898,7 @@ placeholder="Notizen"></textarea>
 <label><input type="checkbox" value="Kappenriss schließen">Kappenriss schließen</label>
 <label><input type="checkbox" value="Kappenlippe erneuern">Kappenlippe erneuern</label>
 <label><input type="checkbox" value="Clip/Kappenringe vergolden">Clip/Kappenringe vergolden</label>
-<label><input type="checkbox" value="Kappenstern erneuert">Kappenstern erneuert</label>
+<label><input type="checkbox" value="Kappenstern ersetzen">Kappenstern ersetzen</label>
 <label><input type="checkbox" value="Feder umschleifen">Feder umschleifen</label>
 <label><input type="checkbox" value="Schreibprobe">Schreibprobe</label>
 
@@ -1253,24 +1272,15 @@ function updateModus(){
     app.modus = document.getElementById("modus").value;
 
     document
-    .querySelectorAll(".section")
-    .forEach(sec=>sec.classList.remove("active"));
-
-    // Eigenbeleg
-    if(app.modus==="eigenbeleg"){
-
-        document
-        .getElementById("eigenbeleg")
-        .classList.add("active");
-
-    }
+        .querySelectorAll(".section")
+        .forEach(sec => sec.classList.remove("active"));
 
     // Werkstatt
     if(app.modus==="werkstatt"){
 
         document
-        .getElementById("werkstatt")
-        .classList.add("active");
+            .getElementById("werkstatt")
+            .classList.add("active");
 
     }
 
@@ -1278,12 +1288,12 @@ function updateModus(){
     if(app.modus==="angebot"){
 
         document
-        .getElementById("werkstatt")
-        .classList.add("active");
+            .getElementById("werkstatt")
+            .classList.add("active");
 
         document
-        .getElementById("angebot")
-        .classList.add("active");
+            .getElementById("angebot")
+            .classList.add("active");
 
     }
 
@@ -1291,17 +1301,39 @@ function updateModus(){
     if(app.modus==="rechnung"){
 
         document
-        .getElementById("werkstatt")
-        .classList.add("active");
+            .getElementById("werkstatt")
+            .classList.add("active");
 
         document
-        .getElementById("rechnung")
-        .classList.add("active");
+            .getElementById("rechnung")
+            .classList.add("active");
+
+    }
+
+    // Eigenbeleg
+    if(app.modus==="eigenbeleg"){
+
+        document
+            .getElementById("eigenbeleg")
+            .classList.add("active");
+
+    }
+
+    // Eigenbeleg-Bereich ein-/ausblenden
+    const eb = document.getElementById("eigenbelegBereich");
+
+    if(eb){
+
+        eb.style.display =
+            app.modus==="eigenbeleg"
+                ? "block"
+                : "none";
 
     }
 
     document.getElementById("title").innerText =
         titel[app.modus];
+
     aktualisierePositionen();
 
 }
