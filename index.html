@@ -1132,13 +1132,13 @@ function druckeDokument(){
 
     aktualisierePositionen();
 
+    const istAngebot = app.modus === "angebot";
+    
     const t = text[app.sprache];
 
     const nummerLabel = istAngebot
     ? t.angebotNr
     : t.rechnungNr;
-
-    const istAngebot = app.modus === "angebot";
 
 const titel = istAngebot
     ? t.angebot
