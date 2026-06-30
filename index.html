@@ -2551,9 +2551,25 @@ function berechneEigenbeleg(){
 
 function ladeEigenbelegFotos(event){
 
-    console.log(event.target.files);
+    const dateien = [...event.target.files];
 
-}       
+    dateien.forEach(datei=>{
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            app.fotos.push(e.target.result);
+
+            console.log(app.fotos);
+
+        };
+
+        reader.readAsDataURL(datei);
+
+    });
+
+}    
        
 document
 .getElementById("addGeraetBtn")
