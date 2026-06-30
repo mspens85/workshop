@@ -1354,19 +1354,7 @@ if(app.modus==="eigenbeleg"){
 
 }
 
-    }
 
-    // Eigenbeleg-Bereich ein-/ausblenden
-    const eb = document.getElementById("eigenbelegBereich");
-
-    if(eb){
-
-        eb.style.display =
-            app.modus==="eigenbeleg"
-                ? "block"
-                : "none";
-
-    }
 
     document.getElementById("title").innerText =
         titel[app.modus];
