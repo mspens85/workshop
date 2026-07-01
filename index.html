@@ -427,6 +427,8 @@ button{
         + Gerät hinzufügen
     </button>
 
+<div id="artikelBereich">
+
 <h2 id="artikelTitel" style="margin-top:35px;">Werkzeuge / Artikel</h2>
 
 <div id="werkzeugContainer">
@@ -436,6 +438,8 @@ button{
 <button id="addArtikelBtn">
     + Artikel hinzufügen
 </button>
+
+</div>
 
 <div style="margin-top:25px;text-align:right;font-size:22px;font-weight:bold;">
 
@@ -668,7 +672,9 @@ de:{
     ustHinweis:"Gemäß § 19 Abs. 1 UStG wird keine Umsatzsteuer ausgewiesen.",
     kontakt:"Kontakt",
     bank:"Bankverbindung",
-    land:"Deutschland"
+    land:"Deutschland",
+
+    auftragsNr: "Auftragsnummer:"
 
 },
 
@@ -712,7 +718,9 @@ en:{
     ustHinweis:"No VAT is charged in accordance with § 19 para. 1 German VAT Act (UStG).",
     kontakt:"Contact",
     bank:"Bank Details",
-    land:"Germany"
+    land:"Germany",
+
+    auftragsNr: "Auftragsnummer:"
         
 }
 
@@ -1455,7 +1463,17 @@ if(app.modus==="eigenbeleg"){
 
 }
 
+const artikelBereich =
+    document.getElementById("artikelBereich");
 
+if(artikelBereich){
+
+    artikelBereich.style.display =
+        app.modus==="werkstatt"
+            ? "none"
+            : "block";
+
+}
 
     document.getElementById("title").innerText =
         titel[app.modus];
@@ -1514,10 +1532,21 @@ function druckeDokument(){
     
     const t = text[app.sprache];
 
-    const nummerLabel = istAngebot
-    ? t.angebotNr
-    : t.rechnungNr;
-    
+let nummerLabel;
+
+if(app.modus==="werkstatt"){
+
+    nummerLabel = t.auftragsNr;
+
+}else if(app.modus==="angebot"){
+
+    nummerLabel = t.angebotNr;
+
+}else{
+
+    nummerLabel = t.rechnungNr;
+
+}
 const titel =
     istEigenbeleg
         ? "Eigenbeleg"
@@ -1995,7 +2024,40 @@ ${document.getElementById("werkstattSumme").innerText}
 
 </div>
 
-${!istAngebot ? `
+${app.modus==="rechnung" ? `
+
+<div class="zahlung">
+
+<b>${t.zahlungTitel}</b>
+
+<br><br>
+
+IBAN: DE•• •••• •••• •••• •••• ••<br>
+BIC: XXXXXXXX
+
+<br><br>
+
+${t.paypalText} <b>@penmarco</b>
+
+<br><br>
+
+${t.versandText}
+
+<br><br>
+
+${t.ustHinweis}
+
+</div>
+
+` : app.modus==="angebot" ? `
+
+<div class="zahlung">
+
+${t.angebotHinweis}
+
+</div>
+
+` : ""}
 
 <div class="zahlung">
 
