@@ -2112,8 +2112,7 @@ ${preis.toFixed(2).replace(".",",")} €
 
         });
 
-
-            app.fotos.forEach(bild=>{
+app.fotos.forEach((bild,index)=>{
 
     fotos += `
 
@@ -2121,11 +2120,13 @@ ${preis.toFixed(2).replace(".",",")} €
 
 <img src="${bild}">
 
+<p>Foto ${index+1}</p>
+
 </div>
 
 `;
 
-});    
+});
 
     const fenster = window.open("", "_blank");
 
@@ -2328,7 +2329,11 @@ td:nth-child(3){
 
     border:1px solid #bbb;
 
-    padding:10px;
+    border-radius:6px;
+
+    padding:12px;
+
+    background:#fafafa;
 
     text-align:center;
 
@@ -2337,14 +2342,15 @@ td:nth-child(3){
     page-break-inside:avoid;
 
 }
-
 .druckFoto img{
 
     width:100%;
 
-    max-height:320px;
+    height:250px;
 
     object-fit:contain;
+
+    background:white;
 
 }
 
@@ -2593,6 +2599,8 @@ PayPal:<br>
 
 </div>
 
+${app.fotos.length > 0 ? `
+
 <div class="fotoSeite">
 
 <h2>Fotodokumentation</h2>
@@ -2604,6 +2612,8 @@ ${fotos}
 </div>
 
 </div>
+
+` : ""}
 
 </body>
 
