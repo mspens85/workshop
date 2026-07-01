@@ -269,6 +269,32 @@ button{
 
 }
 
+    #fotoVorschau{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+    margin-top:15px;
+
+}
+
+#fotoVorschau img{
+
+    width:140px;
+
+    height:140px;
+
+    object-fit:cover;
+
+    border:1px solid #bbb;
+
+    border-radius:6px;
+
+}
+
 #datum,
 #belegnummer{
 
@@ -526,6 +552,7 @@ Gesamt:
     id="ebFotos"
     accept="image/*"
     multiple>
+    <div id="fotoVorschau"></div>
 </div>
 
 
@@ -2557,19 +2584,38 @@ function ladeEigenbelegFotos(event){
 
         const reader = new FileReader();
 
-        reader.onload = function(e){
+reader.onload = function(e){
 
-            app.fotos.push(e.target.result);
+    app.fotos.push(e.target.result);
 
-            console.log(app.fotos);
+    zeigeEigenbelegFotos();
 
-        };
+};
 
         reader.readAsDataURL(datei);
 
     });
 
 }    
+
+function zeigeEigenbelegFotos(){
+
+    const container =
+        document.getElementById("fotoVorschau");
+
+    container.innerHTML = "";
+
+    app.fotos.forEach(bild=>{
+
+        const img = document.createElement("img");
+
+        img.src = bild;
+
+        container.appendChild(img);
+
+    });
+
+}       
        
 document
 .getElementById("addGeraetBtn")
