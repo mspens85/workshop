@@ -198,6 +198,36 @@ h1{
 
 }    
 
+.fotoBox{
+
+    position:relative;
+
+}
+
+.fotoLoeschen{
+
+    position:absolute;
+
+    top:5px;
+    right:5px;
+
+    width:24px;
+    height:24px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#c62828;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}    
+
 select,
 button,
 input,
@@ -2605,17 +2635,39 @@ function zeigeEigenbelegFotos(){
 
     container.innerHTML = "";
 
-    app.fotos.forEach(bild=>{
+    app.fotos.forEach((bild,index)=>{
+
+        const box = document.createElement("div");
+
+        box.className = "fotoBox";
 
         const img = document.createElement("img");
 
         img.src = bild;
 
-        container.appendChild(img);
+        const btn = document.createElement("button");
+
+        btn.className = "fotoLoeschen";
+
+        btn.innerText = "×";
+
+        btn.onclick = function(){
+
+            app.fotos.splice(index,1);
+
+            zeigeEigenbelegFotos();
+
+        };
+
+        box.appendChild(img);
+
+        box.appendChild(btn);
+
+        container.appendChild(box);
 
     });
 
-}       
+}     
        
 document
 .getElementById("addGeraetBtn")
