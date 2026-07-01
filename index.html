@@ -2368,23 +2368,44 @@ td:nth-child(3){
 .unterschriften{
 
     display:flex;
-    justify-content:space-between;
+
+    justify-content:center;
+
     margin-top:80px;
 
 }
 
 .signatur{
 
-    width:260px;
+    width:420px;
+
     text-align:center;
 
 }
 
 .signatur hr{
 
-    border:none;
+    width:420px;
+
     border-top:1px solid black;
-    margin-bottom:8px;
+
+    padding-top:8px;
+
+    text-align:center;
+
+    line-height:1.5;
+
+}
+
+.bestaetigung{
+
+    margin-top:18px;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    line-height:1.4;
 
 }
 
@@ -2419,6 +2440,7 @@ td:nth-child(3){
     color:black;
 
 }
+
 
 </style>
 
@@ -2538,15 +2560,14 @@ ${document.getElementById("eigenbelegSumme").innerText}
 
 <hr>
 
-Verkäufer
-
-</div>
-
-<div class="signatur">
-
-<hr>
-
+Marco Schrage<br>
 MS Pens
+
+<p class="bestaetigung">
+
+Ich bestätige die Richtigkeit und Vollständigkeit der vorstehenden Angaben.
+
+</p>
 
 </div>
 
