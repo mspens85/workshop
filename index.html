@@ -523,12 +523,19 @@ style="width:100%;border-collapse:collapse;">
 <div class="kundeGrid">
 
     <div>
+<input id="ebEmpfaenger" placeholder="Name">
 
-        <input id="ebEmpfaenger" placeholder="Empfänger / Verkäufer">
+<input id="ebZusatz1" placeholder="Zusatz (z. B. Pen Show, Firma, Hotel)">
 
-        <input id="ebStrasse" placeholder="Straße">
+<input id="ebZusatz2" placeholder="Zusatz">
 
-        <input id="ebOrt" placeholder="PLZ / Ort">
+<input id="ebStrasse" placeholder="Straße">
+
+<input id="ebOrt" placeholder="PLZ / Ort">
+
+<input id="ebRegion" placeholder="Bundesland / Region">
+
+<input id="ebLand" placeholder="Land">
 
     </div>
 
@@ -1811,6 +1818,10 @@ td:nth-child(6){
 
     color:#444;
 
+    page-break-inside: avoid;
+
+break-inside: avoid;
+
 }
 
 .footer h4{
@@ -2127,7 +2138,20 @@ app.fotos.forEach((bild,index)=>{
 `;
 
 });
+const verkaeuferAdresse = [
 
+    document.getElementById("ebEmpfaenger").value,
+    document.getElementById("ebZusatz1").value,
+    document.getElementById("ebZusatz2").value,
+    document.getElementById("ebStrasse").value,
+    document.getElementById("ebOrt").value,
+    document.getElementById("ebRegion").value,
+    document.getElementById("ebLand").value
+
+]
+.filter(text => text.trim() !== "")
+.map(text => `<div>${text}</div>`)
+.join("");
     const fenster = window.open("", "_blank");
 
 fenster.document.write(`
@@ -2429,6 +2453,10 @@ td:nth-child(3){
 
     color:#444;
 
+    page-break-inside: avoid;
+
+break-inside: avoid;
+
 }
 
 .footer h4{
@@ -2494,11 +2522,7 @@ MS Pens | Marco Schrage | Glindweg 13 | 22303 Hamburg | Deutschland
 
 <h3>Verkäufer</h3>
 
-${document.getElementById("ebEmpfaenger").value}<br>
-
-${document.getElementById("ebStrasse").value}<br>
-
-${document.getElementById("ebOrt").value}
+${verkaeuferAdresse}
 
 </div>
 
