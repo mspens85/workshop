@@ -2101,6 +2101,17 @@ function druckeEigenbeleg(){
                 ) || 0;
 
             positionen += `
+<tr>
+<td>${index+1}</td>
+<td>${beschreibung}</td>
+<td style="text-align:right">
+${preis.toFixed(2).replace(".",",")} €
+</td>
+</tr>
+`;
+
+        });
+
 
             app.fotos.forEach(bild=>{
 
@@ -2114,19 +2125,7 @@ function druckeEigenbeleg(){
 
 `;
 
-});
-
-
-<tr>
-<td>${index+1}</td>
-<td>${beschreibung}</td>
-<td style="text-align:right">
-${preis.toFixed(2).replace(".",",")} €
-</td>
-</tr>
-`;
-
-        });
+});    
 
     const fenster = window.open("", "_blank");
 
