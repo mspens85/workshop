@@ -2051,12 +2051,15 @@ ${app.modus==="rechnung" ? `
 
 ${app.bereitsBezahlt ? `
 
-<b>Bereits bezahlt</b>
+
+<b>${app.sprache === "de" ? "Bereits bezahlt" : "Already paid"}</b>
 
 <br><br>
 
-Der Rechnungsbetrag wurde bereits vollständig beglichen.
-Es ist keine weitere Zahlung erforderlich.
+${app.sprache === "de"
+    ? "Der Rechnungsbetrag wurde bereits vollständig beglichen. Es ist keine weitere Zahlung erforderlich."
+    : "The invoice has been paid in full. No further payment is required."}
+
 
 ` : `
 
