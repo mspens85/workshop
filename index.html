@@ -415,9 +415,21 @@ button{
 
         </div>
 
+
+    </div>
+
+    <div id="bezahltOption" style="display:none; margin-top:20px; margin-bottom:20px;">
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input
+                type="checkbox"
+                id="bereitsBezahltCheckbox"
+                style="width:auto; margin:0;">
+            <span id="bereitsBezahltLabel">Rechnung bereits bezahlt</span>
+        </label>
     </div>
 
     <h2 id="geraeteTitel" style="margin-top:35px;">Geräte</h2>
+
 
     <div id="geraeteContainer">
 
@@ -620,13 +632,10 @@ Gesamt:
    <script>
        
 const app={
-
     modus:"werkstatt",
-
     sprache:"de",
-
-    fotos:[]
-
+    fotos:[],
+    bereitsBezahlt:false
 };
 
 
@@ -1413,7 +1422,12 @@ const titel={
 
 function updateModus(){
 
-    app.modus = document.getElementById("modus").value;
+const bezahltOption = document.getElementById("bezahltOption");
+
+if(bezahltOption){
+    bezahltOption.style.display =
+        app.modus === "rechnung" ? "block" : "none";
+}
 
     document
         .querySelectorAll(".section")
@@ -1483,8 +1497,10 @@ if(artikelBereich){
 }
 
 document
-.getElementById("modus")
-.addEventListener("change",updateModus);
+.getElementById("bereitsBezahltCheckbox")
+.addEventListener("change",function(){
+    app.bereitsBezahlt = this.checked;
+});
 
 document
 .getElementById("sprache")
@@ -2024,41 +2040,11 @@ ${document.getElementById("werkstattSumme").innerText}
 
 </div>
 
+<CodeBlock language="javascript" editable>
 ${app.modus==="rechnung" ? `
-
-<div class="zahlung">
-
-<b>${t.zahlungTitel}</b>
-
-<br><br>
-
-Institut: Hamburger Sparkasse AG <br>
-IBAN: DE76 2005 0550 1507 8867 50<br>
-BIC: HASPDEHHXXX
-
-<br><br>
-
-${t.paypalText} <b>@penmarco</b>
-
-<br><br>
-
-${t.versandText}
-
-<br><br>
-
-${t.ustHinweis}
-
-</div>
-
-` : app.modus==="angebot" ? `
-
-<div class="zahlung">
-
-${t.angebotHinweis}
-
-</div>
-
+: app.modus==="angebot" ?
 ` : ""}
+</CodeBlock>
 
 
 <div class="footer">
