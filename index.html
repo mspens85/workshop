@@ -930,7 +930,7 @@ const artikelListe = {
     },
     preis: 3.99
 },
-"SHIP2": {
+"SHIP": {
     name: {
         de: "Versandkosten",
         en: "Shipping"
@@ -944,13 +944,23 @@ const artikelListe = {
     },
     preis: 14.49
 },
+
 "SHIP4": {
     name: {
         de: "Versandkosten",
         en: "Shipping"
     },
     preis: 15.99
+},
+
+"PEN": {
+    name: {
+        de: "Schreibgerät (Freitext)",
+        en: "Writing instrument (custom)"
+    },
+    preis: 0
 }
+
 };
 
 
@@ -1163,24 +1173,29 @@ option.textContent =
     btn.className = "removeBtn";
     btn.textContent = "Artikel löschen";
 
-    // Auswahl geändert
-    select.addEventListener("change",function(){
+ 
+ // Auswahl geändert
+select.addEventListener("change",function(){
 
-        const artikel = artikelListe[this.value];
+    const artikel = artikelListe[this.value];
 
-        if(!artikel){
-            beschreibung.value = "";
-            preis.value = "";
-        }else{
-            beschreibung.value =
-    artikel.name[app.sprache] || artikel.name.de;
-            preis.value = artikel.preis;
-        }
+    if(this.value === "PEN"){
+        beschreibung.value = "";
+        preis.value = "";
+    }else if(!artikel){
+        beschreibung.value = "";
+        preis.value = "";
+    }else{
+        beschreibung.value =
+            artikel.name[app.sprache] || artikel.name.de;
+        preis.value = artikel.preis;
+    }
 
-        berechneWerkstattSumme();
-        aktualisierePositionen();
+    berechneWerkstattSumme();
+    aktualisierePositionen();
 
-    });
+});
+
 
     // Änderungen
     [menge,beschreibung,preis].forEach(el=>{
