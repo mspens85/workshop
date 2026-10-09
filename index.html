@@ -1419,10 +1419,11 @@ const titel={
     eigenbeleg:"Eigenbeleg"
 
 };
-
 function updateModus(){
 
-const bezahltOption = document.getElementById("bezahltOption");
+    app.modus = document.getElementById("modus").value;
+
+    const bezahltOption = document.getElementById("bezahltOption");
 
 if(bezahltOption){
     bezahltOption.style.display =
@@ -1495,7 +1496,10 @@ if(artikelBereich){
     aktualisierePositionen();
 
 }
-
+document
+.getElementById("modus")
+.addEventListener("change", updateModus);
+       
 document
 .getElementById("bereitsBezahltCheckbox")
 .addEventListener("change",function(){
