@@ -2044,11 +2044,56 @@ ${document.getElementById("werkstattSumme").innerText}
 
 </div>
 
-<CodeBlock language="javascript" editable>
+
 ${app.modus==="rechnung" ? `
-: app.modus==="angebot" ?
+
+<div class="zahlung">
+
+${app.bereitsBezahlt ? `
+
+<b>Bereits bezahlt</b>
+
+<br><br>
+
+Der Rechnungsbetrag wurde bereits vollständig beglichen.
+Es ist keine weitere Zahlung erforderlich.
+
+` : `
+
+<b>${t.zahlungTitel}</b>
+
+<br><br>
+
+Institut: Hamburger Sparkasse AG <br>
+IBAN: DE76 2005 0550 1507 8867 50<br>
+BIC: HASPDEHHXXX
+
+<br><br>
+
+${t.paypalText} <b>@penmarco</b>
+
+<br><br>
+
+${t.versandText}
+
+<br><br>
+
+${t.ustHinweis}
+
+`}
+
+</div>
+
+` : app.modus==="angebot" ? `
+
+<div class="zahlung">
+
+${t.angebotHinweis}
+
+</div>
+
 ` : ""}
-</CodeBlock>
+
 
 
 <div class="footer">
